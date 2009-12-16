@@ -10,7 +10,7 @@
 	 */
 	public class Hook extends FlxSprite
 	{		
-		[Embed(source = "../data/temp/hook.png")] private var ImgHook:Class;
+		[Embed(source = "../data/temp/hook_small.png")] private var ImgHook:Class;
 		
 		public var bCollided:Boolean;
 		public var playerAccel:Point;
@@ -60,8 +60,15 @@
 			velocity.y = 0;	
 			bCollided = true;	
 			
-			playerAccel.x = 500;
+			playerAccel = new Point(500,0);
 			return true;			
+		}
+		
+		override public function update():void
+		{
+			super.update();
+			
+			playerAccel = new Point(0, 0);
 		}
 		
 		public function release():void 
@@ -73,6 +80,13 @@
 			velocity.x = 0;
 			velocity.y = 0;	
 			exists = false;			
+		}
+		
+		public function breakRelease():void
+		{
+			this.release();
+			// do other stuff?	
+		
 		}
 		
 		/*

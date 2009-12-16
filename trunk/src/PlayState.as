@@ -8,8 +8,8 @@
 	 */
 	public class PlayState extends FlxState
 	{
-		[Embed(source = "../data/temp/map.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
-		[Embed(source = "../data/temp/tiles_new.png")] private var ImgTiles:Class;
+		[Embed(source = "../data/temp/map_long.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
+		[Embed(source = "../data/temp/tiles_new_small.png")] private var ImgTiles:Class;
 		
 		//major game objects
 		private var tilemap:FlxTilemap;		
@@ -21,7 +21,7 @@
 			super();
 			
 			//create tilemap
-			tilemap = new FlxTilemap(new TxtMap,ImgTiles,32,3);
+			tilemap = new FlxTilemap(new TxtMap,ImgTiles,16,3);
 						
 			//create player and hooks array
 			hooks = new Array();
@@ -32,8 +32,8 @@
 			
 			//add player and set up camera
 			this.add(player);
-			FlxG.follow(player,2.5);
-			FlxG.followAdjust(0.5,0.0);
+			FlxG.follow(player,1.5);
+			FlxG.followAdjust(0.5,0.25);
 			tilemap.follow();	//Set the followBounds to the map dimensions
 			
 			//Uncomment these lines if you want to center TxtMap2
