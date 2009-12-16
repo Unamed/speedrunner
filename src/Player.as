@@ -6,7 +6,8 @@ package
 
 	public class Player extends FlxSprite
 	{
-		[Embed(source="../data/temp/spaceman_new.png")] private var ImgSpaceman:Class;
+		[Embed(source="../data/temp/spaceman_new_thin.png")] private var ImgSpaceman:Class;
+		private var size:uint = 32;	
 		
 		private var jumpPower:int;
 		private var bUp:Boolean;
@@ -15,29 +16,41 @@ package
 		
 		private var hooks:Array;
 		private var curHook:uint;
-		public var prevHook:uint;
-		private var hookVel:int;
+		public var prevHook:uint;		
+		
+		private var bIsSwinging:Boolean;
+		
+		private var runSpeed:uint = 9 * size; //18*size = snel
+		private var hookVel:int = 3 * runSpeed;
+		
+		private var swingSpeed:uint = 1.70 * runSpeed; //1.30 * runSpeed bij snel
+		
+		private var jumpTime:Number;
+		private var maxJumpTime:Number = 0.25;
+		
+		private var fallAccel:Number = 32 * size;
 		
 		public function Player(X:int, Y:int, hooks:Array)
 		{
 			super(X,Y);
-			loadGraphic(ImgSpaceman,true,true,32);
+			loadGraphic(ImgSpaceman,true,true,16,32);
 			restart = 0;
 			
+			jumpTime = 0;
+			
 			//bounding box tweaks
-			width = 24;
+			width = 12;
 			height = 28;
 			offset.x = 4;
 			offset.y = 4;
 			
 			//basic player physics
-			var runSpeed:uint = 320;
 			drag.x = runSpeed * 8;
 			
-			acceleration.y = 1680;
-			jumpPower = 800;
+			acceleration.y = fallAccel;
+			jumpPower = 150 * size;
 			maxVelocity.x = runSpeed;
-			maxVelocity.y = jumpPower;
+			maxVelocity.y = 24 * size;// 800;
 			
 			//animations
 			addAnimation("idle", [0]);
@@ -49,15 +62,11 @@ package
 			addAnimation("jump_down", [10]);
 			
 			this.hooks = hooks;			
-			curHook = 0;
-			hookVel = 600;			
+			curHook = 0;		
 		}
 		
 		override public function update():void
-		{
-			
-			var bUsedButtonForJump:Boolean = false;
-			
+		{				
 			//game restart timer
 			if(dead)
 			{
@@ -65,46 +74,64 @@ package
 				if(restart > 2)
 					FlxG.switchState(PlayState);
 				return;
-			}
+			}			
 			
-			if ( hooks[prevHook].exists && !FlxG.keys.pressed("X") && !FlxG.keys.pressed("C") )
+			if ( hooks[prevHook].exists && !FlxG.keys.pressed("C") )
 			{
 				hooks[prevHook].release();				
 			}
 			
-			//MOVEMENT
-			acceleration.x = 0;			
+			if ( !hooks[prevHook].bCollided )
+			{
+				bIsSwinging = false;				
+			}
 			
+			//MOVEMENT
+			// first, set defaults:		
+			acceleration.x = 0;
+			acceleration.y = fallAccel;	
+			maxVelocity.x = runSpeed;
+			
+			// IF SWINGING:
 			if ( hooks[prevHook].exists && hooks[prevHook].bCollided )
 			{
 				var hook:Hook = hooks[prevHook];
 				
 				var relX:Number = this.x - hook.x;
             	var relY:Number = this.y - hook.y;
-            	var ropeAngle:Number = Math.atan2(relY, relX);
-            	
-				FlxG.log("ropAnge: " + ropeAngle);
+				var ropeAngle:Number = Math.atan2(relY, relX);
 				
-				if ( ropeAngle < 0 )
+				// swinging is faster than walking:
+				maxVelocity.x = swingSpeed;
+				
+				// Always start swinging at a high speed				
+				if ( !bIsSwinging )
+				{	
+					if ( relX < 0 )
+						velocity.x = maxVelocity.x;
+					else 
+						velocity.x = -maxVelocity.x;
+					
+					bIsSwinging = true;
+				}				
+				
+				// calculate velocity based on swing physics
+				// (copied and edited from flixel.org, original author: Broco)
+				if ( ropeAngle < 0 && ( ropeAngle > (0.90 * -Math.PI) && ropeAngle < (0.10 * -Math.PI) ) )
 					hook.release();
 				else
-				{
-				
+				{				
 					// Convert player velocity to polar coordinates.
 					var speedAngle:Number = Math.atan2(this.velocity.y, this.velocity.x);
 					var speedMagnitude:Number = Point.distance(new Point(), this.velocity);
 					// Convert to polar coordinates relative to the rope instead of the origin.
 					var relSpeedAngle:Number = speedAngle - ropeAngle;
 					// Convert to cartesian in rope space.  Apply 90-degree rotation to think in terms of rope hanging downward.
-					var relSpeed:Point = Point.polar(speedMagnitude, relSpeedAngle - Math.PI/2);
-					
+					var relSpeed:Point = Point.polar(speedMagnitude, relSpeedAngle - Math.PI/2);					
 					
 					// Actually perform the transformation here.  The rope nullifies any speed directly pulling against it.
-					if (relSpeed.y < 0 )// {&& hook.isRopeTaut())
-					{				
-						relSpeed.y = 0;
-					}
-					//_relSpeed = relSpeed;
+					if (relSpeed.y < 0 )
+						relSpeed.y = 0;					
 					
 					// Convert back to polar in rope coordinate space.
 					relSpeedAngle = Math.atan2(relSpeed.y, relSpeed.x);
@@ -114,121 +141,68 @@ package
 					// Cartesian in main coordinate space.
 					this.velocity = Point.polar(speedMagnitude, speedAngle + Math.PI / 2);
 					
-					this.velocity.x *= 20;
-					//this.velocity.y *= 1.5;
-					
-					//FlxG.log("Vel: " + velocity);
+					// set acceleration in the direction of hook:
+					acceleration.x = relX;
+					acceleration.y = relY;					
+					acceleration.normalize(1);					
 				}
-				
-				
-				
-				
-			
-			/*
-				var hook:Hook = hooks[prevHook];
-				
-				var pPos:Point = new Point(x, y);
-				var hPos:Point = new Point(hook.x, hook.y);
-				
-				var diff:Point = hPos.subtract(pPos);
-				
-				FlxG.log("DiffX: " + diff.x);
-				
-				if(FlxG.keys.LEFT)
-				{
-					facing = LEFT;
-					
-					if ( diff.x > 0 )
-					{
-						//hook.playerAccel.x += drag.x * 1.5 * Math.abs(diff.x / 50);
-						//acceleration.x = hook.playerAccel.x;
-						acceleration.x = drag.x * 0.5 * Math.abs(diff.x / 10);
-					}
-					else
-					{
-						//hook.playerAccel.x -= drag.x * 1.5;// 0.25 * Math.abs(diff.x / 500);
-						//acceleration.x = hook.playerAccel.x;
-						
-						acceleration.x = drag.x * -1.5 * Math.abs(diff.x / 10);
-					}				
-
-				}
-				if(FlxG.keys.RIGHT)
-				{
-					facing = RIGHT;
-					
-					if ( diff.x > 0 )
-					{
-						//hook.playerAccel.x += drag.x * 1.5 * Math.abs(diff.x / 50);
-						//acceleration.x = hook.playerAccel.x;
-						acceleration.x = drag.x * 1.5 * Math.abs(diff.x / 10);
-					}
-					else
-					{
-						//hook.playerAccel.x -= drag.x * 1.5;// 0.25 * Math.abs(diff.x / 500);
-						//acceleration.x = hook.playerAccel.x;
-						
-						acceleration.x = drag.x * -0.5 * Math.abs(diff.x / 10);
-					}			
-				}
-				
-				
-				
-				
-				velocity.y = 0;
-				/*
-				
-				
-				
-				var pPos:Point = new Point(x, y);
-				var hPos:Point = new Point(hook.x, hook.y);
-				
-				var diff:Point = hPos.subtract(pPos);
-				
-				hook.ropeLength = diff.length;
-				
-				
-				//FlxG.log("rAngle: "+hook.ropeAngle);
-			
-				//hook.Length -= dT * 300.0f * grapplingPower;
-                FlxG.log("ropeLength: "+ hook.ropeLength);
-				
-                var angularAccel:Number = -(40 / hook.ropeLength) * Math.sin(hook.ropeAngle);
-
-                hook.angularSpeed += angularAccel * FlxG.elapsed;
-
-                hook.ropeAngle += hook.angularSpeed;
-
-                var diffX:Number = Math.sin(hook.ropeAngle) * -hook.ropeLength;
-                var diffY:Number = Math.cos(hook.ropeAngle) * hook.ropeLength;
-
-                var nPos:Point = hPos.add(new Point(diffX, diffY));
-				
-				var Position:Point = new Point(x, y);
-
-                velocity = (nPos.subtract(Position));
-				
-				velocity.x /= FlxG.elapsed;
-				velocity.y /= FlxG.elapsed;
-				*/
-				
 			}
 			else
 			{				
-				if(FlxG.keys.LEFT)
+				// "NORMAL" MOVEMENT
+				
+				if ( velocity.y )
 				{
-					facing = LEFT;
-					acceleration.x -= drag.x;
+					if(FlxG.keys.LEFT)
+					{
+						facing = LEFT;
+						acceleration.x -= 0.2 * drag.x;
+					}
+					else if(FlxG.keys.RIGHT)
+					{
+						facing = RIGHT;
+						acceleration.x += 0.2 * drag.x;
+					}
+					
+					// jumping slows you down:
+					if ( velocity.x )
+					{
+						if(facing == LEFT)
+						{
+							acceleration.x += 0.1 * drag.x;
+						}
+						else if(facing == RIGHT)
+						{							
+							acceleration.x -= 0.1 * drag.x;
+						}
+					}
 				}
-				else if(FlxG.keys.RIGHT)
+				else
 				{
-					facing = RIGHT;
-					acceleration.x += drag.x;
+					if(FlxG.keys.LEFT)
+					{
+						facing = LEFT;
+						acceleration.x -= drag.x;
+					}
+					else if(FlxG.keys.RIGHT)
+					{
+						facing = RIGHT;
+						acceleration.x += drag.x;
+					}
 				}
-				if(FlxG.keys.justPressed("X") && !velocity.y)
+				
+				// JUMPING:
+				if( FlxG.keys.pressed("X") )
 				{
-					velocity.y = -jumpPower;
-					bUsedButtonForJump = true;
+					jumpTime += FlxG.elapsed;
+					
+					if ( jumpTime < maxJumpTime )
+						velocity.y -= ((maxJumpTime - jumpTime) / maxJumpTime) * jumpPower * FlxG.elapsed;
+				}
+				else if ( velocity.y)
+				{
+					jumpTime = maxJumpTime;
+					
 				}
 			}
 			
@@ -258,27 +232,17 @@ package
 				else play("run");
 			}	
 			
-			
-			if ( FlxG.keys.justPressed("X") && velocity.y && !bUsedButtonForJump 
-					|| FlxG.keys.justPressed("C")  )
+			// SHOOT HOOK:
+			if ( FlxG.keys.justPressed("C")  )
 			{
 				var bXVel:int = 0;
 				var bYVel:int = 0;
 				var bX:int = x;
-				var bY:int = y;				
+				var bY:int = y;	
 				
-				//if(bUp)
-				//{
-					bY -= hooks[curHook].height - 4;
-					bYVel = -hookVel;
-				//}
-				//else if(bDown)
-				//{
-				//	bY += height - 4;
-				//	bYVel = hookVel;
-				//	velocity.y -= 36;
-				//}
-				//else
+				bY -= hooks[curHook].height - 4;
+				bYVel = -hookVel;
+				
 				if(facing == RIGHT)
 				{
 					bX += width - 4;
@@ -297,38 +261,10 @@ package
 					curHook = 0;
 			}
 			
-			/* ROPE STUFF.. COPIED..
+			/* ROPE COLLISION STUFF.. COPIED..
 			 * 
-			 *            //PLAYER PHYSICS WHEN AT END OF TAUT ROPE         
             if(_hook.state == _hook.LATCHED) {
-            	// Calculate angle of rope relative to player.
-            	var relX:Number = this.getCenterPoint().x - _hook.GetCornerPoint().x;
-            	var relY:Number = this.getCenterPoint().y - _hook.GetCornerPoint().y;
-            	var ropeAngle:Number = Math.atan2(relY, relX);
-            	
-            	// Convert player velocity to polar coordinates.
-            	var speedAngle:Number = Math.atan2(this.velocity.y, this.velocity.x);
-            	var speedMagnitude:Number = Point.distance(new Point(), this.velocity);
-            	// Convert to polar coordinates relative to the rope instead of the origin.
-            	var relSpeedAngle:Number = speedAngle - ropeAngle;
-            	// Convert to cartesian in rope space.  Apply 90-degree rotation to think in terms of rope hanging downward.
-            	var relSpeed:Point = Point.polar(speedMagnitude, relSpeedAngle - Math.PI/2);
-            	
-            	// Actually perform the transformation here.  The rope nullifies any speed directly pulling against it.
-            	if (relSpeed.y < 0 && _hook.isRopeTaut()) {
-            		relSpeed.y = 0;
-            	}
-				_relSpeed = relSpeed;
-            	
-            	// Convert back to polar in rope coordinate space.
-            	relSpeedAngle = Math.atan2(relSpeed.y, relSpeed.x);
-            	speedMagnitude = Point.distance(new Point(), relSpeed);
-            	// polar in main coordinate space
-            	speedAngle = relSpeedAngle + ropeAngle;
-            	// Cartesian in main coordinate space.
-            	this.velocity = Point.polar(speedMagnitude, speedAngle + Math.PI/2);            	            	
-
-				//**********************************************************
+            	//**********************************************************
 				//ROPE CORNER COLLISIONS FOR PLAYER PHYSICS PURPOSES
 				if(_hook.COLLIDE_ROPE) {
 						// Eliminate old collision points
@@ -393,6 +329,40 @@ package
 			super.update();			
 		}
 		
+		//@desc		Called when this object collides with a FlxBlock on one of its sides
+		//@return	Whether you wish the FlxBlock to collide with it or not
+		override public function hitWall(Contact:FlxCore = null):Boolean 
+		{
+			if ( bIsSwinging )
+			{
+				hooks[prevHook].breakRelease();
+				velocity.y -= 8 * jumpPower;
+			}
+				
+			return super.hitWall(Contact);
+		}
+		
+		//@desc		Called when this object collides with the top of a FlxBlock
+		//@return	Whether you wish the FlxBlock to collide with it or not
+		override public function hitFloor(Contact:FlxCore = null):Boolean 
+		{ 
+			jumpTime = 0;
+			
+			return super.hitFloor(Contact); 
+		}
+		
+		//@desc		Called when this object collides with the bottom of a FlxBlock
+		//@return	Whether you wish the FlxBlock to collide with it or not
+		override public function hitCeiling(Contact:FlxCore = null):Boolean 
+		{ 
+			if ( bIsSwinging )
+				hooks[prevHook].breakRelease();
+				
+			return super.hitCeiling(Contact);
+		}
+				
+			
+		
 		override public function render():void
 		{					
 			super.render();	
@@ -400,7 +370,10 @@ package
 			if ( hooks[prevHook].exists )
 			{
 				var line : Line;
-				line = new Line(this, hooks[prevHook],2, 0x996600);
+				if ( hooks[prevHook].bCollided )
+					line = new Line(this, hooks[prevHook], 2, 0x999999);
+				else
+					line = new Line(this, hooks[prevHook], 2, 0x996600);
 			
 				line.render();
 			}			

@@ -833,8 +833,23 @@ package org.flixel
 			{
 				if(followTarget.exists && !followTarget.dead)
 				{
-					_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
-					_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
+					if (followTarget is FlxSprite)
+					{
+						var spriteTarget:FlxSprite = (followTarget as FlxSprite);
+						var value:Number = spriteTarget.x;
+						
+						if ( spriteTarget.velocity.x < 0 )
+							value -= 200;
+						else if ( spriteTarget.velocity.x > 0 )
+							value += 200;
+							
+						_scrollTarget.x = (width>>1)-value-(followTarget.width>>1);						
+					}
+					else
+					{
+						_scrollTarget.x = (width >> 1) - followTarget.x - (followTarget.width >> 1);	
+					}						
+					_scrollTarget.y = (height>>1)-(followTarget.y-150)-(followTarget.height>>1);
 					if((followLead != null) && (followTarget is FlxSprite))
 					{
 						_scrollTarget.x -= (followTarget as FlxSprite).velocity.x*followLead.x;
