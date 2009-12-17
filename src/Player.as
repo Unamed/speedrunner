@@ -21,7 +21,7 @@ package
 		private var bIsSwinging:Boolean;
 		
 		private var runSpeed:uint = 9 * size; //18*size = snel
-		private var hookVel:int = 3 * runSpeed;
+		private var hookVel:int = 4 * runSpeed;
 		
 		private var swingSpeed:uint = 1.70 * runSpeed; //1.30 * runSpeed bij snel
 		
@@ -29,6 +29,10 @@ package
 		private var maxJumpTime:Number = 0.25;
 		
 		private var fallAccel:Number = 32 * size;
+		
+		public var playState:PlayState;
+		
+		private var push:Point; // the force applied by input
 		
 		public function Player(X:int, Y:int, hooks:Array)
 		{
@@ -45,7 +49,9 @@ package
 			offset.y = 4;
 			
 			//basic player physics
-			drag.x = runSpeed * 8;
+			drag.x = runSpeed * 2;
+			
+			push = new Point(runSpeed * 8, 0);			
 			
 			acceleration.y = fallAccel;
 			jumpPower = 150 * size;
@@ -150,31 +156,30 @@ package
 			else
 			{				
 				// "NORMAL" MOVEMENT
-				
+				// In air:
 				if ( velocity.y )
 				{
 					if(FlxG.keys.LEFT)
 					{
 						facing = LEFT;
-						acceleration.x -= 0.2 * drag.x;
+						acceleration.x -= 0.2 * push.x;
 					}
 					else if(FlxG.keys.RIGHT)
 					{
 						facing = RIGHT;
-						acceleration.x += 0.2 * drag.x;
+						acceleration.x += 0.2 * push.x;
+					}
+					else if(velocity.x )	// no direction input while jumping, so no acceleration (only drag)
+					{					
+						acceleration.x = 0;
 					}
 					
-					// jumping slows you down:
-					if ( velocity.x )
+					// Finally, add a lot of drag, b/c jumping slows you down:
+					if ( velocity.x && acceleration.x )
 					{
-						if(facing == LEFT)
-						{
-							acceleration.x += 0.1 * drag.x;
-						}
-						else if(facing == RIGHT)
-						{							
-							acceleration.x -= 0.1 * drag.x;
-						}
+						var decrease:Number = 2.0 * FlxG.elapsed;
+						
+						velocity.x *= (1 - decrease);						
 					}
 				}
 				else
@@ -182,12 +187,12 @@ package
 					if(FlxG.keys.LEFT)
 					{
 						facing = LEFT;
-						acceleration.x -= drag.x;
+						acceleration.x -= push.x;
 					}
 					else if(FlxG.keys.RIGHT)
 					{
 						facing = RIGHT;
-						acceleration.x += drag.x;
+						acceleration.x += push.x;
 					}
 				}
 				
@@ -329,6 +334,22 @@ package
 			super.update();			
 		}
 		
+		private function hitTrigger(Contact:Trigger):Boolean 
+		{
+			if ( Contact is StartTrigger )
+			{				
+				playState.startTimer();								
+			}
+			
+			else if ( Contact is FinishTrigger )
+			{				
+				playState.stopTimer();				
+			}
+			
+			return false;
+			
+		}
+		
 		//@desc		Called when this object collides with a FlxBlock on one of its sides
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitWall(Contact:FlxCore = null):Boolean 
@@ -338,6 +359,9 @@ package
 				hooks[prevHook].breakRelease();
 				velocity.y -= 8 * jumpPower;
 			}
+			
+			if ( Contact is Trigger )
+				return hitTrigger((Contact as Trigger));
 				
 			return super.hitWall(Contact);
 		}
@@ -345,9 +369,12 @@ package
 		//@desc		Called when this object collides with the top of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitFloor(Contact:FlxCore = null):Boolean 
-		{ 
-			jumpTime = 0;
+		{ 			
+			jumpTime = 0;			
 			
+			if ( Contact is Trigger )
+				return hitTrigger((Contact as Trigger));
+				
 			return super.hitFloor(Contact); 
 		}
 		
@@ -357,6 +384,9 @@ package
 		{ 
 			if ( bIsSwinging )
 				hooks[prevHook].breakRelease();
+				
+			if ( Contact is Trigger )
+				return hitTrigger((Contact as Trigger));
 				
 			return super.hitCeiling(Contact);
 		}

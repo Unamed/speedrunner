@@ -1,5 +1,6 @@
 ﻿package  
 {
+	import flash.geom.Point;
 	import org.flixel.*;
 	
 	/**
@@ -14,7 +15,16 @@
 		//major game objects
 		private var tilemap:FlxTilemap;		
 		private var player:Player;
-		private var hooks:Array;		
+		private var hooks:Array;
+		
+		private var timerTxt:FlxText;
+		private var debugTxt:FlxText;
+		private var playTime:Number;
+		
+		private var start:StartTrigger;
+		private var finish:FinishTrigger;
+		
+		private var bIsTimer:Boolean;
 		
 		public function PlayState() 
 		{
@@ -28,7 +38,8 @@
 			for(var i:uint = 0; i < 1; i++)
 				hooks.push(this.add(new Hook()));												
 				
-			player = new Player(tilemap.width / 2 - 4, tilemap.height / 2 - 4, hooks);			
+			player = new Player(150, 300, hooks);	
+			player.playState = this;
 			
 			//add player and set up camera
 			this.add(player);
@@ -44,21 +55,81 @@
 			//add tilemap last so it is in front, looks neat
 			this.add(tilemap);
 			
+			timerTxt = new FlxText(300, 100, 100, "Timer");
+			timerTxt.scrollFactor = new Point(0, 0);	
+			timerTxt.size = 10;			
+			this.add(timerTxt);
+			
+			debugTxt = new FlxText(300, 150, 100, "Debug");
+			debugTxt.scrollFactor = new Point(0, 0);	
+			debugTxt.size = 10;			
+			this.add(debugTxt);
+			
+			// Add Start and Finish:
+			playTime = 0;
+			
+			start = new StartTrigger(200, 370);
+			finish = new FinishTrigger(2400, 370);
+			this.add(start);
+			this.add(finish);
+			
 			//fade in
 			FlxG.flash(0xff131c1b);
+		}
+		
+		public function resetGame():void
+		{
+			player.x = 150;
+			player.y = 300;
+			
+			player.velocity = new Point(0, 0);
+			player.acceleration.x = 0;
+			playTime = 0;
+			bIsTimer = false;
+			
 		}
 
 		override public function update():void
 		{
-			super.update();			
+			super.update();	
+			
+			if ( FlxG.keys.justPressed("ESC") )
+			{
+				resetGame();				
+			}
+			
+			if( bIsTimer )
+				playTime += FlxG.elapsed;
+			timerTxt.text = "Timer: " + playTime.toFixed(2);
+			
+			debugTxt.text = "";// "Velocity.x: " + player.velocity.x;
+			
+			
+			// Collision tests:
 			tilemap.collide(player);
 			
 			if ( hooks[player.prevHook].exists )
 			{
-					tilemap.collide(hooks[player.prevHook]);
+				tilemap.collide(hooks[player.prevHook]);
 			
 			}
-		}		
+			
+			start.collide(player);
+			finish.collide(player);
+		}	
+		
+		public function startTimer():void
+		{
+			playTime = 0;
+			bIsTimer = true;
+			
+		}
+		
+		public function stopTimer():void
+		{
+			bIsTimer = false;
+			
+		}
 	}
 
 }
