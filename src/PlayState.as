@@ -3,6 +3,9 @@
 	import flash.geom.Point;
 	import org.flixel.*;
 	
+	import com.google.analytics.AnalyticsTracker;
+	import com.google.analytics.GATracker;
+		
 	/**
 	 * ...
 	 * @author Casper van Est
@@ -12,12 +15,10 @@
 		[Embed(source = "../data/temp/map_long.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
 		[Embed(source = "../data/temp/tiles_new_small.png")] private var ImgTiles:Class;
 		
-		//[Embed(source = "../data/temp/MapCSV_SR_Playground_Collision.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
-		
+		//[Embed(source = "../data/temp/MapCSV_SR_Playground_Collision.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;		
 		
 		// FLAN CODE:
 		private var _map:MapBase;
-		
 		
 		//major game objects
 		private var tilemap:FlxTilemap;		
@@ -33,6 +34,9 @@
 		private var finish:FinishTrigger;
 		
 		private var bIsTimer:Boolean;
+
+		// Google Analytics:
+		private var tracker:GATracker;
 		
 		public function PlayState() 
 		{
@@ -102,6 +106,10 @@
 			this.add(start);
 			this.add(finish);
 			
+			// Google Analytics:
+			//FlxG.log(tracker);
+			//
+			
 			//fade in
 			FlxG.flash(0xff131c1b);
 		}
@@ -121,6 +129,9 @@
 		override public function update():void
 		{
 			super.update();	
+			
+			if ( !tracker )
+				tracker = new GATracker(this, "UA-12125437-1", "AS3", false );
 			
 			if ( FlxG.keys.justPressed("ESC") )
 			{
@@ -153,14 +164,16 @@
 		public function startTimer():void
 		{
 			playTime = 0;
-			bIsTimer = true;
+			bIsTimer = true;			
 			
+			tracker.trackPageview("/started");// "/FisherGirl");
+			tracker.trackEvent("Timing Events", "Started", "Label", playTime );			
 		}
 		
 		public function stopTimer():void
 		{
 			bIsTimer = false;
-			
+			tracker.trackEvent("Timing Events", "Finished", "Label", playTime );			
 		}	
 		
 		protected function onAddSpriteCallback(obj:FlxSprite):void
