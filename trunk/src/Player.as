@@ -30,6 +30,8 @@ package
 		
 		private var fallAccel:Number = 32 * size;
 		
+		private var bWalling:Boolean;
+		
 		public var playState:PlayState;
 		
 		private var push:Point; // the force applied by input
@@ -68,7 +70,7 @@ package
 			addAnimation("jump_down", [10]);
 			
 			this.hooks = hooks;			
-			curHook = 0;		
+			curHook = 0;
 		}
 		
 		override public function update():void
@@ -97,6 +99,8 @@ package
 			acceleration.x = 0;
 			acceleration.y = fallAccel;	
 			maxVelocity.x = runSpeed;
+			
+			
 			
 			// IF SWINGING:
 			if ( hooks[prevHook].exists && hooks[prevHook].bCollided )
@@ -152,6 +156,30 @@ package
 					acceleration.y = relY;					
 					acceleration.normalize(1);					
 				}
+			}
+			// WALL MOVEMENT:
+			else if ( bWalling )
+			{
+				velocity.x = 0;
+				velocity.y = 0;
+				
+				
+				
+				if(FlxG.keys.LEFT)
+					facing = LEFT;
+				else if(FlxG.keys.RIGHT)
+					facing = RIGHT;				
+								
+				// JUMPING:
+				if( FlxG.keys.justPressed("X") )
+				{
+					bWalling = false;					
+						
+					if ( facing == RIGHT )
+						velocity.x += jumpPower * 8;
+					else
+						velocity.x -= jumpPower * 8;
+				}				
 			}
 			else
 			{				
@@ -354,6 +382,13 @@ package
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitWall(Contact:FlxCore = null):Boolean 
 		{
+			if ( Contact is Obstacle )
+			{
+				FlxG.log("YEAS EEN OBSTAC");
+				this.y -= Contact.height;
+			}
+			
+			
 			if ( bIsSwinging )
 			{
 				hooks[prevHook].breakRelease();
@@ -362,6 +397,27 @@ package
 			
 			if ( Contact is Trigger )
 				return hitTrigger((Contact as Trigger));
+			else if ( velocity.y )
+			{
+				//bWalling = true;	
+				
+				//velocity.y = 0;
+				//jumpTime = 0;
+				
+				/*
+				this.y -= Contact.height;
+				
+				if ( Contact is FlxBlock )
+					FlxG.log("was block");
+				else if ( Contact is FlxTilemap )
+					FlxG.log("was tilemap");
+				else if (Contact is FlxSprite )
+					FlxG.log("was sprite");
+				
+				FlxG.log(Contact.height);
+				*/
+				
+			}
 				
 			return super.hitWall(Contact);
 		}
