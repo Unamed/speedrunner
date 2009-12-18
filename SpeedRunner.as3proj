@@ -39,11 +39,13 @@
   </build>
   <!-- SWC Include Libraries -->
   <includeLibraries>
-    <!-- example: <element path="..." /> -->
+    <element path="src\swc\analytics.swc" />
+    <element path="src\swc\analytics_flash.swc" />
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <!-- example: <element path="..." /> -->
+    <element path="src\swc\analytics.swc" />
+    <element path="src\swc\analytics_flash.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
