@@ -1,7 +1,7 @@
 ﻿package 
 {
 	import org.flixel.FlxGame;
-	//import Mode.MenuState;
+	
 	
 	[SWF(width="800", height="600", backgroundColor="#000000")]	
 	
