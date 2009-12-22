@@ -16,18 +16,19 @@
 		public var playerAccel:Point;
 		
 		public var ropeLength:uint;
-		
+		private var player:Player;
 		
 		public var ropeAngle:Number;
 		public var angularSpeed:Number;
 			
-		public function Hook()
+		public function Hook(player:Player)
 		{
 			super();
 			loadGraphic(ImgHook);	
 			exists = false;
 			bCollided = false;
 			
+			this.player = player;
 			playerAccel = new Point(0, 0);
 		}
 		
@@ -87,6 +88,22 @@
 			this.release();
 			// do other stuff?	
 		
+		}
+		
+		override public function render():void
+		{					
+			super.render();	
+			
+			if ( exists )
+			{
+				var line : Line;
+				if ( bCollided )
+					line = new Line(player, this, 2, 0x999999);
+				else
+					line = new Line(player, this, 2, 0x996600);
+			
+				line.render();
+			}			
 		}
 		
 		/*

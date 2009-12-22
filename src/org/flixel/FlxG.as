@@ -18,7 +18,7 @@ package org.flixel
 		
 		static public var LIBRARY_NAME:String = "flixel";
 		static public var LIBRARY_MAJOR_VERSION:uint = 1;
-		static public var LIBRARY_MINOR_VERSION:uint = 45;
+		static public var LIBRARY_MINOR_VERSION:uint = 48;
 
 		static protected var _pause:Boolean;
 		static protected var _game:FlxGame;
@@ -833,23 +833,8 @@ package org.flixel
 			{
 				if(followTarget.exists && !followTarget.dead)
 				{
-					if (followTarget is FlxSprite)
-					{
-						var spriteTarget:FlxSprite = (followTarget as FlxSprite);
-						var value:Number = spriteTarget.x;
-						
-						if ( spriteTarget.velocity.x < 0 )
-							value -= 200;
-						else if ( spriteTarget.velocity.x > 0 )
-							value += 200;
-							
-						_scrollTarget.x = (width>>1)-value-(followTarget.width>>1);						
-					}
-					else
-					{
-						_scrollTarget.x = (width >> 1) - followTarget.x - (followTarget.width >> 1);	
-					}						
-					_scrollTarget.y = (height>>1)-(followTarget.y-150)-(followTarget.height>>1);
+					_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
+					_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
 					if((followLead != null) && (followTarget is FlxSprite))
 					{
 						_scrollTarget.x -= (followTarget as FlxSprite).velocity.x*followLead.x;
