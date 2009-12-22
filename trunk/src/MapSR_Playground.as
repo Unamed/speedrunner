@@ -17,12 +17,19 @@ package  {
 
 			bgColor = 0xff000000;
 
-			layerCollision = new FlxTilemap(new CSV_Collision, Img_Collision,16,3,1);
+			layerCollision = new FlxTilemap();
+			layerCollision.loadMap(new CSV_Collision, Img_Collision, 16);
+			layerCollision.collideIndex = 3;
+			layerCollision.drawIndex = 1;
 			layerCollision.x = 0;
 			layerCollision.y = 0;
 			layerCollision.scrollFactor.x = 1.000000;
 			layerCollision.scrollFactor.y = 1.000000;
-			layerObstacles = new FlxTilemap(new CSV_Obstacles, Img_Obstacles,16,3,1);
+			
+			layerObstacles = new FlxTilemap();
+			layerObstacles.loadMap(new CSV_Obstacles, Img_Obstacles, 16);
+			layerObstacles.collideIndex = 3;
+			layerObstacles.drawIndex = 1;			
 			layerObstacles.x = 0;
 			layerObstacles.y = 0;
 			layerObstacles.scrollFactor.x = 1.000000;

@@ -36,7 +36,11 @@ package
 		
 		private var push:Point; // the force applied by input
 		
-		public function Player(X:int, Y:int, hooks:Array)
+		
+		public var bOnDownSlope:Boolean;
+		
+		
+		public function Player(X:int, Y:int)//, hooks:Array)
 		{
 			super(X,Y);
 			loadGraphic(ImgSpaceman,true,true,16,32);
@@ -69,8 +73,23 @@ package
 			addAnimation("jump_up", [9]);
 			addAnimation("jump_down", [10]);
 			
-			this.hooks = hooks;			
+			
+			
+			
 			curHook = 0;
+		}
+		
+		// ugly hackish function, clean up:
+		public function setHooks(hooks:Array):void
+		{
+			this.hooks = hooks;	
+			/*
+			if( FlxG.state is PlayState )
+				this.hooks = (FlxG.state as PlayState).hooks;
+			else
+				this.hooks = new Array();
+				*/
+			
 		}
 		
 		override public function update():void
@@ -99,7 +118,8 @@ package
 			acceleration.x = 0;
 			acceleration.y = fallAccel;	
 			maxVelocity.x = runSpeed;
-			
+			maxVelocity.y = 24 * size;
+			drag.x = runSpeed * 2;		
 			
 			
 			// IF SWINGING:
@@ -110,6 +130,8 @@ package
 				var relX:Number = this.x - hook.x;
             	var relY:Number = this.y - hook.y;
 				var ropeAngle:Number = Math.atan2(relY, relX);
+				
+				bOnDownSlope = false;
 				
 				// swinging is faster than walking:
 				maxVelocity.x = swingSpeed;
@@ -185,7 +207,7 @@ package
 			{				
 				// "NORMAL" MOVEMENT
 				// In air:
-				if ( velocity.y )
+				if ( velocity.y && !bOnDownSlope )
 				{
 					if(FlxG.keys.LEFT)
 					{
@@ -212,27 +234,81 @@ package
 				}
 				else
 				{
-					if(FlxG.keys.LEFT)
+					if ( bOnDownSlope )
 					{
-						facing = LEFT;
-						acceleration.x -= push.x;
+						acceleration = new Point(0, 0);
+						drag = new Point(0, 0);						
+						
+						maxVelocity.y = maxVelocity.x;
+						
+						if(FlxG.keys.LEFT)
+						{
+							facing = LEFT;
+							
+							
+							//velocity.y = Math.max( velocity.x, velocity.y );
+							
+							//velocity.x = -0.6 * maxVelocity.x;
+							//velocity.y = -0.6 * maxVelocity.x;
+							//acceleration.x -= 0.6 * push.x;
+							//acceleration.y -= 0.6 * push.x;
+							
+							
+							velocity.x = -0.65 * maxVelocity.x;
+							velocity.y = -0.65 * maxVelocity.x;
+							
+						}
+						else if(FlxG.keys.RIGHT)
+						{
+							facing = RIGHT;
+							
+							if( FlxG.keys.DOWN )
+							{
+								// higher maxVelocity?
+								velocity.x = 1.0 * maxVelocity.x;
+								velocity.y = 1.0 * maxVelocity.x;
+							}
+							else
+							{
+								velocity.x = 0.75 * maxVelocity.x;
+								velocity.y = 0.75 * maxVelocity.x;
+							}
+						}	
+						else
+						{
+							// no input also slides (slowly)
+							velocity.x = 0.15 * maxVelocity.x;
+							velocity.y = 0.15 * maxVelocity.x;
+							
+							//acceleration.x = 0.25 * push.x;
+							//acceleration.y = 0.25 * push.x;
+						}
 					}
-					else if(FlxG.keys.RIGHT)
+					else
 					{
-						facing = RIGHT;
-						acceleration.x += push.x;
+						if(FlxG.keys.LEFT)
+						{
+							facing = LEFT;
+							acceleration.x -= push.x;
+						}
+						else if(FlxG.keys.RIGHT)
+						{
+							facing = RIGHT;
+							acceleration.x += push.x;
+						}
 					}
 				}
 				
 				// JUMPING:
 				if( FlxG.keys.pressed("X") )
 				{
+					bOnDownSlope = false;
 					jumpTime += FlxG.elapsed;
 					
 					if ( jumpTime < maxJumpTime )
 						velocity.y -= ((maxJumpTime - jumpTime) / maxJumpTime) * jumpPower * FlxG.elapsed;
 				}
-				else if ( velocity.y)
+				else if ( velocity.y && !bOnDownSlope )
 				{
 					jumpTime = maxJumpTime;
 					
@@ -358,8 +434,13 @@ package
 			 * */
 			
 				
+			
+			 
 			//UPDATE POSITION AND ANIMATION
-			super.update();			
+			super.update();	
+			
+			// RESET SOME STUFF:
+			bOnDownSlope = false;
 		}
 		
 		private function hitTrigger(Contact:Trigger):Boolean 
@@ -376,6 +457,23 @@ package
 			
 			return false;
 			
+		}
+		
+		public function hitSlope(Contact:FlxCore, pl:FlxCore ):void
+		{			
+			if ( Contact is SlopeDown )
+			{
+				jumpTime = 0;
+				
+				var xdiff:Number = this.x - Contact.x;
+				//FlxG.log(xdiff);
+				
+				//this.x = Contact.x;
+				this.y = Contact.y - this.height + xdiff - 1.0;
+				//this.velocity.y = 0;
+				
+				bOnDownSlope = true;				
+			}			
 		}
 		
 		//@desc		Called when this object collides with a FlxBlock on one of its sides
@@ -426,6 +524,13 @@ package
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitFloor(Contact:FlxCore = null):Boolean 
 		{ 			
+			
+			bOnDownSlope = false;
+			//var playState:PlayState = (FlxG.state as PlayState);
+			
+			//if ( playState )
+				//FlxG.log(playState.tilemap.getTileIndex(Contact));
+			
 			jumpTime = 0;			
 			
 			if ( Contact is Trigger )
@@ -448,7 +553,7 @@ package
 		}
 				
 			
-		
+		/*
 		override public function render():void
 		{					
 			super.render();	
@@ -464,5 +569,6 @@ package
 				line.render();
 			}			
 		}
+		*/
 	}
 }
