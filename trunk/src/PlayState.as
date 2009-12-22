@@ -138,9 +138,12 @@
 			this.add(start);
 			this.add(finish);
 			
-			// Google Analytics:
-			//FlxG.log(tracker);
-			//
+			// Test obstacle:
+			var obj:Obstacle = new Obstacle(1148, 550);
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			this.add(obj);
+			obstacles.push(obj);
 			
 			//fade in
 			FlxG.flash(0xff131c1b);
@@ -259,14 +262,14 @@
 			playTime = 0;
 			bIsTimer = true;			
 			
-			tracker.trackPageview("/started");// "/FisherGirl");
-			tracker.trackEvent("Timing Events", "Started", "Label", playTime );			
+			//tracker.trackPageview("/started");// "/FisherGirl");
+			//tracker.trackEvent("Timing Events", "Started", "Label", playTime );			
 		}
 		
 		public function stopTimer():void
 		{
 			bIsTimer = false;
-			tracker.trackEvent("Timing Events", "Finished", "Label", playTime );			
+			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );			
 		}	
 		
 		protected function onAddSpriteCallback(obj:FlxSprite):void
