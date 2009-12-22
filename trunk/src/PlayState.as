@@ -23,7 +23,7 @@
 		
 		//major game objects
 		private var tilemap:FlxTilemap;		
-		private var player:Player;
+		public var player:Player;
 		public var hooks:Array;	
 		
 		private var obstacles:Array;
@@ -81,10 +81,9 @@
 						
 			//create player and hooks array
 			
-			playerLayer = new BlurLayer();
+			//playerLayer = new BlurLayer();
 			
-			this.add(playerLayer);
-			
+			//this.add(playerLayer);
 			
 				
 			player = new Player(150, 300);// , hooks);	
@@ -111,7 +110,8 @@
 			//_map.layerCollision.follow();	//Set the followBounds to the map dimensions
 			
 			
-			playerLayer.add(player);
+			//playerLayer.add(player);
+			this.add(player);
 			
 			
 			
@@ -139,11 +139,18 @@
 			this.add(finish);
 			
 			// Test obstacle:
-			var obj:Obstacle = new Obstacle(1148, 550);
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
+			var obj:Obstacle = new Obstacle(1148, 550);			
 			this.add(obj);
 			obstacles.push(obj);
+			
+			// Test BOOST:
+			var bst:BoostSection = new BoostSection(1350, 528);
+			bst.createGraphic(200, 32, 0x660000FF);
+			bst.width = 200;
+			bst.height = 32;
+			this.add(bst);
+			obstacles.push(bst);
+			
 			
 			//fade in
 			FlxG.flash(0xff131c1b);
@@ -218,7 +225,7 @@
 
 		override public function update():void
 		{
-			debugTxt.text = "" + player.bOnDownSlope;// "Velocity.x: " + player.velocity.x;
+			debugTxt.text = "" + "Velocity.x: " + player.velocity.x;
 			super.update();	
 			
 			if ( !tracker )
