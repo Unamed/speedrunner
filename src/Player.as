@@ -31,6 +31,7 @@ package
 		private var fallAccel:Number = 32 * size;
 		
 		private var bWalling:Boolean;
+		private var bBoosting:Boolean;
 		
 		public var playState:PlayState;
 		
@@ -39,11 +40,18 @@ package
 		
 		public var bOnDownSlope:Boolean;
 		
+		private var trail:FlxEmitter;
+		
+		private const maxSwingVelocity:uint = 2.00 * runSpeed;
+		private const maxRunVelocity:uint = runSpeed;
+		private const maxBoostVelocity:uint = 2.00 * runSpeed;
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
-			super(X,Y);
-			loadGraphic(ImgSpaceman,true,true,16,32);
+			super(X, Y);
+			
+			this.createGraphic(16, 32, 0xFFFF0000);
+			//loadGraphic(ImgSpaceman,true,true,16,32);
 			restart = 0;
 			
 			jumpTime = 0;
@@ -73,7 +81,50 @@ package
 			addAnimation("jump_up", [9]);
 			addAnimation("jump_down", [10]);
 			
+			trail = new FlxEmitter();
 			
+			trail.width = 1;// 10;
+			trail.height = 1;// 20;
+			trail.y = this.y;
+			trail.x = this.x;
+			
+			trail.setRotation(0, 0);
+			
+			trail.delay = 0.01;
+			trail.gravity = 0;
+			trail.setXVelocity(0);
+			trail.setYVelocity(0);
+			
+			trail.setRotation(45, 45);
+			
+			var arr:Array = new Array();
+			for (var i:uint = 0; i < 30; i++)
+			{
+				arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 16, 0x66FF6666))));			
+				arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x6600FFFF))));			
+			}
+				
+			FlxG.state.add(trail.loadSprites(arr));
+			
+			/*
+			
+			//This is the particle emitter that spews things off the bottom of the screen.
+			//I'm not going to go over it in too much detail here, but basically we
+			// create the emitter, then we create 50 16x16 sprites and add them to it.
+			//Note that both the sprites we create and the emitter ARE added to the game state.
+			var e:FlxEmitter = new FlxEmitter();
+			e.width = FlxG.width;
+			e.y = FlxG.height+8;
+			e.delay = 0.08;
+			e.gravity = -40;
+			e.setXVelocity();
+			e.setYVelocity(-50,0);
+			var particles:uint = 50;
+			var a:Array = new Array();
+			for(var i:uint = 0; i < particles; i++)
+				a.push(add((new FlxSprite()).createGraphic(16,16)));
+			add(e.loadSprites(a));
+			*/
 			
 			
 			curHook = 0;
@@ -101,7 +152,11 @@ package
 				if(restart > 2)
 					FlxG.switchState(PlayState);
 				return;
-			}			
+			}	
+			
+			
+			
+			
 			
 			if ( hooks[prevHook].exists && !FlxG.keys.pressed("C") )
 			{
@@ -117,7 +172,14 @@ package
 			// first, set defaults:		
 			acceleration.x = 0;
 			acceleration.y = fallAccel;	
-			maxVelocity.x = runSpeed;			
+			
+			if( bBoosting )
+				maxVelocity.x = maxBoostVelocity;			
+			else
+			{
+				maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed*100, maxRunVelocity);			
+			}
+				
 			maxVelocity.y = 24 * size;
 			drag.x = runSpeed * 2;		
 			
@@ -235,7 +297,7 @@ package
 				else
 				{
 					if ( bOnDownSlope )
-					{
+					{						
 						acceleration = new Point(0, 0);
 						drag = new Point(0, 0);						
 						
@@ -439,6 +501,9 @@ package
 			//UPDATE POSITION AND ANIMATION
 			super.update();	
 			
+			trail.x = this.x + this.width / 2;			
+			trail.y = this.y + this.height - 8;// / 2;
+			
 			// RESET SOME STUFF:
 			bOnDownSlope = false;
 		}
@@ -480,6 +545,16 @@ package
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitWall(Contact:FlxCore = null):Boolean 
 		{
+			if (Contact is BoostSection )
+			{
+				bBoosting = true;
+				return false;				
+			}
+			else
+			{
+				bBoosting = false;				
+			}
+			
 			if ( Contact is Obstacle )
 			{				
 				this.velocity.x = 0;
@@ -491,6 +566,8 @@ package
 				
 				return false;
 			}
+			
+			
 			
 			
 			if ( bIsSwinging )
@@ -529,7 +606,16 @@ package
 		//@desc		Called when this object collides with the top of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitFloor(Contact:FlxCore = null):Boolean 
-		{ 			
+		{ 	
+			if (Contact is BoostSection )
+			{
+				bBoosting = true;
+				return false;				
+			}
+			else
+			{
+				bBoosting = false;				
+			}
 			
 			bOnDownSlope = false;
 			//var playState:PlayState = (FlxG.state as PlayState);
@@ -563,22 +649,18 @@ package
 		}
 				
 			
-		/*
+		
 		override public function render():void
 		{					
-			super.render();	
-			
-			if ( hooks[prevHook].exists )
+			if ( bOnDownSlope )
 			{
-				var line : Line;
-				if ( hooks[prevHook].bCollided )
-					line = new Line(this, hooks[prevHook], 2, 0x999999);
-				else
-					line = new Line(this, hooks[prevHook], 2, 0x996600);
-			
-				line.render();
-			}			
+				this.angle = 45;
+			}
+			else	
+			{
+				this.angle = 0;
+			}
+			super.render();	
 		}
-		*/
 	}
 }
