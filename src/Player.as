@@ -23,7 +23,7 @@ package
 		private var runSpeed:uint = 9 * size; //18*size = snel
 		private var hookVel:int = 4 * runSpeed;
 		
-		private var swingSpeed:uint = 1.70 * runSpeed; //1.30 * runSpeed bij snel
+		private var swingSpeed:uint = 2.00 * runSpeed; //1.30 * runSpeed bij snel
 		
 		private var jumpTime:Number;
 		private var maxJumpTime:Number = 0.25;
@@ -117,7 +117,7 @@ package
 			// first, set defaults:		
 			acceleration.x = 0;
 			acceleration.y = fallAccel;	
-			maxVelocity.x = runSpeed;
+			maxVelocity.x = runSpeed;			
 			maxVelocity.y = 24 * size;
 			drag.x = runSpeed * 2;		
 			
@@ -481,16 +481,22 @@ package
 		override public function hitWall(Contact:FlxCore = null):Boolean 
 		{
 			if ( Contact is Obstacle )
-			{
-				FlxG.log("YEAS EEN OBSTAC");
-				this.y -= Contact.height;
+			{				
+				this.velocity.x = 0;
+				
+				this.flicker(2);
+				
+				if ( bIsSwinging )
+					hooks[prevHook].breakRelease();
+				
+				return false;
 			}
 			
 			
 			if ( bIsSwinging )
 			{
 				hooks[prevHook].breakRelease();
-				velocity.y -= 8 * jumpPower;
+				//velocity.y -= jumpPower;
 			}
 			
 			if ( Contact is Trigger )
@@ -544,7 +550,11 @@ package
 		override public function hitCeiling(Contact:FlxCore = null):Boolean 
 		{ 
 			if ( bIsSwinging )
+			{
 				hooks[prevHook].breakRelease();
+				//this.velocity.x *= -1;
+				//this.velocity.y *= -1;
+			}
 				
 			if ( Contact is Trigger )
 				return hitTrigger((Contact as Trigger));
