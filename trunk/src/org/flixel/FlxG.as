@@ -423,11 +423,12 @@ package org.flixel
 		//@param	Cores		An array of FlxCore objects
 		//@param	Core		A FlxCore object
 		//@param	Collide		A function that takes two sprites as parameters (first the one from Array, then Sprite)
-		static public function overlapArray(Cores:Array,Core:FlxCore,Collide:Function=null):void
+		static public function overlapArray(Cores:Array,Core:FlxCore,Collide:Function=null):Boolean
 		{
-			if((Core == null) || !Core.exists || Core.dead) return;
+			if((Core == null) || !Core.exists || Core.dead) return false;
 			var c:FlxCore;
 			var l:uint = Cores.length;
+			var r:Boolean = false;
 			for(var i:uint = 0; i < l; i++)
 			{
 				c = Cores[i];
@@ -441,8 +442,10 @@ package org.flixel
 						c.kill();
 						Core.kill();
 					}
+					r = true;
 				}
 			}
+			return r;
 		}
 		
 		//@desc		Checks to see if any FlxCore in Array1 overlaps any FlxCore in Array2, and calls Collide when they do

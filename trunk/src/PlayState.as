@@ -12,8 +12,9 @@
 	 */
 	public class PlayState extends FlxState
 	{
-		[Embed(source = "../data/temp/map_long.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
-		[Embed(source = "../data/temp/tiles_new_small.png")] private var ImgTiles:Class;
+		[Embed(source = "../data/temp/map_long_2.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
+		//[Embed(source = "../data/temp/tiles_new_small.png")] private var ImgTiles:Class;
+		[Embed(source = "../data/temp/tiles_black.png")] private var ImgTiles:Class;
 		[Embed(source = "../data/temp/tile_slope_down.png")] private var SlopeTiles:Class;
 		
 		//[Embed(source = "../data/temp/MapCSV_SR_Playground_Collision.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;		
@@ -39,8 +40,6 @@
 		// Google Analytics:
 		private var tracker:GATracker;
 		
-		private var playerLayer:BlurLayer;
-		
 		
 		// temp slopes:
 		private var slopes:Array;
@@ -52,164 +51,116 @@
 		{
 			super();
 			
-			obstacles = new Array();
+			// 0. set default settings
+			// 1. create tilemap
+			// 2. create sprites (obstacles, boost, triggers)
+			// 3. create player & hooks
+			// 4. camera settings
+			// 4. add to stage in correct order
 			
-			//create tilemap
+			bgColor = 0xFF7678CB;
+			
+			
+			playTime = 0;		
+			//FlxG.followBounds(_map.boundsMinX, _map.boundsMinY, _map.boundsMaxX, _map.boundsMaxY);
+			
+			// create tilemap
 			tilemap = new FlxTilemap();
 			tilemap.loadMap(new TxtMap, ImgTiles, 16);
-			tilemap.collideIndex = 3;			
+			tilemap.collideIndex = 15;				
 			
-			
-			// FLAN CODE:
-			//Create the map
 			_map = new MapSR_Playground();
-			//Add the background (a bit hacky but works)
-			//var bgColorSprite:FlxSprite = new FlxSprite(null, 0, 0, false, false, FlxG.width, FlxG.height, _map.bgColor);
-			//var bgColorSprite:FlxSprite = new FlxSprite();// null, 0, 0, false, false, FlxG.width, FlxG.height, _map.bgColor);
-			//bgColorSprite.scrollFactor.x = 0;
-			//bgColorSprite.scrollFactor.y = 0;
-			//FlxG.state.add(bgColorSprite);
-
 			//Add the layers to current the FlxState
 			//FlxG.state.add(_map.layerCollision);
 			//_map.addSpritesToLayerCollision(onAddSpriteCallback);
 			//FlxG.state.add(_map.layerObstacles);
 			//_map.addSpritesToLayerObstacles(onAddSpriteCallback);
-
-			FlxG.followBounds(_map.boundsMinX, _map.boundsMinY, _map.boundsMaxX, _map.boundsMaxY);
 			
-						
-			//create player and hooks array
-			
-			//playerLayer = new BlurLayer();
-			
-			//this.add(playerLayer);
-			
-				
-			player = new Player(150, 300);// , hooks);	
-			player.playState = this;
-			
-			
-			hooks = new Array();
-			for(var i:uint = 0; i < 1; i++)
-				hooks.push(this.add(new Hook(player)));	
-				
-			player.setHooks(hooks);
-				
-				
-			//add player and set up camera
-			
-			
-			
-			
-			//this.add(player);
-			FlxG.follow(player,1.5);
-			FlxG.followAdjust(1.0,0.25);
-			
-			tilemap.follow();	//Set the followBounds to the map dimensions
-			//_map.layerCollision.follow();	//Set the followBounds to the map dimensions
-			
-			
-			//playerLayer.add(player);
-			this.add(player);
-			
-			
-			
-			
-			//add tilemap last so it is in front, looks neat
-			this.add(tilemap);
-			//this.add(_map.layerCollision);
-			
-			timerTxt = new FlxText(300, 100, 100, "Timer");
-			timerTxt.scrollFactor = new Point(0, 0);	
-			timerTxt.size = 10;			
-			this.add(timerTxt);
-			
-			debugTxt = new FlxText(300, 150, 100, "Debug");
-			debugTxt.scrollFactor = new Point(0, 0);	
-			debugTxt.size = 10;			
-			this.add(debugTxt);
-			
-			// Add Start and Finish:
-			playTime = 0;
-			
-			start = new StartTrigger(200, 370);
-			finish = new FinishTrigger(2400, 370);
-			this.add(start);
-			this.add(finish);
-			
-			// Test obstacle:
-			var obj:Obstacle = new Obstacle(1148, 550);			
-			this.add(obj);
+			// create sprites
+			var obj:Obstacle = new Obstacle(1148, 550);
+			obstacles = new Array();						
 			obstacles.push(obj);
 			
 			// Test BOOST:
 			var bst:BoostSection = new BoostSection(1350, 528);
 			bst.createGraphic(200, 32, 0x660000FF);
 			bst.width = 200;
-			bst.height = 32;
-			this.add(bst);
+			bst.height = 32;			
 			obstacles.push(bst);
 			
+			// TEXTS:
+			timerTxt = new FlxText(300, 100, 200, "Timer");
+			timerTxt.scrollFactor = new Point(0, 0);	
+			timerTxt.size = 15;				
 			
-			//fade in
-			FlxG.flash(0xff131c1b);
+			debugTxt = new FlxText(300, 150, 200, "Debug");
+			debugTxt.scrollFactor = new Point(0, 0);	
+			debugTxt.size = 10;	
+			
+			// Triggers:
+			start = new StartTrigger(200, 370);
+			finish = new FinishTrigger(2400, 370);
+			
+			// create player and hooks				
+			player = new Player(150, 300);
+			hooks = new Array();
+			for(var i:uint = 0; i < 1; i++)
+				hooks.push(this.add(new Hook(player)));					
+			player.setHooks(hooks);
+				
+			// camera settings			
+			FlxG.follow(player,1.5);
+			FlxG.followAdjust(1.0,0.25);			
+			tilemap.follow();	
+			//_map.layerCollision.follow();	//Set the followBounds to the map dimensions
+							
 			
 			
 			
-			
-			
+			///////////////////////// TEMP STUFF, EXPERIMENTAL:
+			///
 			// more temp:
 			slopeDowns = new Array();
 			slopeDowns.push(this.add(new SlopeDown(480, 384, SlopeTiles)));
 			slopeDowns.push(this.add(new SlopeDown(496, 400, SlopeTiles)));
-			slopeDowns.push(this.add(new SlopeDown(512, 416, SlopeTiles)));
-			
+			slopeDowns.push(this.add(new SlopeDown(512, 416, SlopeTiles)));			
 			slopeDowns.push(this.add(new SlopeDown(528, 432, SlopeTiles)));
 			slopeDowns.push(this.add(new SlopeDown(544, 448, SlopeTiles)));
 			slopeDowns.push(this.add(new SlopeDown(560, 464, SlopeTiles)));			
-			slopeDowns.push(this.add(new SlopeDown(576, 480, SlopeTiles)));
-			
+			slopeDowns.push(this.add(new SlopeDown(576, 480, SlopeTiles)));			
 			slopeDowns.push(this.add(new SlopeDown(592, 496, SlopeTiles)));
 			slopeDowns.push(this.add(new SlopeDown(608, 512, SlopeTiles)));
 			slopeDowns.push(this.add(new SlopeDown(624, 528, SlopeTiles)));			
 			slopeDowns.push(this.add(new SlopeDown(640, 544, SlopeTiles)));
 			
-			/*
-			slopeDowns.push(this.add(new SlopeDown(480, 384)));
-			slopeDowns.push(this.add(new SlopeDown(480, 384)));
-			slopeDowns.push(this.add(new SlopeDown(480, 384)));
-			slopeDowns.push(this.add(new SlopeDown(480, 384)));
-			slopeDowns.push(this.add(new SlopeDown(480, 384)));
-			slopeDowns.push(this.add(new SlopeDown(480, 384)));
-			slpeDowns.push(this.add(new SlopeDown(480, 384)));
-			*/
+			
 			
 			
 			
 			//Add your blocks
-			slopes = new Array();
-			
-			//slopes.push(this.add(new SlopeBlock(480, 384, 656, 566, 16, SlopeTiles) ) );
-			
+			slopes = new Array();			
+			//slopes.push(this.add(new SlopeBlock(480, 384, 656, 566, 16, SlopeTiles) ) );		
 			
 			//slopes.push(this.add(new SlopeBlock(220, 300, 420, 232, 32, ImgTiles) ) );	
 			//slopes.push(this.add(new SlopeBlock(420, 2032, 520, 2090, 32, ImgTiles) ) );
 			
 			
-
+			// Finally, add everything to stage:
+			this.add(bst);
+			this.add(player);			
+			this.add(tilemap);
+			//this.add(_map.layerCollision);
+			this.add(timerTxt);
+			this.add(debugTxt);
+			this.add(start);
+			this.add(finish);
+			this.add(obj);
+			
+			//fade in
+			FlxG.flash(0xff131c1b);
 		}
-		/*
-		public function slopeColl(Core:FlxCore,X:uint,Y:uint,Tile:uint):void
-		{
-			FlxG.log("slopeColl...");
-			FlxG.log("Core: " + Core);
-			FlxG.log("X: " + X);
-			FlxG.log("Y: " + Y);			
-			FlxG.log("Tile: "+Tile);
-			
-			
-		}*/
+		
+		
 		
 		public function resetGame():void
 		{
@@ -223,32 +174,58 @@
 			
 		}
 
+		// MAIN UPDATE FUNCTION:
+		// 1. Update childs
+		// 2. Run game state updates (timers, etc.)
+		// 3. Perform collision checks		
 		override public function update():void
 		{
-			debugTxt.text = "" + "Velocity.x: " + player.velocity.x;
-			super.update();	
+			// RUN UPDATE ON ALL CHILDS:
+			super.update();
 			
+			// Debugging:
+			if( player.status == 0 )
+				debugTxt.text = "" + "Status: " + "onGround";
+			if( player.status == 1 )
+				debugTxt.text = "" + "Status: " + "onWall";
+			if( player.status == 2 )
+				debugTxt.text = "" + "Status: " + "onSlopeDown";
+			if( player.status == 3 )
+				debugTxt.text = "" + "Status: " + "onSlopeUp";
+			if( player.status == 4 )
+				debugTxt.text = "" + "Status: " + "inAir";
+			if( player.status == 5 )
+				debugTxt.text = "" + "Status: " + "swinging";
+				
+			//debugTxt.text = "Facing: " + player.facing;
+			
+			// Google Analytics:			
 			if ( !tracker )
 				tracker = new GATracker(this, "UA-12125437-1", "AS3", false );
 			
+			// Various Input
 			if ( FlxG.keys.justPressed("ESC") )
-			{
 				resetGame();				
-			}
-			
+						
+			// Timer
 			if( bIsTimer )
 				playTime += FlxG.elapsed;
 			timerTxt.text = "Timer: " + playTime.toFixed(2);
 			
+			// COLLISION:
 			
+			var playerCol:Boolean = false;
+			if ( tilemap.collide(player) )
+				playerCol = true;
+			if ( FlxG.overlapArray(slopeDowns, player, player.hitSlope) )
+				playerCol = true;
 			
-			
-			// Collision tests:
-			tilemap.collide(player);
-			SlopeBlock.collideSlopeArray(slopes, player);
-			//_map.layerCollision.collide(player);
+			if ( !playerCol )
+				player.hitNothing();
 			
 			FlxG.collideArray(obstacles, player);
+			start.collide(player);
+			finish.collide(player);
 			
 			if ( hooks[player.prevHook].exists )
 			{
@@ -256,12 +233,12 @@
 				//_map.layerCollision.collide(hooks[player.prevHook]);			
 			}
 			
-			start.collide(player);
-			finish.collide(player);
-			
-			
-			FlxG.overlapArray(slopeDowns, player, player.hitSlope);
+			// OBSOLETE:
+			//SlopeBlock.collideSlopeArray(slopes, player);
+			//_map.layerCollision.collide(player);
 			//slD.collide(player);
+			
+			
 		}	
 		
 		public function startTimer():void
@@ -286,6 +263,19 @@
 				obstacles.push(obj);				
 			}
 		}
+		
+		// OBSOLETE:
+		/*
+		public function slopeColl(Core:FlxCore,X:uint,Y:uint,Tile:uint):void
+		{
+			FlxG.log("slopeColl...");
+			FlxG.log("Core: " + Core);
+			FlxG.log("X: " + X);
+			FlxG.log("Y: " + Y);			
+			FlxG.log("Tile: "+Tile);
+			
+			
+		}*/
 	}
 
 }
