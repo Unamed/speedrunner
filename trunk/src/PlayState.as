@@ -3,6 +3,8 @@
 	import flash.geom.Point;
 	import org.flixel.*;
 	
+	import flash.filters.BlurFilter;
+	
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
 		
@@ -12,9 +14,13 @@
 	 */
 	public class PlayState extends FlxState
 	{
-		[Embed(source = "../data/temp/map_long_2.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
+		[Embed(source = "../data/temp/main_flan.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
+		[Embed(source = "../data/temp/bg_flan.txt", mimeType = "application/octet-stream")] private var BgMap:Class;
+		[Embed(source = "../data/temp/fg_map.txt", mimeType = "application/octet-stream")] private var FgMap:Class;
 		//[Embed(source = "../data/temp/tiles_new_small.png")] private var ImgTiles:Class;
-		[Embed(source = "../data/temp/tiles_black.png")] private var ImgTiles:Class;
+		[Embed(source = "../data/temp/tiles_black_32.png")] private var ImgTiles:Class; 
+		[Embed(source = "../data/temp/tiles_background.png")] private var BgTiles:Class;
+		[Embed(source = "../data/temp/tiles_foreground.png")] private var FgTiles:Class;
 		[Embed(source = "../data/temp/tile_slope_down.png")] private var SlopeTiles:Class;
 		
 		//[Embed(source = "../data/temp/MapCSV_SR_Playground_Collision.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;		
@@ -24,6 +30,9 @@
 		
 		//major game objects
 		private var tilemap:FlxTilemap;		
+		private var bgmap:FlxTilemap;
+		private var fgmap:FlxTilemap;
+		
 		public var player:Player;
 		public var hooks:Array;	
 		
@@ -44,6 +53,8 @@
 		// temp slopes:
 		private var slopes:Array;
 		private var slopeDowns:Array;
+		
+		private var blurLayer:BlurLayer;
 		
 
 		
@@ -67,9 +78,22 @@
 			// create tilemap
 			tilemap = new FlxTilemap();
 			tilemap.loadMap(new TxtMap, ImgTiles, 16);
-			tilemap.collideIndex = 15;				
+			tilemap.collideIndex = 31;				
 			
-			_map = new MapSR_Playground();
+			// BG map
+			bgmap = new FlxTilemap();
+			bgmap.loadMap(new BgMap, FgTiles, 16);
+			bgmap.collideIndex = 15;
+			bgmap.scrollFactor = new Point(0.5, 0.5);	
+			
+			// FG map
+			fgmap = new FlxTilemap();			
+			fgmap.loadMap(new FgMap, FgTiles, 16);
+			fgmap.collideIndex = 15;
+			fgmap.scrollFactor = new Point(2.0, 2.0);			
+			
+			
+			//_map = new MapSR_Playground();
 			//Add the layers to current the FlxState
 			//FlxG.state.add(_map.layerCollision);
 			//_map.addSpritesToLayerCollision(onAddSpriteCallback);
@@ -83,7 +107,7 @@
 			
 			// Test BOOST:
 			var bst:BoostSection = new BoostSection(1350, 528);
-			bst.createGraphic(200, 32, 0x660000FF);
+			bst.createGraphic(200, 32, 0xFF0000FF);
 			bst.width = 200;
 			bst.height = 32;			
 			obstacles.push(bst);
@@ -101,21 +125,15 @@
 			start = new StartTrigger(200, 370);
 			finish = new FinishTrigger(2400, 370);
 			
-			// create player and hooks				
-			player = new Player(150, 300);
-			hooks = new Array();
-			for(var i:uint = 0; i < 1; i++)
-				hooks.push(this.add(new Hook(player)));					
-			player.setHooks(hooks);
+			
 				
-			// camera settings			
-			FlxG.follow(player,1.5);
-			FlxG.followAdjust(1.0,0.25);			
-			tilemap.follow();	
-			//_map.layerCollision.follow();	//Set the followBounds to the map dimensions
+			
 							
 			
 			
+			//blurLayer = new BlurLayer();
+			//this.add(blurLayer);
+			this.add(bgmap);
 			
 			///////////////////////// TEMP STUFF, EXPERIMENTAL:
 			///
@@ -133,6 +151,10 @@
 			slopeDowns.push(this.add(new SlopeDown(624, 528, SlopeTiles)));			
 			slopeDowns.push(this.add(new SlopeDown(640, 544, SlopeTiles)));
 			
+			slopeDowns.push(this.add(new SlopeDown(1840, 560, SlopeTiles)));
+			slopeDowns.push(this.add(new SlopeDown(1856, 576, SlopeTiles)));			
+			slopeDowns.push(this.add(new SlopeDown(1872, 592, SlopeTiles)));
+			
 			
 			
 			
@@ -146,8 +168,22 @@
 			
 			
 			// Finally, add everything to stage:
-			this.add(bst);
-			this.add(player);			
+			
+			// create player and hooks				
+			player = new Player(150, 300);
+			hooks = new Array();
+			for(var i:uint = 0; i < 1; i++)
+				hooks.push(this.add(new Hook(player)));					
+			player.setHooks(hooks);
+			
+			// camera settings			
+			FlxG.follow(player,1.5);
+			FlxG.followAdjust(1.0,0.25);			
+			tilemap.follow();	
+			//_map.layerCollision.follow();	//Set the followBounds to the map dimensions
+			
+			this.add(bst);			
+			player.addToState(this);			
 			this.add(tilemap);
 			//this.add(_map.layerCollision);
 			this.add(timerTxt);
@@ -155,6 +191,8 @@
 			this.add(start);
 			this.add(finish);
 			this.add(obj);
+			
+			this.add(fgmap);
 			
 			//fade in
 			FlxG.flash(0xff131c1b);

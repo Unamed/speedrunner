@@ -60,11 +60,22 @@ package
 		
 		private var switchToAirCntDwn:Number = 0;
 		
+		private var eyeSpr:FlxSprite;
+		private var eyeOffsetX:uint;
+		private var eyeOffsetY:uint;
+		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
 			super(X, Y);
 			
 			this.createGraphic(16, 32, 0xFF000000);
+			
+			eyeOffsetX = 7;
+			eyeOffsetY = 2;
+			eyeSpr = new FlxSprite(X + eyeOffsetX, Y + eyeOffsetY, null);
+			eyeSpr.createGraphic(4, 4, 0xFFFFFFFF);
+			
+			//this.createGraphic(4, 4, 0x00FFFFFF);
 			//loadGraphic(ImgSpaceman,true,true,16,32);
 			restart = 0;
 			
@@ -93,7 +104,17 @@ package
 			addAnimation("idle_up", [5]);
 			addAnimation("run_up", [6, 7, 8, 5], 12);
 			addAnimation("jump_up", [9]);
-			addAnimation("jump_down", [10]);
+			addAnimation("jump_down", [10]);						
+			
+			curHook = 0;
+			
+			if( FlxG.state is PlayState )
+				playState = FlxG.state as PlayState
+		}
+		
+		public function addToState(state:FlxState):void
+		{			
+			
 			
 			// Trail emitter
 			trail = new FlxEmitter();			
@@ -140,15 +161,11 @@ package
 			}
 			
 			trail2Yoffset = 16;		
+			state.add(trail2.loadSprites(arr2));
+			state.add(trail.loadSprites(arr));
 			
-			FlxG.state.add(trail2.loadSprites(arr2));
-			FlxG.state.add(trail.loadSprites(arr));
-			
-			
-			curHook = 0;
-			
-			if( FlxG.state is PlayState )
-				playState = FlxG.state as PlayState
+			state.add(this);
+			state.add(eyeSpr);
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -477,6 +494,12 @@ package
 			trail2.x = this.x + this.width / 2;			
 			trail2.y = this.y + trail2Yoffset;// + this.height - 8;// / 2;
 			
+			if( facing == RIGHT )
+				eyeSpr.x = this.x + eyeOffsetX;
+			else
+				eyeSpr.x = this.x + (eyeOffsetX - this.width)+1;
+			eyeSpr.y = this.y + eyeOffsetY;
+			
 			// RESET SOME STUFF:
 			//if ( status == ONWALL )//|| status == ONSLOPEDOWN)
 				//status = INAIR;
@@ -543,7 +566,7 @@ package
 				jumpTime = 0;
 				
 				var xdiff:Number = this.x - Contact.x;
-				this.y = Contact.y - this.height + xdiff - 5;
+				this.y = Contact.y - this.height + xdiff - 2;
 				/*
 				if ( facing == LEFT )
 					this.y = Contact.y - this.height - 1.0;
