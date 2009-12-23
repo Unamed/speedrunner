@@ -97,10 +97,10 @@
 			if ( exists )
 			{
 				var line : Line;
-				if ( bCollided )
-					line = new Line(player, this, 2, 0x999999);
-				else
-					line = new Line(player, this, 2, 0x996600);
+				//if ( bCollided )
+					line = new Line(player, this, 2, 0x000000);
+				//else
+				//	line = new Line(player, this, 2, 0xFFFFFF);
 			
 				line.render();
 			}			

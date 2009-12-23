@@ -14,7 +14,7 @@
 			super(X, Y, SimpleGraphic);
 			this.fixed = true;
 			
-			//this.alpha = 0.70;
+			this.alpha = 0.70;
 		}
 		
 	}
