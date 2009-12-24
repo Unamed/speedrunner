@@ -267,7 +267,11 @@ package
 					
 					// Actually perform the transformation here.  The rope nullifies any speed directly pulling against it.
 					if (relSpeed.y < 0 )
-						relSpeed.y = 0;					
+						relSpeed.y = 0;		
+					
+					this.angle = (ropeAngle * (180 / Math.PI)) - 90;
+					this.angle = Math.min( 45, this.angle );
+					this.angle = Math.max( -45, this.angle );
 					
 					// Convert back to polar in rope coordinate space.
 					relSpeedAngle = Math.atan2(relSpeed.y, relSpeed.x);
@@ -322,16 +326,6 @@ package
 					if(FlxG.keys.LEFT)
 					{
 						facing = LEFT;
-						
-						
-						//velocity.y = Math.max( velocity.x, velocity.y );
-						
-						//velocity.x = -0.6 * maxVelocity.x;
-						//velocity.y = -0.6 * maxVelocity.x;
-						//acceleration.x -= 0.6 * push.x;
-						//acceleration.y -= 0.6 * push.x;
-						
-						
 						velocity.x = -0.65 * maxVelocity.x;
 						velocity.y = -0.65 * maxVelocity.x;
 						
@@ -357,10 +351,46 @@ package
 						// no input also slides (slowly)
 						velocity.x = 0.15 * maxVelocity.x;
 						velocity.y = 0.15 * maxVelocity.x;
-						
-						//acceleration.x = 0.25 * push.x;
-						//acceleration.y = 0.25 * push.x;
 					}
+				}
+				else if ( status == ONSLOPEUP )
+				{
+					acceleration = new Point(0, 0);
+					drag = new Point(0, 0);						
+					
+					maxVelocity.y = maxVelocity.x;
+					
+					if(FlxG.keys.RIGHT)
+					{
+						facing = RIGHT;
+						velocity.x = 0.65 * maxVelocity.x;
+						velocity.y = 0.65 * maxVelocity.x;
+						
+					}
+					else if(FlxG.keys.LEFT)
+					{
+						facing = LEFT;
+						
+						if( FlxG.keys.DOWN )
+						{
+							// higher maxVelocity?
+							velocity.x = -1.0 * maxVelocity.x;
+							velocity.y = -1.0 * maxVelocity.x;
+						}
+						else
+						{
+							velocity.x = -0.75 * maxVelocity.x;
+							velocity.y = -0.75 * maxVelocity.x;
+						}
+					}	
+					else
+					{
+						// no input also slides (slowly)
+						velocity.x = -0.15 * maxVelocity.x;
+						velocity.y = -0.15 * maxVelocity.x;
+					}
+					
+					
 				}
 				// "NORMAL" MOVEMENT
 				// In air:
@@ -478,9 +508,18 @@ package
 			
 							
 			if ( status == ONSLOPEDOWN )			
-				this.angle = 45;						
-			else	
-				this.angle = 0;	
+				this.angle = 45;
+			else if ( status == ONSLOPEUP )
+				this.angle = -45;
+			else if ( status == INAIR )
+			{								
+				if ( this.angle < 0 )
+					this.angle = Math.min(0, this.angle + FlxG.elapsed*75);	
+				else
+					this.angle = Math.max(0, this.angle - FlxG.elapsed*75);	
+			}
+			else if( status != SWINGING )
+				this.angle = 0;
 			
 			 
 			//UPDATE POSITION AND ANIMATION
@@ -558,22 +597,26 @@ package
 		}
 		
 		public function hitSlope(Contact:FlxCore, pl:FlxCore ):void
-		{				
+		{		
+			var xdiff:Number;
 			if ( Contact is SlopeDown )
 			{
 				status = ONSLOPEDOWN;
 				
 				jumpTime = 0;
 				
-				var xdiff:Number = this.x - Contact.x;
+				xdiff = this.x - Contact.x;
 				this.y = Contact.y - this.height + xdiff - 2;
-				/*
-				if ( facing == LEFT )
-					this.y = Contact.y - this.height - 1.0;
-				else
-					this.y = Contact.y - this.height + xdiff + 1.0;
-					*/
-			}			
+			}
+			else if ( Contact is SlopeUp )
+			{
+				status = ONSLOPEUP;
+				
+				jumpTime = 0;
+				
+				xdiff = (Contact.x + Contact.width) - (this.x + this.width);
+				this.y = Contact.y - this.height + xdiff - 2;				
+			}
 		}
 		
 		public function hitBoost():Boolean
@@ -610,18 +653,50 @@ package
 			if ( bIsSwinging )
 				hooks[prevHook].breakRelease();			
 			
-			status = ONWALL;
-			velocity.x = 0;
-			
-			/*
-			if ( velocity.x > 0 )
-				facing = LEFT;
-			else	
-				facing = RIGHT;
-			*/
 				
-			velocity.y = 0;
-			jumpTime = 0;			
+			if ( playState )
+			{					
+				var contactXtile:uint = Contact.x / 16;
+				var contactYtile:uint = Contact.y / 16;
+				
+				var tileIndexAbove:uint = playState.tilemap.getTile(contactXtile, contactYtile + 1);
+				var tileIndexBelow:uint = playState.tilemap.getTile(contactXtile, contactYtile - 1);
+				
+				if ( tileIndexAbove >= playState.tilemap.collideIndex 
+					|| tileIndexBelow >= playState.tilemap.collideIndex )
+				{					
+					status = ONWALL;
+					velocity.x = 0;
+					
+					/*
+					if ( velocity.x > 0 )
+						facing = LEFT;
+					else	
+						facing = RIGHT;
+					*/
+						
+					velocity.y = 0;
+					jumpTime = 0;		
+				}
+				else
+				{
+					var yDiff:Number = this.y - (Contact.y + Contact.height / 2);
+					
+					// I've hit a single tile.. slide over or under it:
+					if ( yDiff > 0 )
+					{
+						//slide over..
+						this.y += (Contact.height + yDiff );						
+						return false;
+					}
+					else
+					{
+						// slide under..
+						this.y -= (Contact.height + yDiff );						
+						return false;
+					}
+				}
+			}	
 				
 			return super.hitWall(Contact);
 		}

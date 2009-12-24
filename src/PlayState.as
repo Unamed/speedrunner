@@ -22,6 +22,7 @@
 		[Embed(source = "../data/temp/tiles_background.png")] private var BgTiles:Class;
 		[Embed(source = "../data/temp/tiles_foreground.png")] private var FgTiles:Class;
 		[Embed(source = "../data/temp/tile_slope_down.png")] private var SlopeTiles:Class;
+		[Embed(source = "../data/temp/tile_slope_up.png")] private var SlopeTilesUp:Class;
 		
 		//[Embed(source = "../data/temp/MapCSV_SR_Playground_Collision.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;		
 		
@@ -29,7 +30,7 @@
 		private var _map:MapBase;
 		
 		//major game objects
-		private var tilemap:FlxTilemap;		
+		public var tilemap:FlxTilemap;		
 		private var bgmap:FlxTilemap;
 		private var fgmap:FlxTilemap;
 		
@@ -78,7 +79,7 @@
 			// create tilemap
 			tilemap = new FlxTilemap();
 			tilemap.loadMap(new TxtMap, ImgTiles, 16);
-			tilemap.collideIndex = 31;				
+			tilemap.collideIndex = 31;	
 			
 			// BG map
 			bgmap = new FlxTilemap();
@@ -155,6 +156,9 @@
 			slopeDowns.push(this.add(new SlopeDown(1856, 576, SlopeTiles)));			
 			slopeDowns.push(this.add(new SlopeDown(1872, 592, SlopeTiles)));
 			
+			slopeDowns.push( this.add(new SlopeUp(2144, 400, SlopeTilesUp)));
+			slopeDowns.push( this.add(new SlopeUp(2160, 384, SlopeTilesUp)));
+			
 			
 			
 			
@@ -197,8 +201,6 @@
 			//fade in
 			FlxG.flash(0xff131c1b);
 		}
-		
-		
 		
 		public function resetGame():void
 		{
