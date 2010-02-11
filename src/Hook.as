@@ -1,8 +1,9 @@
 ﻿package  
 {
-	import flash.geom.Point;
+	import flash.geom.Point;	
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxCore;
+	import org.flixel.FlxG;
 	
 	/**
 	 * ...
@@ -30,6 +31,8 @@
 			
 			this.player = player;
 			playerAccel = new Point(0, 0);
+			
+			this.height = 32;
 		}
 		
 		public function shoot(X:int, Y:int, VelocityX:int, VelocityY:int):void
@@ -49,11 +52,52 @@
 		
 		//@desc		Called when this object collides with the top of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitFloor(Contact:FlxCore=null):Boolean { return collided(); }
+		override public function hitFloor(Contact:FlxCore = null):Boolean 
+		{ 
+			if ( Contact )
+			{			
+				var contactXtile:uint = Contact.x / Contact.width
+				var contactYtile:uint = Contact.y / Contact.height;
+				
+				//var tileIndexAbove:uint = playState.tilemap.getTile(contactXtile, contactYtile + 1);
+				var tileIndexBelow:uint = (FlxG.state as PlayState).flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
+				
+				if ( tileIndexBelow >= (FlxG.state as PlayState).flanmap.mainLayer.collideIndex )
+				{
+					this.y = Contact.y + Contact.height + Contact.height;
+				}
+				else
+				{
+					this.y = Contact.y + Contact.height;
+				}
+			}
+			return collided(); 
+		}
 		
 		//@desc		Called when this object collides with the bottom of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitCeiling(Contact:FlxCore = null):Boolean { return collided(); }
+		override public function hitCeiling(Contact:FlxCore = null):Boolean 
+		{
+			if ( Contact )
+			{			
+				var contactXtile:uint = Contact.x / Contact.width
+				var contactYtile:uint = Contact.y / Contact.height;
+				
+				//var tileIndexAbove:uint = playState.tilemap.getTile(contactXtile, contactYtile + 1);
+				var tileIndexBelow:uint = (FlxG.state as PlayState).flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
+				
+				if ( tileIndexBelow >= (FlxG.state as PlayState).flanmap.mainLayer.collideIndex )
+				{
+					this.y = Contact.y + Contact.height + Contact.height;
+				}
+				else
+				{
+					this.y = Contact.y + Contact.height;
+				}
+			}
+			
+			return collided(); 
+		}
 		
 		private function collided():Boolean
 		{
@@ -62,7 +106,7 @@
 			bCollided = true;	
 			
 			playerAccel = new Point(500,0);
-			return true;			
+			return true;	
 		}
 		
 		override public function update():void

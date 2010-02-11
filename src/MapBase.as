@@ -5,12 +5,14 @@ package  {
 	
 	public class MapBase {
 		//Layer name definitions
-		public static const LAYER_COLLISION:uint = 0;
-		public static const LAYER_OBSTACLES:uint = 1;
+		public static const LAYER_FG:uint = 0;
+		public static const LAYER_MAIN:uint = 1;
+		public static const LAYER_BG:uint = 2;
 
 		//Layer variable accessors
-		public var layerCollision:FlxTilemap;
-		public var layerObstacles:FlxTilemap;
+		public var layerFG:FlxTilemap;
+		public var layerMain:FlxTilemap;
+		public var layerBG:FlxTilemap;
 
 		//Map layers and principal layer (map) declarations
 		public var allLayers:Array;
@@ -26,8 +28,9 @@ package  {
 
 		public var bgColor:uint = 0xff000000;
 
-		virtual public function addSpritesToLayerCollision(onAddCallback:Function = null):void { }
-		virtual public function addSpritesToLayerObstacles(onAddCallback:Function = null):void { }
+		virtual public function addSpritesToLayerFG(onAddCallback:Function = null):void { }
+		virtual public function addSpritesToLayerMain(onAddCallback:Function = null):void { }
+		virtual public function addSpritesToLayerBG(onAddCallback:Function = null):void { }
 
 		public var customValues:Object = new Object;		//Name-value map;
 		virtual public function customFunction(param:* = null):* { }

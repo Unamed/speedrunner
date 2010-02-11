@@ -3,10 +3,12 @@ package
 	import flash.display.Graphics;
 	import flash.geom.Point;
 	import org.flixel.*;
+	//import org.flixel.fefranca.debug.FlxSpriteDebug;
 
 	public class Player extends FlxSprite
 	{
 		[Embed(source="../data/temp/spaceman_new_thin.png")] private var ImgSpaceman:Class;
+		
 		private var size:uint = 32;	
 		
 		private var jumpPower:int;
@@ -39,6 +41,9 @@ package
 		
 		
 		public var bOnDownSlope:Boolean;
+		
+		private var switchToLevelId:uint;
+		private var bHitDoor:Boolean;
 		
 		private var trail:FlxEmitter;
 		private var trail2:FlxEmitter;
@@ -182,7 +187,14 @@ package
 				return;
 			}		
 			
-			
+			if ( FlxG.keys.justPressed("UP") && bHitDoor )
+			{
+				FlxG.switchState(LevelState);
+				if ( FlxG.state is LevelState )
+					(FlxG.state as LevelState).switchToMap(switchToLevelId);
+				else
+					FlxG.log("erffrrr");				
+			}
 			
 			// release swing?
 			if ( hooks[prevHook].exists && !FlxG.keys.pressed("C") )
@@ -570,7 +582,9 @@ package
 		// hitCeiling
 		
 		public function hitNothing():void
-		{		
+		{	
+			bHitDoor = false;
+			
 			if ( status == ONSLOPEDOWN )
 			{	
 				if( switchToAirCntDwn <= 0 )
@@ -583,14 +597,25 @@ package
 			}
 		}
 		
+		private function hitDoor(Contact:Door):Boolean 
+		{
+			switchToLevelId = Contact.levelId;
+			bHitDoor = true;
+			
+			return false;			
+		}
+		
+		
 		private function hitTrigger(Contact:Trigger):Boolean 
 		{
-			if ( playState )
+			if ( playState is LevelState )
 			{
+				var lState:LevelState = playState as LevelState;
+				
 				if ( Contact is StartTrigger )							
-					playState.startTimer();								
+					lState.startTimer();								
 				else if ( Contact is FinishTrigger )
-					playState.stopTimer();				
+					lState.stopTimer();				
 			}
 			
 			return false;			
@@ -637,12 +662,25 @@ package
 			return false;			
 		}
 		
+		public function hitPickup(Contact:Pickup):Boolean
+		{
+			Contact.PickedUp();			
+			
+			return false;
+		}
+		
 		//@desc		Called when this object collides with a FlxBlock on one of its sides
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitWall(Contact:FlxCore = null):Boolean 
 		{
 			if (Contact is BoostSection )
-				return hitBoost();										
+				return hitBoost();	
+				
+			if (Contact is Pickup )
+				return hitPickup((Contact as Pickup));
+				
+			if (Contact is Door )
+				return hitDoor((Contact as Door));
 			
 			if ( Contact is Obstacle )
 				return hitObstacle((Contact as Obstacle));
@@ -659,11 +697,11 @@ package
 				var contactXtile:uint = Contact.x / 16;
 				var contactYtile:uint = Contact.y / 16;
 				
-				var tileIndexAbove:uint = playState.tilemap.getTile(contactXtile, contactYtile + 1);
-				var tileIndexBelow:uint = playState.tilemap.getTile(contactXtile, contactYtile - 1);
+				var tileIndexAbove:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile + 1);
+				var tileIndexBelow:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
 				
-				if ( tileIndexAbove >= playState.tilemap.collideIndex 
-					|| tileIndexBelow >= playState.tilemap.collideIndex )
+				if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
+					|| tileIndexBelow >= playState.flanmap.mainLayer.collideIndex )
 				{					
 					status = ONWALL;
 					velocity.x = 0;
@@ -709,6 +747,10 @@ package
 				return hitBoost();			
 			if ( Contact is Trigger )
 				return hitTrigger((Contact as Trigger));
+			if (Contact is Pickup )
+				return hitPickup((Contact as Pickup));
+			if (Contact is Door )
+				return hitDoor((Contact as Door));
 				
 			status = ONGROUND;			
 			jumpTime = 0;			
@@ -721,7 +763,13 @@ package
 		override public function hitCeiling(Contact:FlxCore = null):Boolean 
 		{ 
 			if (Contact is BoostSection )
-				return hitBoost();										
+				return hitBoost();	
+			
+			if (Contact is Pickup )
+				return hitPickup((Contact as Pickup));
+				
+			if (Contact is Door )
+				return hitDoor((Contact as Door));
 			
 			if ( Contact is Obstacle )
 				return hitObstacle((Contact as Obstacle));
