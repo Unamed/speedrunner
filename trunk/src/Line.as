@@ -29,7 +29,7 @@
             drawShape = new Shape();
             drawShape.graphics.lineStyle(thickness, color);
             drawShape.graphics.moveTo(player.x + player.width/2 + FlxG.scroll.x, player.y + player.height/2 + FlxG.scroll.y);
-            drawShape.graphics.lineTo(hook.x + hook.width/2 + FlxG.scroll.x, hook.y + hook.height/2 + FlxG.scroll.y);
+            drawShape.graphics.lineTo(hook.x + hook.width/2 + FlxG.scroll.x, hook.y + 6 + FlxG.scroll.y);
             FlxG.buffer.draw(drawShape);
         }
     }
