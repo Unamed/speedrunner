@@ -2,6 +2,7 @@
 
 package  {
 	import org.flixel.FlxTilemap;
+	import org.flixel.fefranca.FlxTilemapSloped;
 	
 	public class MapBase {
 		//Layer name definitions
@@ -11,13 +12,13 @@ package  {
 
 		//Layer variable accessors
 		public var layerFG:FlxTilemap;
-		public var layerMain:FlxTilemap;
-		public var layerBG:FlxTilemap;
+		public var layerMain:FlxTilemapSloped;
+		public var layerBG:FlxTilemap; 
 
 		//Map layers and principal layer (map) declarations
 		public var allLayers:Array;
 
-		public var mainLayer:FlxTilemap;
+		public var mainLayer:FlxTilemapSloped;
 
 		public var boundsMinX:int;
 		public var boundsMinY:int;
