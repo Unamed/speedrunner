@@ -26,7 +26,7 @@
 			// 0 - The Lion
 			// 1 - The Hydra
 			// 2 - The The Hind
-			maps.push(MapTheHind);
+			maps.push(MapTheLion);
 			maps.push(MapTheHydra);
 			
 			currentMapIndex = 0;

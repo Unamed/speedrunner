@@ -2,6 +2,7 @@
 
 package  {
 	import org.flixel.*;
+	import org.flixel.fefranca.FlxTilemapSloped;
 	
 	public class MapTheHydra extends MapBase {
 		//Media content declarations
@@ -28,7 +29,7 @@ package  {
 			layerFG.scrollFactor.x = 1.500000;
 			layerFG.scrollFactor.y = 1.000000;
 			
-			layerMain = new FlxTilemap();
+			layerMain = new FlxTilemapSloped();
 			layerMain.loadMap(new CSV_Main, Img_Main, 16);
 			layerMain.collideIndex = 31;
 			layerMain.drawIndex = 1;
