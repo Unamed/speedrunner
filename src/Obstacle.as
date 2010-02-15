@@ -12,8 +12,11 @@
 
 		public function Obstacle(X:int = 0, Y:int = 0, SimpleGraphic:Class = null) 
 		{
-			super(X, Y, SimpleGraphic);
-			this.loadGraphic(ObstacleIcon,false,false,16,16);
+			super(X, Y-8, SimpleGraphic);
+			this.loadGraphic(ObstacleIcon, false, false, 24, 24);
+			
+			this.offset.x = 4;
+			this.offset.y = 8;
 			
 			this.fixed = true;			
 		}		

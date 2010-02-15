@@ -102,7 +102,7 @@
 		
 		public function addBGLayer():void
 		{			
-			this.add(flanmap.layerBG);		
+			//this.add(flanmap.layerBG);		
 		}
 		
 		public function addMainLayer():void

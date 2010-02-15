@@ -13,7 +13,7 @@ package  {
 		//Layer variable accessors
 		public var layerFG:FlxTilemap;
 		public var layerMain:FlxTilemapSloped;
-		public var layerBG:FlxTilemap; 
+		public var layerBG:FlxTilemap;
 
 		//Map layers and principal layer (map) declarations
 		public var allLayers:Array;
