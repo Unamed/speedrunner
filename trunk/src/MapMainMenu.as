@@ -9,7 +9,7 @@ package  {
 		[Embed(source="../data/maps/MapCSV_MainMenu_FG.txt", mimeType="application/octet-stream")] public var CSV_FG:Class;
 		[Embed(source="../data/temp/tiles_foreground.png")] public var Img_FG:Class;
 		[Embed(source="../data/maps/MapCSV_MainMenu_Main.txt", mimeType="application/octet-stream")] public var CSV_Main:Class;
-		[Embed(source="../data/temp/tiles_black_32.png")] public var Img_Main:Class;
+		[Embed(source="../data/temp/tiles_black_37.png")] public var Img_Main:Class;
 		[Embed(source="../data/maps/MapCSV_MainMenu_BG.txt", mimeType="application/octet-stream")] public var CSV_BG:Class;
 		[Embed(source="../data/temp/tiles_background.png")] public var Img_BG:Class;
 
@@ -26,7 +26,7 @@ package  {
 			layerFG.drawIndex = 1;
 			layerFG.x = 0;
 			layerFG.y = 0;
-			layerFG.scrollFactor.x = 2.000000;
+			layerFG.scrollFactor.x = 1.500000;
 			layerFG.scrollFactor.y = 1.000000;
 			
 			layerMain = new FlxTilemapSloped();
@@ -60,72 +60,6 @@ package  {
 		override public function addSpritesToLayerMain(onAddCallback:Function = null):void {
 			var obj:FlxSprite;
 			
-			obj = new SlopeDown(560, 1440);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(544, 1424);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(528, 1408);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(512, 1392);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(496, 1376);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(480, 1360);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(576, 1456);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(592, 1472);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(608, 1488);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(624, 1504);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(640, 1520);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new SlopeDown(1840, 1536);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -150,17 +84,17 @@ package  {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Door(828, 1088);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 1;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new Door(288, 1328);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["levelId"] = 0;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(1088, 1320);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 2;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);

@@ -28,6 +28,7 @@
 			// 2 - The The Hind
 			maps.push(MapTheLion);
 			maps.push(MapTheHydra);
+			maps.push(MapTheHydra);
 			
 			currentMapIndex = 0;
 			

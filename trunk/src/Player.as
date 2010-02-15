@@ -7,7 +7,8 @@ package
 
 	public class Player extends FlxSprite
 	{
-		[Embed(source="../data/temp/spaceman_new_thin.png")] private var ImgSpaceman:Class;
+		[Embed(source = "../data/temp/spaceman_new_thin.png")] private var ImgSpaceman:Class;
+		[Embed(source="../data/temp/player.png")] private var ImgPlayer:Class;
 		
 		private var size:uint = 32;	
 		
@@ -65,31 +66,32 @@ package
 		
 		private var switchToAirCntDwn:Number = 0;
 		
-		private var eyeSpr:FlxSprite;
-		private var eyeOffsetX:uint;
-		private var eyeOffsetY:uint;
+		//private var eyeSpr:FlxSprite;
+		//private var eyeOffsetX:uint;
+		//private var eyeOffsetY:uint;
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
 			super(X, Y);
 			
-			this.createGraphic(16, 32, 0xFF000000);
+			//this.createGraphic(16, 32, 0xFF000000);
 			
-			eyeOffsetX = 7;
-			eyeOffsetY = 2;
-			eyeSpr = new FlxSprite(X + eyeOffsetX, Y + eyeOffsetY, null);
-			eyeSpr.createGraphic(4, 4, 0xFFFFFFFF);
+			//eyeOffsetX = 7;
+			//eyeOffsetY = 2;
+			//eyeSpr = new FlxSprite(X + eyeOffsetX, Y + eyeOffsetY, null);
+			//eyeSpr.createGraphic(4, 4, 0xFFFFFFFF);
 			
 			//this.createGraphic(4, 4, 0x00FFFFFF);
 			//loadGraphic(ImgSpaceman,true,true,16,32);
+			this.loadGraphic(ImgPlayer, false, false, 25, 50, false);
 			restart = 0;
 			
 			jumpTime = 0;
 			
 			//bounding box tweaks
-			width = 12;
-			height = 28;
-			offset.x = 4;
+			width = 21;
+			height = 46;
+			offset.x = 2;
 			offset.y = 4;
 			
 			//basic player physics
@@ -123,8 +125,8 @@ package
 			
 			// Trail emitter
 			trail = new FlxEmitter();			
-			trail.width = 10;// 10;
-			trail.height = 32;// 20;
+			trail.width = 19;// 10;
+			trail.height = 50;// 20;
 			trail.y = this.y;
 			trail.x = this.x;		
 			trail.setRotation(0, 0);			
@@ -162,15 +164,15 @@ package
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(6, 6, 0x880000FF))));
 				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle(8.0).createGraphic(4, 4, 0xFF000000))));
-				arr2.push(FlxG.state.add((new PlayerTrailParticle(6.0).createGraphic(16, 32, 0x220000FF))));
+				arr2.push(FlxG.state.add((new PlayerTrailParticle(6.0).createGraphic(25, 50, 0x220000FF))));
 			}
 			
-			trail2Yoffset = 16;		
+			trail2Yoffset = 25;		
 			state.add(trail2.loadSprites(arr2));
 			state.add(trail.loadSprites(arr));
 			
 			state.add(this);
-			state.add(eyeSpr);
+			//state.add(eyeSpr);
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -545,11 +547,11 @@ package
 			trail2.x = this.x + this.width / 2;			
 			trail2.y = this.y + trail2Yoffset;// + this.height - 8;// / 2;
 			
-			if( facing == RIGHT )
-				eyeSpr.x = this.x + eyeOffsetX;
-			else
-				eyeSpr.x = this.x + (eyeOffsetX - this.width)+1;
-			eyeSpr.y = this.y + eyeOffsetY;
+			//if( facing == RIGHT )
+			//	eyeSpr.x = this.x + eyeOffsetX;
+			//else
+			//	eyeSpr.x = this.x + (eyeOffsetX - this.width)+1;
+			//eyeSpr.y = this.y + eyeOffsetY;
 			
 			// RESET SOME STUFF:
 			//if ( status == ONWALL )//|| status == ONSLOPEDOWN)
