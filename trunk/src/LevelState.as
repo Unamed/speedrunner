@@ -20,10 +20,7 @@
 		private var bIsPaused:Boolean;
 		
 		private var maps:Array;		
-		private var currentMapIndex:uint;		
-		
-		private var speedometerBG:FlxSprite;
-		private var speedometer:FlxSprite;
+		private var currentMapIndex:uint;	
 		
 		
 		public function LevelState() 
@@ -74,17 +71,7 @@
 			timerTxt = new FlxText(300, 100, 200, "Timer");
 			timerTxt.size = 15;							
 			timerTxt.scrollFactor = new Point(0, 0);				
-			this.add(timerTxt);			
-			
-			speedometerBG = new FlxSprite(100, 10, null);
-			speedometerBG.createGraphic(200, 25, 0xFF000000, false);
-			speedometerBG.scrollFactor = new Point(0, 0);			
-			this.add(speedometerBG);
-			
-			speedometer = new FlxSprite(100, 10, null);
-			speedometer.createGraphic(200, 25, 0xFFFF0000, false);
-			speedometer.scrollFactor = new Point(0, 0);			
-			this.add(speedometer);
+			this.add(timerTxt);	
 		}	
 		
 		override public function update():void
@@ -101,16 +88,7 @@
 			if ( FlxG.keys.justPressed("ESC") )
 			{
 				switchToMainMenu();	
-			}		
-			
-			// HUD:		
-			var maxSpeed:Number = Math.max( player.maxBoostVelocity, player.maxSwingVelocity );
-			
-			speedometer.x = 0 + (100* (Math.abs( player.velocity.x ) / maxSpeed));
-			speedometer.scale.x = (Math.abs( player.velocity.x ) / maxSpeed);
-			
-			
-			
+			}				
 		}
 		
 		public function startTimer():void

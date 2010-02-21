@@ -12,7 +12,8 @@ package
 		
 		private var size:uint = 50;	
 		
-		private var jumpPower:int = 140 * size;
+		private var jumpPower:int = 6000;
+		private var jumpFromWallPower:uint = 550;// 1000;
 		private var bUp:Boolean;
 		private var bDown:Boolean;
 		private var restart:Number;
@@ -56,7 +57,7 @@ package
 		public const maxBoostVelocity:uint = 2.00 * runSpeed;		
 		public const defaultRunVelocity:uint = runSpeed;
 		
-		private var currentPush:Number; // the force applied by input
+		public var currentPush:Number; // the force applied by input
 		public const defaultPush:Number = 20 * size;
 		public const slowPush:Number = 1.0 * size;
 		
@@ -177,7 +178,7 @@ package
 			}
 			
 			trail2Yoffset = 22;		
-			state.add(trail2.loadSprites(arr2));
+			//state.add(trail2.loadSprites(arr2));
 			state.add(trail.loadSprites(arr));
 			
 			state.add(this);
@@ -234,7 +235,7 @@ package
 			
 			if ( bBoosting )
 				maxVelocity.x = maxBoostVelocity;			
-			else
+			else  
 			{
 				if ( Math.abs(velocity.x) < defaultRunVelocity )
 				{		
@@ -242,7 +243,11 @@ package
 				}
 				else // gelijk..
 				{
-					currentPush = slowPush;
+					if (velocity.x < 0 && FlxG.keys.LEFT 
+						|| velocity.x > 0 && FlxG.keys.RIGHT )
+					{
+						currentPush = slowPush;
+					}
 					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);					
 				}
 			}
@@ -279,7 +284,7 @@ package
 				bOnDownSlope = false;
 				
 				// swinging is faster than walking:
-				maxVelocity.x = maxSwingVelocity;
+				maxVelocity.x = maxSwingVelocity; // Math.min( maxVelocity.x + FlxG.elapsed * 100, maxSwingVelocity );
 				
 				// Always start swinging at a high speed				
 				if ( !bIsSwinging )
@@ -331,6 +336,8 @@ package
 			// WALL MOVEMENT:
 			else if ( status == ONWALL )//bWalling )
 			{
+				maxVelocity.x = defaultRunVelocity;
+				
 				if( facing == LEFT )
 					velocity.x = -50;
 				else
@@ -348,9 +355,9 @@ package
 				if( FlxG.keys.justPressed("X") )
 				{		
 					if ( facing == RIGHT )
-						velocity.x -= jumpPower * 8;
+						velocity.x -= jumpFromWallPower;
 					else
-						velocity.x += jumpPower * 8;
+						velocity.x += jumpFromWallPower;
 						
 					status = INAIR;
 				}				
@@ -434,7 +441,7 @@ package
 					
 				}
 				// "NORMAL" MOVEMENT
-				// In air:
+				// IN AIR:
 				else if ( velocity.y )
 				{
 					status = INAIR;
@@ -462,7 +469,7 @@ package
 					//	velocity.x *= (1 - decrease);						
 					//}
 				}
-				else 
+				else // ON GROUND
 				{
 					if(FlxG.keys.LEFT)
 					{
@@ -550,7 +557,7 @@ package
 			
 			
 			
-							
+			// ROTATING:				
 			if ( status == ONSLOPEDOWN )			
 				this.angle = 45;
 			else if ( status == ONSLOPEUP )
@@ -565,11 +572,8 @@ package
 						this.angle =  this.angle + FlxG.elapsed * -675;	
 				}
 				else
-				{
-					
+				{					
 					var maxRot:Number = Math.ceil( Math.abs(this.angle) / 360 ) * 360;
-					
-					//FlxG.log("var is: "+maxRot);
 					
 					if ( this.angle < 0 )
 						this.angle = Math.min(0, Math.max(this.angle - FlxG.elapsed*475, -maxRot));	
