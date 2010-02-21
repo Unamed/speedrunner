@@ -96,19 +96,22 @@
 		
 		public function addBackGround():void
 		{			
-			bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFF7678CB, 0xFF2222BB);
+			//bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFF7678CB, 0xFF2222BB);	// blueish..
+			bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFFA75452, 0xFF661111);		// reddish..
+			
 			this.add(bgSpr);			
 		}
 		
 		public function addBGLayer():void
 		{			
-			//this.add(flanmap.layerBG);		
+			//this.add(flanmap.layerBG);	
+			flanmap.addSpritesToLayerMain(onAddSpriteCallback);
 		}
 		
 		public function addMainLayer():void
 		{			
 			this.add(flanmap.layerMain);
-			flanmap.addSpritesToLayerMain(onAddSpriteCallback);	
+				
 		}
 		
 		public function addGameElements():void
@@ -180,7 +183,7 @@
 			if( player.status == 5 )
 				debugTxt.text = "" + "Status: " + "swinging";
 			*/	
-			
+				
 			// Google Analytics:			
 			if ( !tracker )
 				tracker = new GATracker(this, "UA-12125437-1", "AS3", false );

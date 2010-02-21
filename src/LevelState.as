@@ -1,5 +1,6 @@
 ﻿package  
 {
+	import org.flixel.FlxSprite;
 	import org.flixel.FlxText;
 	import org.flixel.FlxG;
 	import flash.geom.Point;
@@ -16,9 +17,14 @@
 		private var timerTxt:FlxText;	
 		private var playTime:Number;		
 		private var bIsTiming:Boolean;
+		private var bIsPaused:Boolean;
 		
 		private var maps:Array;		
 		private var currentMapIndex:uint;		
+		
+		private var speedometerBG:FlxSprite;
+		private var speedometer:FlxSprite;
+		
 		
 		public function LevelState() 
 		{			
@@ -28,14 +34,16 @@
 			// 2 - The The Hind
 			maps.push(MapTheLion);
 			maps.push(MapTheHydra);
-			maps.push(MapTheHydra);
+			maps.push(MapTheHind);
 			
 			currentMapIndex = 0;
 			
 			flanmap = new maps[currentMapIndex];
 			super();
 			
-			playTime = 0;		
+			
+			
+			playTime = 0;					
 		}
 		
 		override public function initLevel():void
@@ -64,15 +72,25 @@
 			
 			// TEXTS:
 			timerTxt = new FlxText(300, 100, 200, "Timer");
-			timerTxt.scrollFactor = new Point(0, 0);	
-			timerTxt.size = 15;				
-			
+			timerTxt.size = 15;							
+			timerTxt.scrollFactor = new Point(0, 0);				
 			this.add(timerTxt);			
+			
+			speedometerBG = new FlxSprite(100, 10, null);
+			speedometerBG.createGraphic(200, 25, 0xFF000000, false);
+			speedometerBG.scrollFactor = new Point(0, 0);			
+			this.add(speedometerBG);
+			
+			speedometer = new FlxSprite(100, 10, null);
+			speedometer.createGraphic(200, 25, 0xFFFF0000, false);
+			speedometer.scrollFactor = new Point(0, 0);			
+			this.add(speedometer);
 		}	
 		
 		override public function update():void
 		{
-			super.update();
+			if( !bIsPaused )
+				super.update();
 			
 			if( bIsTiming )
 				playTime += FlxG.elapsed;		
@@ -83,18 +101,18 @@
 			if ( FlxG.keys.justPressed("ESC") )
 			{
 				switchToMainMenu();	
-				
-				// test, deze hoort eigelijk bij de finish..
-				SWFStats.LevelMetrics.LogRanged("CompletionTime", currentMapIndex+1, playTime);		
-
-			}
+			}		
+			
+			// HUD:			
+			speedometer.x = 0 + (100* (Math.abs( player.velocity.x ) / player.maxSwingVelocity));
+			speedometer.scale.x = (Math.abs( player.velocity.x ) / player.maxSwingVelocity) * 1;
+			
 			
 			
 		}
 		
 		public function startTimer():void
 		{
-			FlxG.log("Start Timer");
 			playTime = 0;
 			bIsTiming = true;			
 			
@@ -107,9 +125,16 @@
 		public function stopTimer():void
 		{
 			bIsTiming = false;
-			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );	
+			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );				
 			
-			SWFStats.LevelMetrics.Log("Finished", currentMapIndex+1);
+			//SWFStats.LevelMetrics.Log("Finished", currentMapIndex+1);
+			//SWFStats.LevelMetrics.LogRanged("CompletionTime", currentMapIndex+1, playTime);	
+			
+			FlxG.log( player.progressManager.FinishedLevel(flanmap, playTime) );
+			
+			bIsPaused = true;
+			
+			
 		}	
 		
 		override public function resetLevel():void 
