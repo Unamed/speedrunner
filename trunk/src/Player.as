@@ -26,7 +26,7 @@ package
 		private var runSpeed:uint = 6 * size; //18*size = snel
 		private var hookVel:int = 4 * runSpeed;
 		
-		private var swingSpeed:uint = 2.00 * runSpeed; //1.30 * runSpeed bij snel
+		//private var swingSpeed:uint = 1.750 * runSpeed; //1.30 * runSpeed bij snel
 		
 		private var jumpTime:Number;
 		private var maxJumpTime:Number = 0.25;
@@ -38,7 +38,7 @@ package
 		
 		private var playState:PlayState;
 		
-		private var push:Point; // the force applied by input
+		
 		
 		
 		public var bOnDownSlope:Boolean;
@@ -52,8 +52,13 @@ package
 		private var trail2Yoffset:uint;
 		
 		public const maxSwingVelocity:uint = 2.00 * runSpeed;
-		public const maxRunVelocity:uint = runSpeed;
-		public const maxBoostVelocity:uint = 2.00 * runSpeed;
+		public const maxRunVelocity:uint = 1.50 * runSpeed;
+		public const maxBoostVelocity:uint = 2.00 * runSpeed;		
+		public const defaultRunVelocity:uint = runSpeed;
+		
+		private var currentPush:Number; // the force applied by input
+		public const defaultPush:Number = 20 * size;
+		public const slowPush:Number = 1.0 * size;
 		
 		static public const ONGROUND:uint = 0;
 		static public const ONWALL:uint = 1;
@@ -101,7 +106,7 @@ package
 			//basic player physics
 			drag.x = runSpeed * 2;
 			
-			push = new Point(runSpeed * 8, 0);			
+			currentPush = defaultPush;			
 			
 			acceleration.y = fallAccel;
 			
@@ -225,10 +230,22 @@ package
 				acceleration.y = fallAccel;	
 						
 			// Determine max Velocity:
+			currentPush = defaultPush;
+			
 			if ( bBoosting )
 				maxVelocity.x = maxBoostVelocity;			
 			else
-				maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);			
+			{
+				if ( Math.abs(velocity.x) < defaultRunVelocity )
+				{		
+					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, defaultRunVelocity);			
+				}
+				else // gelijk..
+				{
+					currentPush = slowPush;
+					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);					
+				}
+			}
 				
 			maxVelocity.y = 24 * size;
 			drag.x = runSpeed * 2;				
@@ -262,7 +279,7 @@ package
 				bOnDownSlope = false;
 				
 				// swinging is faster than walking:
-				maxVelocity.x = swingSpeed;
+				maxVelocity.x = maxSwingVelocity;
 				
 				// Always start swinging at a high speed				
 				if ( !bIsSwinging )
@@ -425,12 +442,12 @@ package
 					if(FlxG.keys.LEFT)
 					{
 						facing = LEFT;
-						acceleration.x -= 0.2 * push.x;
+						acceleration.x -= 0.2 * currentPush;
 					}
 					else if(FlxG.keys.RIGHT)
 					{
 						facing = RIGHT;
-						acceleration.x += 0.2 * push.x;
+						acceleration.x += 0.2 * currentPush;
 					}
 					else if(velocity.x )	// no direction input while jumping, so no acceleration (only drag)
 					{					
@@ -450,12 +467,12 @@ package
 					if(FlxG.keys.LEFT)
 					{
 						facing = LEFT;
-						acceleration.x -= push.x;
+						acceleration.x -= currentPush;
 					}
 					else if(FlxG.keys.RIGHT)
 					{
 						facing = RIGHT;
-						acceleration.x += push.x;
+						acceleration.x += currentPush;
 					}
 				}
 				
