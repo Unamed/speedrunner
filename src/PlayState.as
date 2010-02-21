@@ -57,6 +57,12 @@
 		private var playerStartX:Number = 100;
 		private var playerStartY:Number = 100;
 		
+			
+		// HUD:
+		private var speedometerBG:FlxSprite;
+		private var speedometerBG2:FlxSprite;
+		private var speedometer:FlxSprite;
+		
 		public function PlayState() 
 		{
 			super();			
@@ -143,6 +149,23 @@
 			debugTxt.size = 10;	
 			
 			this.add(debugTxt);
+			
+			// SPEEDOMETER:
+			
+			speedometerBG = new FlxSprite(100, 10, null);
+			speedometerBG.createGraphic(200, 25, 0xFF000000, false);
+			speedometerBG.scrollFactor = new Point(0, 0);			
+			this.add(speedometerBG);
+			
+			speedometerBG2 = new FlxSprite(100, 10, null);
+			speedometerBG2.createGraphic(200, 25, 0xFF0000FF, false);
+			speedometerBG2.scrollFactor = new Point(0, 0);			
+			this.add(speedometerBG2);
+			
+			speedometer = new FlxSprite(100, 10, null);
+			speedometer.createGraphic(200, 25, 0xFFFF0000, false);
+			speedometer.scrollFactor = new Point(0, 0);			
+			this.add(speedometer);
 		}
 		
 		virtual public function resetLevel():void
@@ -184,6 +207,8 @@
 				debugTxt.text = "" + "Status: " + "swinging";
 			*/	
 				
+			debugTxt.text = "currentPush: " + player.currentPush;
+			
 			// Google Analytics:			
 			if ( !tracker )
 				tracker = new GATracker(this, "UA-12125437-1", "AS3", false );
@@ -225,7 +250,16 @@
 			if ( hooks[player.prevHook].exists )
 			{
 				flanmap.mainLayer.collide(hooks[player.prevHook]);				
-			}			
+			}	
+			
+			// HUD:
+			var maxSpeed:Number = Math.max( player.maxBoostVelocity, player.maxSwingVelocity );
+			
+			speedometer.x = 0 + (100* (Math.abs( player.velocity.x ) / maxSpeed));
+			speedometer.scale.x = (Math.abs( player.velocity.x ) / maxSpeed);
+			
+			speedometerBG2.x = 0 + (100* (Math.abs( player.maxVelocity.x ) / maxSpeed));
+			speedometerBG2.scale.x = (Math.abs( player.maxVelocity.x ) / maxSpeed);
 		}	
 		
 		
