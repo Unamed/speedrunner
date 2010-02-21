@@ -103,9 +103,11 @@
 				switchToMainMenu();	
 			}		
 			
-			// HUD:			
-			speedometer.x = 0 + (100* (Math.abs( player.velocity.x ) / player.maxSwingVelocity));
-			speedometer.scale.x = (Math.abs( player.velocity.x ) / player.maxSwingVelocity) * 1;
+			// HUD:		
+			var maxSpeed:Number = Math.max( player.maxBoostVelocity, player.maxSwingVelocity );
+			
+			speedometer.x = 0 + (100* (Math.abs( player.velocity.x ) / maxSpeed));
+			speedometer.scale.x = (Math.abs( player.velocity.x ) / maxSpeed);
 			
 			
 			
