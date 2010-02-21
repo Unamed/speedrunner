@@ -25,7 +25,7 @@ package  {
 		public var boundsMaxX:int;
 		public var boundsMaxY:int;
 
-		public function MapBase() { }
+		public function MapBase() { } 
 
 		public var bgColor:uint = 0xff000000;
 

@@ -60,38 +60,27 @@ package  {
 		override public function addSpritesToLayerMain(onAddCallback:Function = null):void {
 			var obj:FlxSprite;
 			
-			obj = new SlopeDown(1840, 1536);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(1856, 1552);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new SlopeDown(1872, 1568);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new PlayerStart(68, 1282);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Door(288, 1328);;
+			obj = new Door(312, 1288+8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["levelId"] = 0;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Door(1088, 1320);;
+			obj = new Door(1080, 1272+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 1;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(696, 1048 +8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["levelId"] = 2;

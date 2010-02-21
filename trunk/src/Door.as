@@ -16,7 +16,7 @@
 		{
 			super(X, Y, SimpleGraphic);
 			
-			loadGraphic(DoorIcon,false, false,16,32);
+			loadGraphic(DoorIcon,false, false,32,64);
 		}		
 	}
 }

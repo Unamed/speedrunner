@@ -10,9 +10,9 @@ package
 		[Embed(source = "../data/temp/spaceman_new_thin.png")] private var ImgSpaceman:Class;
 		[Embed(source="../data/temp/player.png")] private var ImgPlayer:Class;
 		
-		private var size:uint = 32;	
+		private var size:uint = 50;	
 		
-		private var jumpPower:int;
+		private var jumpPower:int = 140 * size;
 		private var bUp:Boolean;
 		private var bDown:Boolean;
 		private var restart:Number;
@@ -23,7 +23,7 @@ package
 		
 		private var bIsSwinging:Boolean;
 		
-		private var runSpeed:uint = 9 * size; //18*size = snel
+		private var runSpeed:uint = 6 * size; //18*size = snel
 		private var hookVel:int = 4 * runSpeed;
 		
 		private var swingSpeed:uint = 2.00 * runSpeed; //1.30 * runSpeed bij snel
@@ -51,9 +51,9 @@ package
 		private var trailYoffset:uint;
 		private var trail2Yoffset:uint;
 		
-		private const maxSwingVelocity:uint = 2.00 * runSpeed;
-		private const maxRunVelocity:uint = runSpeed;
-		private const maxBoostVelocity:uint = 2.00 * runSpeed;
+		public const maxSwingVelocity:uint = 2.00 * runSpeed;
+		public const maxRunVelocity:uint = runSpeed;
+		public const maxBoostVelocity:uint = 2.00 * runSpeed;
 		
 		static public const ONGROUND:uint = 0;
 		static public const ONWALL:uint = 1;
@@ -65,6 +65,8 @@ package
 		public var status:uint = INAIR;
 		
 		private var switchToAirCntDwn:Number = 0;
+		
+		public var progressManager:ProgressManager;
 		
 		//private var eyeSpr:FlxSprite;
 		//private var eyeOffsetX:uint;
@@ -83,8 +85,10 @@ package
 			
 			//this.createGraphic(4, 4, 0x00FFFFFF);
 			//loadGraphic(ImgSpaceman,true,true,16,32);
-			this.loadGraphic(ImgPlayer, false, false, 25, 50, false);
+			this.loadGraphic(ImgPlayer, false, true, 25, 50, false);
 			restart = 0;
+			
+			this._curFrame = 0;
 			
 			jumpTime = 0;
 			
@@ -100,7 +104,7 @@ package
 			push = new Point(runSpeed * 8, 0);			
 			
 			acceleration.y = fallAccel;
-			jumpPower = 150 * size;
+			
 			maxVelocity.x = runSpeed;
 			maxVelocity.y = 24 * size;// 800;
 			
@@ -117,12 +121,12 @@ package
 			
 			if( FlxG.state is PlayState )
 				playState = FlxG.state as PlayState
+				
+			progressManager = new ProgressManager();
 		}
 		
 		public function addToState(state:FlxState):void
-		{			
-			
-			
+		{		
 			// Trail emitter
 			trail = new FlxEmitter();			
 			trail.width = 19;// 10;
@@ -167,7 +171,7 @@ package
 				arr2.push(FlxG.state.add((new PlayerTrailParticle(6.0).createGraphic(25, 50, 0x220000FF))));
 			}
 			
-			trail2Yoffset = 25;		
+			trail2Yoffset = 22;		
 			state.add(trail2.loadSprites(arr2));
 			state.add(trail.loadSprites(arr));
 			
@@ -189,6 +193,7 @@ package
 				return;
 			}		
 			
+			// ENTERING DOORS:
 			if ( FlxG.keys.justPressed("UP") && bHitDoor )
 			{
 				FlxG.switchState(LevelState);
@@ -212,8 +217,13 @@ package
 			//MOVEMENT
 			// first, set defaults:		
 			acceleration.x = 0;
-			acceleration.y = fallAccel;	
 			
+			// this is to force the player to "stick" to the ground, you know, with slopes and such.
+			if( status == ONGROUND )
+				acceleration.y = 4 * fallAccel;	
+			else
+				acceleration.y = fallAccel;	
+						
 			// Determine max Velocity:
 			if ( bBoosting )
 				maxVelocity.x = maxBoostVelocity;			
@@ -411,6 +421,7 @@ package
 				else if ( velocity.y )
 				{
 					status = INAIR;
+					acceleration.y = fallAccel;
 					if(FlxG.keys.LEFT)
 					{
 						facing = LEFT;
@@ -427,12 +438,12 @@ package
 					}
 					
 					// Finally, add a lot of drag, b/c jumping slows you down:
-					if ( velocity.x && acceleration.x )
-					{
-						var decrease:Number = 2.0 * FlxG.elapsed;
-						
-						velocity.x *= (1 - decrease);						
-					}
+					//if ( velocity.x && acceleration.x )
+					//{
+					//	var decrease:Number = 2.0 * FlxG.elapsed;
+					//	
+					//	velocity.x *= (1 - decrease);						
+					//}
 				}
 				else 
 				{
@@ -453,7 +464,9 @@ package
 				{
 					status = INAIR;
 					jumpTime += FlxG.elapsed;
+					acceleration.y = fallAccel;
 					
+					// hmm gaat nog niet echt lekker :(
 					if ( jumpTime < maxJumpTime )
 						velocity.y -= ((maxJumpTime - jumpTime) / maxJumpTime) * jumpPower * FlxG.elapsed;
 				}
@@ -526,18 +539,47 @@ package
 			else if ( status == ONSLOPEUP )
 				this.angle = -45;
 			else if ( status == INAIR )
-			{								
-				if ( this.angle < 0 )
-					this.angle = Math.min(0, this.angle + FlxG.elapsed*75);	
+			{					
+				if ( FlxG.keys.X && Math.abs(this.velocity.x) > 0)
+				{	
+					if ( facing == RIGHT )					
+						this.angle =  this.angle + FlxG.elapsed * 675;	
+					else
+						this.angle =  this.angle + FlxG.elapsed * -675;	
+				}
 				else
-					this.angle = Math.max(0, this.angle - FlxG.elapsed*75);	
+				{
+					
+					var maxRot:Number = Math.ceil( Math.abs(this.angle) / 360 ) * 360;
+					
+					//FlxG.log("var is: "+maxRot);
+					
+					if ( this.angle < 0 )
+						this.angle = Math.min(0, Math.max(this.angle - FlxG.elapsed*475, -maxRot));	
+					else
+						this.angle = Math.max(0, Math.min(this.angle + FlxG.elapsed*475, maxRot));	
+				}				
+				
+				
+				// original, this rotates slowly towards straight up:
+				//if ( this.angle < 0 )
+				//	this.angle = Math.min(0, this.angle + FlxG.elapsed*75);	
+				//else
+				//	this.angle = Math.max(0, this.angle - FlxG.elapsed*75);	
 			}
 			else if( status != SWINGING )
 				this.angle = 0;
+				
+				
 			
 			 
 			//UPDATE POSITION AND ANIMATION
 			super.update();	
+			
+			//if ( facing == LEFT )
+			//	this._flipped = 1;
+			//else
+			//	this._flipped = 0;
 			
 			
 			// So I;m also re-setting the trails above, so this needs to be checked/rewritten/etc:
