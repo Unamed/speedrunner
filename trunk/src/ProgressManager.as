@@ -14,47 +14,134 @@
 		
 		public var nCollectedPickups:uint = 0;
 		
-		private var lionGold:Number = 16.0;
-		private var lionSilver:Number = 19.0;
-		private var lionBronze:Number = 25.0;
+		private var lionGold:Number = 13.0;
+		private var lionSilver:Number = 16.0;
+		private var lionBronze:Number = 20.0;
+		private var lionBest:Number;// = 99.99;
 		
+		private var hydraGold:Number = 13.0;
+		private var hydraSilver:Number = 16.0;
+		private var hydraBronze:Number = 20.0;
+		private var hydraBest:Number;// = 99.99;
 		
+		private var hindGold:Number = 13.0;
+		private var hindSilver:Number = 16.0;
+		private var hindBronze:Number = 20.0;
+		private var hindBest:Number;// = 99.99;
 		
 		public function ProgressManager() 
 		{
-			
+			lionBest = 99.99;
+			hydraBest = 99.99;
+			hindBest = 99.99;
 		}
 		
-		// Returns true if finishing the level in playTime is worthy of throwing a party
-		public function FinishedLevel(finishedLevel:MapBase, playTime:Number):Boolean
+		// Returns a party reason string value if finishing the level in playTime is worthy of throwing a party
+		public function FinishedLevel(finishedLevel:MapBase, playTime:Number):String
 		{			
-			var bThrowParty:Boolean = false;
+			var sParty:String = "";	
 			
-			
-			if ( finishedLevel is MapTheLion )
+			if ( playTime < getBestTime(finishedLevel) )
 			{
-				if ( playTime < lionBronze )
+				sParty = "New Record!";	
+				setBestTime(finishedLevel, playTime);
+			}			
+			
+			if ( playTime < getBronzeTime(finishedLevel) && UnlockPower(finishedLevel) )								
+				sParty = "Unlocked New Power!";
+			else
+			{			
+				if ( playTime > getGoldTime(finishedLevel) )
 				{
-					bThrowParty = UnlockHook();
+					if ( playTime > getSilverTime(finishedLevel) )
+					{
+						if ( playTime < getBronzeTime(finishedLevel) )
+							sParty = "Bronze Medal!";						
+					}
+					else
+						sParty = "Silver Medal!";
 				}
-				
+				else 
+					sParty = "Gold Medal!";
 			}
 			
-			return bThrowParty;
+			return sParty;
 		}
 		
-		public function UnlockHook():Boolean
+		// Tries to unlock a power, corresponding to the finished level
+		// returns true if something was unlocked
+		public function UnlockPower(level:MapBase):Boolean
 		{
-			if ( !bUnlockedHook )
+			if ( level is MapTheLion && !bUnlockedHook )
 			{
 				// throw a party!
-				bUnlockedHook = true;
-				
+				bUnlockedHook = true;				
 				return true;
-			}
-			return false;
+			}				
+			else 
+				return false;
+		}
+		
+		public function getGoldTime(level:MapBase):Number
+		{
+			if ( level is MapTheLion )
+				return lionGold;
+			else if ( level is MapTheHydra )
+				return hydraGold;
+			else if ( level is MapTheHind )
+				return hindGold;
+			else
+				return 99;
 			
 		}
+		
+		public function getSilverTime(level:MapBase):Number
+		{
+			if ( level is MapTheLion )
+				return lionSilver;
+			else if ( level is MapTheHydra )
+				return hydraSilver;
+			else if ( level is MapTheHind )
+				return hindSilver;
+			else
+				return 99;
+		}
+		
+		public function getBronzeTime(level:MapBase):Number
+		{
+			if ( level is MapTheLion )
+				return lionBronze;
+			else if ( level is MapTheHydra )
+				return hydraBronze;
+			else if ( level is MapTheHind )
+				return hindBronze;
+			else
+				return 99;
+		}
+		
+		public function getBestTime(level:MapBase):Number
+		{
+			if ( level is MapTheLion )
+				return lionBest;
+			else if ( level is MapTheHydra )
+				return hydraBest;
+			else if ( level is MapTheHind )
+				return hindBest;
+			else
+				return 99;
+		}
+		
+		public function setBestTime(level:MapBase, playTime:Number):void
+		{
+			if ( level is MapTheLion )
+				lionBest = playTime;
+			else if ( level is MapTheHydra )
+				hydraBest = playTime;
+			else if ( level is MapTheHind )
+				hindBest = playTime;
+			
+		}
+		
 		
 	}
 

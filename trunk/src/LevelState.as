@@ -15,6 +15,13 @@
 	public class LevelState extends PlayState
 	{			
 		private var timerTxt:FlxText;	
+		private var finTxt:FlxText;	
+		
+		private var gTxt:FlxText;	
+		private var sTxt:FlxText;	
+		private var bTxt:FlxText;			
+		private var bestTxt:FlxText;
+		
 		private var playTime:Number;		
 		private var bIsTiming:Boolean;
 		private var bIsPaused:Boolean;
@@ -24,37 +31,17 @@
 		
 		
 		public function LevelState() 
-		{			
-			maps = new Array();		
-			// 0 - The Lion
-			// 1 - The Hydra
-			// 2 - The The Hind
-			maps.push(MapTheLion);
-			maps.push(MapTheHydra);
-			maps.push(MapTheHind);
+		{	
+			playTime = 0;
+			bIsTiming = false;			
 			
-			currentMapIndex = 0;
-			
-			flanmap = new maps[currentMapIndex];
-			super();
-			
-			
-			
-			playTime = 0;					
+			super();					
 		}
 		
 		override public function initLevel():void
 		{	
-			flanmap = new maps[currentMapIndex];
+			flanmap = new FlxG.levels[FlxG.level];
 			super.initLevel();			
-		}
-		
-		public function switchToMap(mapIndex:uint):void
-		{
-			currentMapIndex = mapIndex;
-			resetLevel();	
-			
-			SWFStats.LevelMetrics.Log("Started", currentMapIndex+1);
 		}
 		
 		public function switchToMainMenu():void 
@@ -63,21 +50,46 @@
 		}
 		
 		public function restartLevel():void
-		{
-			initLevel();
-			
-		}
-		
+		{			
+			FlxG.switchState(LevelState);			
+		}		
 		
 		override public function addHUDElements():void
 		{		
 			super.addHUDElements();
 			
 			// TEXTS:
-			timerTxt = new FlxText(300, 100, 200, "Timer");
+			timerTxt = new FlxText(500, 10, 200, "Timer");
 			timerTxt.size = 15;							
 			timerTxt.scrollFactor = new Point(0, 0);				
 			this.add(timerTxt);	
+			
+			finTxt = new FlxText(200, 50, 400, "Congratulations!");			
+			finTxt.size = 35;							
+			finTxt.scrollFactor = new Point(0, 0);
+			finTxt.visible = false;
+			this.add(finTxt);
+			
+			// goals:
+			gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(flanmap).toFixed(2));			
+			gTxt.size = 15;							
+			gTxt.scrollFactor = new Point(0, 0);				
+			this.add(gTxt);	
+			
+			sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(flanmap).toFixed(2));			
+			sTxt.size = 15;							
+			sTxt.scrollFactor = new Point(0, 0);				
+			this.add(sTxt);	
+			
+			bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(flanmap).toFixed(2));			
+			bTxt.size = 15;							
+			bTxt.scrollFactor = new Point(0, 0);				
+			this.add(bTxt);	
+			
+			bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(flanmap).toFixed(2));			
+			bestTxt.size = 15;							
+			bestTxt.scrollFactor = new Point(0, 0);				
+			this.add(bestTxt);	
 		}	
 		
 		override public function update():void
@@ -118,21 +130,12 @@
 			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );				
 			
 			//SWFStats.LevelMetrics.Log("Finished", currentMapIndex+1);
-			//SWFStats.LevelMetrics.LogRanged("CompletionTime", currentMapIndex+1, playTime);	
+			//SWFStats.LevelMetrics.LogRanged("CompletionTime", currentMapIndex+1, playTime);				
+						
+			finTxt.text = FlxG.progressManager.FinishedLevel(flanmap, playTime);
+			finTxt.visible = true;
 			
-			FlxG.log( player.progressManager.FinishedLevel(flanmap, playTime) );
-			
-			bIsPaused = true;
-			
-			
-		}	
-		
-		override public function resetLevel():void 
-		{
-			super.resetLevel();
-			bIsTiming = false;
-			playTime = 0;
-		}
-		
+			bIsPaused = true;			
+		}		
 	}
 }
