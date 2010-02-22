@@ -69,21 +69,21 @@ package  {
 			obj = new Door(312, 1288+8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
-			obj["levelId"] = 0;
+			obj["levelId"] = 1;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new Door(1080, 1272+8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
-			obj["levelId"] = 1;
+			obj["levelId"] = 2;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new Door(696, 1048 +8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
-			obj["levelId"] = 2;
+			obj["levelId"] = 3;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);

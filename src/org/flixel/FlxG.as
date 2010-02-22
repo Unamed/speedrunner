@@ -71,6 +71,8 @@ package org.flixel
 		static protected var _seed:Number;
 		static protected var _originalSeed:Number;
 		
+		static public var progressManager:ProgressManager;
+		
 		//@desc		The setter for FlxG.pause - pauses the game + sounds and displays the pause message
 		static public function set pause(Pause:Boolean):void
 		{
@@ -827,6 +829,8 @@ package org.flixel
 			seed = NaN;
 			kong = null;
 			pause = false;
+			
+			progressManager = new ProgressManager();
 		}
 
 		//@desc		This function is only used by the FlxGame class to do important internal management stuff

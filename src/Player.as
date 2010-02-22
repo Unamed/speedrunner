@@ -20,7 +20,8 @@ package
 		
 		private var hooks:Array;
 		private var curHook:uint;
-		public var prevHook:uint;		
+		public var prevHook:uint;	
+		private var bCanHook:Boolean;
 		
 		private var bIsSwinging:Boolean;
 		
@@ -72,7 +73,7 @@ package
 		
 		private var switchToAirCntDwn:Number = 0;
 		
-		public var progressManager:ProgressManager;
+		//public var progressManager:ProgressManager;
 		
 		//private var eyeSpr:FlxSprite;
 		//private var eyeOffsetX:uint;
@@ -80,7 +81,7 @@ package
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
-			super(X, Y);
+			super(X, Y);			
 			
 			//this.createGraphic(16, 32, 0xFF000000);
 			
@@ -128,7 +129,7 @@ package
 			if( FlxG.state is PlayState )
 				playState = FlxG.state as PlayState
 				
-			progressManager = new ProgressManager();
+			bCanHook = FlxG.progressManager.bUnlockedHook;
 		}
 		
 		public function addToState(state:FlxState):void
@@ -202,11 +203,7 @@ package
 			// ENTERING DOORS:
 			if ( FlxG.keys.justPressed("UP") && bHitDoor )
 			{
-				FlxG.switchState(LevelState);
-				if ( FlxG.state is LevelState )
-					(FlxG.state as LevelState).switchToMap(switchToLevelId);
-				else
-					FlxG.log("erffrrr");				
+				( FlxG.state as PlayState ).switchToLevel(switchToLevelId);				
 			}
 			
 			// release swing?
@@ -527,7 +524,7 @@ package
 			}	
 			
 			// SHOOT HOOK:
-			if ( FlxG.keys.justPressed("C")  )
+			if ( FlxG.keys.justPressed("C") && bCanHook )
 			{
 				var bXVel:int = 0;
 				var bYVel:int = 0;

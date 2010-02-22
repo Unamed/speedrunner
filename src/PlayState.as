@@ -66,16 +66,21 @@
 		private var speedometerBG2:FlxSprite;
 		private var speedometer:FlxSprite;
 		
+		
+		private var temp:uint;
+		
 		public function PlayState() 
 		{
 			super();			
 			
 			bgColor = 0xFF7678CB;
 			
+			temp = 0;
+			
 			initLevel();
 						
 			//fade in
-			FlxG.flash(0xff131c1b);
+			FlxG.flash(0xff131c1b);			
 		}	
 		
 		virtual public function initLevel():void
@@ -99,23 +104,31 @@
 			
 			// camera settings			
 			camTarget = new FlxSprite(player.x, player.y - camOffset, null);
-			camTarget.visible = false;
-			//camTarget.acceleration.y = 0;
-			//camTarget.drag.y = 0;
-			//camTarget.velocity.y = 0;
+			camTarget.visible = false;;
 			this.add(camTarget);
 			
 			FlxG.follow(camTarget,1.5);
 			FlxG.followAdjust(1.0, 0.25);	
 			flanmap.layerMain.follow();
+			
+			// Debug:
+			FlxG.log("numChildren: " + this._layer.children().length);
 		}
 		
 		public function addBackGround():void
 		{			
-			//bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFF7678CB, 0xFF2222BB);	// blueish..
-			bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFFA75452, 0xFF661111);		// reddish..
+			temp++;
+			if( temp % 2 >0 )
+				bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFF7678CB, 0xFF2222BB);	// blueish..
+			else 
+			{
+				bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFFA75452, 0xFF661111);		// reddish..	
+			}
 			
-			this.add(bgSpr);			
+			
+			this.add(bgSpr);
+			
+			
 		}
 		
 		public function addBGLayer():void
@@ -149,7 +162,7 @@
 		
 		public function addFGLayer():void
 		{			
-			//this.add(flanmap.layerFG);
+			//this.add(flanmap.layerFG);			
 		}
 		
 		virtual public function addHUDElements():void
@@ -160,36 +173,29 @@
 			
 			this.add(debugTxt);
 			
-			// SPEEDOMETER:
-			
-			speedometerBG = new FlxSprite(100, 10, null);
+			// SPEEDOMETER:			
+			/*
+			speedometerBG = new FlxSprite(100, 550, null);
 			speedometerBG.createGraphic(200, 25, 0xFF000000, false);
 			speedometerBG.scrollFactor = new Point(0, 0);			
 			this.add(speedometerBG);
 			
-			speedometerBG2 = new FlxSprite(100, 10, null);
+			speedometerBG2 = new FlxSprite(100, 550, null);
 			speedometerBG2.createGraphic(200, 25, 0xFF0000FF, false);
 			speedometerBG2.scrollFactor = new Point(0, 0);			
 			this.add(speedometerBG2);
 			
-			speedometer = new FlxSprite(100, 10, null);
+			speedometer = new FlxSprite(100, 550, null);
 			speedometer.createGraphic(200, 25, 0xFFFF0000, false);
 			speedometer.scrollFactor = new Point(0, 0);			
 			this.add(speedometer);
+			*/
 		}
 		
-		virtual public function resetLevel():void
-		{
-			initLevel();
-			/*
-			player.x = 150;
-			player.y = 300;
-			
-			player.velocity = new Point(0, 0);
-			player.acceleration.x = 0;
-			*/
-			
-			
+		public function switchToLevel(levelId:uint):void
+		{			
+			FlxG.level = levelId;
+			FlxG.switchState(LevelState);
 		}
 
 		// MAIN UPDATE FUNCTION:
@@ -265,11 +271,14 @@
 			// HUD:
 			var maxSpeed:Number = Math.max( player.maxBoostVelocity, player.maxSwingVelocity );
 			
-			speedometer.x = 0 + (100* (Math.abs( player.velocity.x ) / maxSpeed));
-			speedometer.scale.x = (Math.abs( player.velocity.x ) / maxSpeed);
-			
-			speedometerBG2.x = 0 + (100* (Math.abs( player.maxVelocity.x ) / maxSpeed));
-			speedometerBG2.scale.x = (Math.abs( player.maxVelocity.x ) / maxSpeed);
+			if ( speedometer )
+			{
+				speedometer.x = 0 + (100* (Math.abs( player.velocity.x ) / maxSpeed));
+				speedometer.scale.x = (Math.abs( player.velocity.x ) / maxSpeed);
+				
+				speedometerBG2.x = 0 + (100* (Math.abs( player.maxVelocity.x ) / maxSpeed));
+				speedometerBG2.scale.x = (Math.abs( player.maxVelocity.x ) / maxSpeed);
+			}
 			
 			// CAMERA:
 			camTarget.velocity = player.velocity;
