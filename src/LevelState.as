@@ -62,6 +62,12 @@
 			FlxG.switchState(MainMenuState);				
 		}
 		
+		public function restartLevel():void
+		{
+			initLevel();
+			
+		}
+		
 		
 		override public function addHUDElements():void
 		{		
@@ -88,7 +94,11 @@
 			if ( FlxG.keys.justPressed("ESC") )
 			{
 				switchToMainMenu();	
-			}				
+			}	
+			else if ( FlxG.keys.justPressed("SPACE") )
+			{
+				restartLevel();
+			}
 		}
 		
 		public function startTimer():void
