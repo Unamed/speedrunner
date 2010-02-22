@@ -17,17 +17,17 @@
 		private var lionGold:Number = 13.0;
 		private var lionSilver:Number = 16.0;
 		private var lionBronze:Number = 20.0;
-		private var lionBest:Number;// = 99.99;
+		public var lionBest:Number;// = 99.99;
 		
 		private var hydraGold:Number = 13.0;
 		private var hydraSilver:Number = 16.0;
 		private var hydraBronze:Number = 20.0;
-		private var hydraBest:Number;// = 99.99;
+		public var hydraBest:Number;// = 99.99;
 		
 		private var hindGold:Number = 13.0;
 		private var hindSilver:Number = 16.0;
 		private var hindBronze:Number = 20.0;
-		private var hindBest:Number;// = 99.99;
+		public var hindBest:Number;// = 99.99;
 		
 		public function ProgressManager() 
 		{
@@ -41,14 +41,17 @@
 		{			
 			var sParty:String = "";	
 			
-			if ( playTime < getBestTime(finishedLevel) )
+			if ( getBestTime(finishedLevel) == 0 || playTime < getBestTime(finishedLevel) )
 			{
 				sParty = "New Record!";	
 				setBestTime(finishedLevel, playTime);
 			}			
 			
-			if ( playTime < getBronzeTime(finishedLevel) && UnlockPower(finishedLevel) )								
-				sParty = "Unlocked New Power!";
+			if ( playTime < getBronzeTime(finishedLevel) && UnlockPower(finishedLevel) )
+			{
+				if( finishedLevel is MapTheLion )
+					sParty = "Unlocked Grappling Hook!";
+			}
 			else
 			{			
 				if ( playTime > getGoldTime(finishedLevel) )
@@ -75,7 +78,8 @@
 			if ( level is MapTheLion && !bUnlockedHook )
 			{
 				// throw a party!
-				bUnlockedHook = true;				
+				bUnlockedHook = true;
+				FlxG.saves[FlxG.save].write("bUnlockedHook", bUnlockedHook);
 				return true;
 			}				
 			else 
@@ -134,15 +138,21 @@
 		public function setBestTime(level:MapBase, playTime:Number):void
 		{
 			if ( level is MapTheLion )
+			{
 				lionBest = playTime;
+				FlxG.saves[FlxG.save].write("lionBest", lionBest);
+			}
 			else if ( level is MapTheHydra )
+			{
 				hydraBest = playTime;
+				FlxG.saves[FlxG.save].write("hydraBest", hydraBest);
+			}
 			else if ( level is MapTheHind )
+			{
 				hindBest = playTime;
-			
+				FlxG.saves[FlxG.save].write("hindBest", hindBest);				
+			}			
 		}
-		
-		
 	}
 
 }

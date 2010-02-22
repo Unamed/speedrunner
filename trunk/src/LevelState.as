@@ -64,8 +64,8 @@
 			timerTxt.scrollFactor = new Point(0, 0);				
 			this.add(timerTxt);	
 			
-			finTxt = new FlxText(200, 50, 400, "Congratulations!");			
-			finTxt.size = 35;							
+			finTxt = new FlxText(250, 250, 500, "Congratulations!");			
+			finTxt.size = 25;							
 			finTxt.scrollFactor = new Point(0, 0);
 			finTxt.visible = false;
 			this.add(finTxt);
