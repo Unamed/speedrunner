@@ -66,16 +66,11 @@
 		private var speedometerBG2:FlxSprite;
 		private var speedometer:FlxSprite;
 		
-		
-		private var temp:uint;
-		
 		public function PlayState() 
 		{
 			super();			
 			
 			bgColor = 0xFF7678CB;
-			
-			temp = 0;
 			
 			initLevel();
 						
@@ -110,25 +105,16 @@
 			FlxG.follow(camTarget,1.5);
 			FlxG.followAdjust(1.0, 0.25);	
 			flanmap.layerMain.follow();
-			
-			// Debug:
-			FlxG.log("numChildren: " + this._layer.children().length);
 		}
 		
 		public function addBackGround():void
-		{			
-			temp++;
-			if( temp % 2 >0 )
+		{	
+			if( Math.random() > 0.5 )
 				bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFF7678CB, 0xFF2222BB);	// blueish..
-			else 
-			{
+			else 			
 				bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFFA75452, 0xFF661111);		// reddish..	
-			}
-			
 			
 			this.add(bgSpr);
-			
-			
 		}
 		
 		public function addBGLayer():void
@@ -167,7 +153,7 @@
 		
 		virtual public function addHUDElements():void
 		{	
-			debugTxt = new FlxText(300, 150, 200, "Debug");
+			debugTxt = new FlxText(300, 150, 200, "");
 			debugTxt.scrollFactor = new Point(0, 0);	
 			debugTxt.size = 10;	
 			
@@ -222,8 +208,6 @@
 			if( player.status == 5 )
 				debugTxt.text = "" + "Status: " + "swinging";
 			*/	
-				
-			debugTxt.text = "currentPush: " + player.currentPush;
 			
 			// Google Analytics:			
 			if ( !tracker )
