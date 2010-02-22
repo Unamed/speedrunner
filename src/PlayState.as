@@ -37,6 +37,9 @@
 		public var player:Player;
 		public var hooks:Array;	
 		
+		private var camTarget:FlxSprite;
+		private var camOffset:Number = 75;
+		
 		private var obstacles:Array;
 		private var boosts:Array;
 		private var pickups:Array;
@@ -95,7 +98,14 @@
 			addHUDElements();
 			
 			// camera settings			
-			FlxG.follow(player,1.5);
+			camTarget = new FlxSprite(player.x, player.y - camOffset, null);
+			camTarget.visible = false;
+			//camTarget.acceleration.y = 0;
+			//camTarget.drag.y = 0;
+			//camTarget.velocity.y = 0;
+			this.add(camTarget);
+			
+			FlxG.follow(camTarget,1.5);
 			FlxG.followAdjust(1.0, 0.25);	
 			flanmap.layerMain.follow();
 		}
@@ -260,6 +270,10 @@
 			
 			speedometerBG2.x = 0 + (100* (Math.abs( player.maxVelocity.x ) / maxSpeed));
 			speedometerBG2.scale.x = (Math.abs( player.maxVelocity.x ) / maxSpeed);
+			
+			// CAMERA:
+			camTarget.velocity = player.velocity;
+			camTarget.y = player.y - camOffset;
 		}	
 		
 		
