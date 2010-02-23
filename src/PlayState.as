@@ -222,6 +222,11 @@
 			// Google Analytics:			
 			if ( !tracker )
 				tracker = new GATracker(this, "UA-12125437-1", "AS3", false );
+				
+			if ( FlxG.keys.justPressed("Q") )
+			{
+				player.switchChar();
+			}
 			
 			
 			

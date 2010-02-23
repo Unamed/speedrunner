@@ -6,9 +6,9 @@ package
 	//import org.flixel.fefranca.debug.FlxSpriteDebug;
 
 	public class Player extends FlxSprite
-	{
-		[Embed(source = "../data/temp/spaceman_new_thin.png")] private var ImgSpaceman:Class;
-		[Embed(source="../data/temp/player.png")] private var ImgPlayer:Class;
+	{		
+		[Embed(source = "../data/temp/player.png")] private var ImgPlayer:Class;
+		[Embed(source="../data/temp/ninjagaidentrilogy_ryuhayabusa_sheet.png")] private var ImgRyu:Class;
 		
 		private var size:uint = 50;	
 		
@@ -73,6 +73,9 @@ package
 		
 		private var switchToAirCntDwn:Number = 0;
 		
+		
+		private var charIndx:int;
+		
 		//public var progressManager:ProgressManager;
 		
 		//private var eyeSpr:FlxSprite;
@@ -90,9 +93,9 @@ package
 			//eyeSpr = new FlxSprite(X + eyeOffsetX, Y + eyeOffsetY, null);
 			//eyeSpr.createGraphic(4, 4, 0xFFFFFFFF);
 			
-			//this.createGraphic(4, 4, 0x00FFFFFF);
-			//loadGraphic(ImgSpaceman,true,true,16,32);
-			this.loadGraphic(ImgPlayer, false, true, 25, 50, false);
+			//this.createGraphic(4, 4, 0x00FFFFFF);			
+			this.loadGraphic(ImgPlayer, false, true, 25, 50, false);			
+			charIndx = 1;
 			restart = 0;
 			
 			this._curFrame = 0;
@@ -117,19 +120,36 @@ package
 			
 			//animations
 			addAnimation("idle", [0]);
-			addAnimation("run", [1, 2, 3, 0], 12);
-			addAnimation("jump", [4]);
-			addAnimation("idle_up", [5]);
-			addAnimation("run_up", [6, 7, 8, 5], 12);
-			addAnimation("jump_up", [9]);
-			addAnimation("jump_down", [10]);						
+			addAnimation("run", [1, 2, 3], 12);						
+			addAnimation("grappling", [14]);			
+			addAnimation("jump_up", [13]);
+			addAnimation("jump_down", [12]);						
+			addAnimation("walling", [6]);						
 			
 			curHook = 0;
 			
 			if( FlxG.state is PlayState )
 				playState = FlxG.state as PlayState
 				
-			bCanHook = FlxG.progressManager.bUnlockedHook;
+			bCanHook = FlxG.progressManager.bUnlockedHook;			
+		}
+		
+		public function switchChar():void
+		{
+			if ( charIndx == 1 )
+			{
+				this.loadGraphic(ImgPlayer, false, true, 25, 50, false);
+				charIndx = 0;
+			}
+			else
+			{
+				this.loadGraphic(ImgRyu, true, true, 45, 51);
+				charIndx = 1;
+			}
+				
+			this.height = 46;
+			this.width = 21;
+			
 		}
 		
 		public function addToState(state:FlxState):void
@@ -207,7 +227,7 @@ package
 			}
 			
 			// release swing?
-			if ( hooks[prevHook].exists && !FlxG.keys.pressed("C") )
+			if ( hooks[prevHook].exists && !FlxG.keys.pressed("X") )
 			{
 				hooks[prevHook].release();				
 			}
@@ -349,7 +369,7 @@ package
 			//		facing = RIGHT;				
 								
 				// JUMPING:
-				if( FlxG.keys.justPressed("X") )
+				if( FlxG.keys.justPressed("Z") )
 				{		
 					if ( facing == RIGHT )
 						velocity.x -= jumpFromWallPower;
@@ -481,7 +501,7 @@ package
 				}
 				
 				// JUMPING:
-				if( FlxG.keys.pressed("X") )
+				if( FlxG.keys.pressed("Z") )
 				{
 					status = INAIR;
 					jumpTime += FlxG.elapsed;
@@ -505,26 +525,29 @@ package
 			
 			//ANIMATION
 			if (hooks[prevHook].exists && hooks[prevHook].bCollided)
-				play("jump_up");					
+				play("grappling");					
 			else if(velocity.y != 0)
 			{
-				if(bUp) play("jump_up");
-				else if(bDown) play("jump_down");
-				else play("jump");
+				if(velocity.y > 0) play("jump_down");
+				
+				if(velocity.y < 0) play("jump_up");
+				
+			}
+			else if ( status == ONWALL )
+			{
+				play("walling");
 			}
 			else if(velocity.x == 0)
 			{
-				if(bUp) play("idle_up");
-				else play("idle");
+				play("idle");
 			}
 			else
 			{
-				if (bUp) play("run_up");
-				else play("run");
+				play("run");
 			}	
 			
 			// SHOOT HOOK:
-			if ( FlxG.keys.justPressed("C") && bCanHook )
+			if ( FlxG.keys.justPressed("X") && bCanHook )
 			{
 				var bXVel:int = 0;
 				var bYVel:int = 0;
@@ -561,7 +584,7 @@ package
 				this.angle = -45;
 			else if ( status == INAIR )
 			{					
-				if ( FlxG.keys.X && Math.abs(this.velocity.x) > 0)
+				if ( FlxG.keys.Z && Math.abs(this.velocity.x) > 0)
 				{	
 					if ( facing == RIGHT )					
 						this.angle =  this.angle + FlxG.elapsed * 675;	
