@@ -37,12 +37,13 @@
 			var gTxt:FlxText = new FlxText(100, 1400, 500, 
 				"Welcome to SpeedRunner Prototype v0.3" + "\n" + 
 				"Controls: " + "\n" +
-				"X - jump" + "\n" +
-				"C - shoot Grappling Hook (when unlocked)" + "\n" +
+				"Z - jump" + "\n" +
+				"X - shoot Grappling Hook (when unlocked)" + "\n" +
 				"Arrow keys to move" + "\n" +
 				"UP to enter door" + "\n" +
 				"ESC to main menu" + "\n" +
-				"SPACE to restart level"				
+				"SPACE to restart level" + "\n" +
+				"Q to switch character (test)"
 				);			
 			gTxt.size = 12;							
 			gTxt.scrollFactor = new Point(1, 1);				
