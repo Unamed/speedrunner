@@ -34,7 +34,7 @@
 		{		
 			super.addHUDElements();
 			
-			var gTxt:FlxText = new FlxText(100, player.y + 100, 500, 
+			var gTxt:FlxText = new FlxText(100, 1400, 500, 
 				"Welcome to SpeedRunner Prototype v0.3" + "\n" + 
 				"Controls: " + "\n" +
 				"X - jump" + "\n" +
@@ -47,6 +47,30 @@
 			gTxt.size = 12;							
 			gTxt.scrollFactor = new Point(1, 1);				
 			this.add(gTxt);	
+		}
+		
+		override public function addGameElements():void
+		{	
+			// re-define playerStart, if coming from a level:
+			if ( FlxG.level > 0 )
+			{
+				for ( var i:uint = 0; i < this._layer.children().length; i++ )
+				{
+					if ( this._layer.children()[i] is Door )
+					{
+						var door:Door = ( this._layer.children()[i] as Door );	
+						
+						if ( door.levelId == FlxG.level )
+						{
+							// this is the door next to which the player should start
+							playerStartX = door.x;
+							playerStartY = door.y;							
+						}						
+					}
+				}				
+			}
+			
+			super.addGameElements();
 		}
 	}
 }

@@ -179,7 +179,7 @@ package
 			}
 			
 			trail2Yoffset = 22;		
-			//state.add(trail2.loadSprites(arr2));
+			state.add(trail2.loadSprites(arr2));
 			state.add(trail.loadSprites(arr));
 			
 			state.add(this);
@@ -258,7 +258,7 @@ package
 			else if ( trail.active )
 				trail.active = false;
 				
-			if ( velocity.length *0.77 > maxRunVelocity )
+			if ( Math.abs(velocity.x) * 0.85 > maxRunVelocity )
 				trail2.reset(this.x, this.y);
 			else if ( trail2.active )
 				trail2.active = false;
