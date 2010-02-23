@@ -60,8 +60,8 @@
 		private var bgSpr:FlxGradientBackground;
 		private var bgSpr2:FlxSprite;
 		
-		private var playerStartX:Number = 100;
-		private var playerStartY:Number = 100;
+		protected var playerStartX:Number = 100;
+		protected var playerStartY:Number = 100;
 		
 			
 		// HUD:
@@ -139,7 +139,7 @@
 				
 		}
 		
-		public function addGameElements():void
+		virtual public function addGameElements():void
 		{		
 			// Triggers:
 			//start = new StartTrigger(200, 370);
