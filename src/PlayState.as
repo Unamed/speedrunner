@@ -24,6 +24,8 @@
 		[Embed(source = "../data/temp/tiles_background.png")] private var BgTiles:Class;
 		[Embed(source = "../data/temp/tiles_foreground.png")] private var FgTiles:Class;
 		
+		[Embed(source = "../data/temp/bgIm.png")] private var bgIm:Class;
+		
 		//[Embed(source = "../data/temp/MapCSV_SR_Playground_Collision.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;		
 		
 		// FLAN CODE:
@@ -56,6 +58,7 @@
 		private var tracker:GATracker;
 		
 		private var bgSpr:FlxGradientBackground;
+		private var bgSpr2:FlxSprite;
 		
 		private var playerStartX:Number = 100;
 		private var playerStartY:Number = 100;
@@ -114,7 +117,14 @@
 			else 			
 				bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFFA75452, 0xFF661111);		// reddish..	
 			
-			this.add(bgSpr);
+			bgSpr2 = new FlxSprite(0, 0, bgIm);
+			bgSpr2.scrollFactor = new Point(0, 0);
+			bgSpr2.width = 800;
+			bgSpr2.height = 600;
+			bgSpr2.alpha = 0.2;
+			
+			this.add(bgSpr);			
+			this.add(bgSpr2);
 		}
 		
 		public function addBGLayer():void
