@@ -21,6 +21,8 @@
 		
 		public var ropeAngle:Number;
 		public var angularSpeed:Number;
+		
+		private var line:Line;
 			
 		public function Hook(player:Player)
 		{
@@ -33,6 +35,8 @@
 			playerAccel = new Point(0, 0);
 			
 			this.height = 32;
+				
+			line = new Line(player, this, 2, 0x000000);
 		}
 		
 		public function shoot(X:int, Y:int, VelocityX:int, VelocityY:int):void
@@ -139,13 +143,7 @@
 			super.render();	
 			
 			if ( exists )
-			{
-				var line : Line;
-				//if ( bCollided )
-					line = new Line(player, this, 2, 0x000000);
-				//else
-				//	line = new Line(player, this, 2, 0xFFFFFF);
-			
+			{			
 				line.render();
 			}			
 		}

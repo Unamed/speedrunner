@@ -8,7 +8,8 @@ package
 	public class Player extends FlxSprite
 	{		
 		[Embed(source = "../data/temp/player.png")] private var ImgPlayer:Class;
-		[Embed(source="../data/temp/ninjagaidentrilogy_ryuhayabusa_sheet.png")] private var ImgRyu:Class;
+		//[Embed(source="../data/temp/ninjagaidentrilogy_ryuhayabusa_sheet.png")] private var ImgRyu:Class;
+		[Embed(source="../data/temp/player_sheet_black2.png")] private var ImgRyu:Class;
 		
 		private var size:uint = 50;	
 		
@@ -94,7 +95,7 @@ package
 			//eyeSpr.createGraphic(4, 4, 0xFFFFFFFF);
 			
 			//this.createGraphic(4, 4, 0x00FFFFFF);			
-			this.loadGraphic(ImgPlayer, false, true, 25, 50, false);			
+			this.loadGraphic(ImgRyu, true, true, 45, 51);
 			charIndx = 1;
 			restart = 0;
 			
@@ -330,11 +331,7 @@ package
 					
 					// Actually perform the transformation here.  The rope nullifies any speed directly pulling against it.
 					if (relSpeed.y < 0 )
-						relSpeed.y = 0;		
-					
-					this.angle = (ropeAngle * (180 / Math.PI)) - 90;
-					this.angle = Math.min( 45, this.angle );
-					this.angle = Math.max( -45, this.angle );
+						relSpeed.y = 0;						
 					
 					// Convert back to polar in rope coordinate space.
 					relSpeedAngle = Math.atan2(relSpeed.y, relSpeed.x);
@@ -607,6 +604,11 @@ package
 				//	this.angle = Math.min(0, this.angle + FlxG.elapsed*75);	
 				//else
 				//	this.angle = Math.max(0, this.angle - FlxG.elapsed*75);	
+			}
+			else if ( status == SWINGING )
+			{
+				this.angle = (ropeAngle * (180 / Math.PI)) - 90;
+				this.angle = Math.max( -45, Math.min( 45, this.angle ) );					
 			}
 			else if( status != SWINGING )
 				this.angle = 0;
