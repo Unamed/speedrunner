@@ -24,10 +24,9 @@ package
 		public var prevHook:uint;	
 		private var bCanHook:Boolean;
 		
-		private var bIsSwinging:Boolean;
+		private var bIsSwinging:Boolean;		
 		
-		private var runSpeed:uint = 6 * size; //18*size = snel
-		private var hookVel:int = 4 * runSpeed;
+		private var hookVel:int = 1200;
 		
 		//private var swingSpeed:uint = 1.750 * runSpeed; //1.30 * runSpeed bij snel
 		
@@ -54,14 +53,16 @@ package
 		private var trailYoffset:uint;
 		private var trail2Yoffset:uint;
 		
-		public const maxSwingVelocity:uint = 2.00 * runSpeed;
-		public const maxRunVelocity:uint = 1.50 * runSpeed;
-		public const maxBoostVelocity:uint = 2.00 * runSpeed;		
-		public const defaultRunVelocity:uint = runSpeed;
+		public const defaultRunVelocity:uint = 300;
+		public const defaultSwingVelocity:uint = 2.00 * defaultRunVelocity;			//2.0
+		public const maxRunVelocity:uint = 2.0 * defaultRunVelocity;			//1.5
+		public const maxBoostVelocity:uint = 3.00 * defaultRunVelocity;			//2.0
+		public const maxSwingVelocity:uint = maxBoostVelocity;
+		
 		
 		public var currentPush:Number; // the force applied by input
-		public const defaultPush:Number = 20 * size;
-		public const slowPush:Number = 1.0 * size;
+		public const defaultPush:Number = 500;
+		public const slowPush:Number = 100;
 		
 		static public const ONGROUND:uint = 0;
 		static public const ONWALL:uint = 1;
@@ -110,22 +111,28 @@ package
 			offset.y = 4;
 			
 			//basic player physics
-			drag.x = runSpeed * 2;
+			drag.x = defaultRunVelocity * 2;
 			
 			currentPush = defaultPush;			
 			
 			acceleration.y = fallAccel;
 			
-			maxVelocity.x = runSpeed;
+			maxVelocity.x = defaultRunVelocity;
 			maxVelocity.y = 24 * size;// 800;
 			
 			//animations
 			addAnimation("idle", [0]);
-			addAnimation("run", [1, 2, 3], 12);						
+			addAnimation("runslow", [1, 2, 3], 8);						
+			addAnimation("runmedium", [1, 2, 3], 16);
+			addAnimation("runfast", [1, 2, 3], 24);			
 			addAnimation("grappling", [14]);			
+			addAnimation("trygrappling", [15]);			
 			addAnimation("jump_up", [13]);
+			addAnimation("jump_rotate", [18]);
 			addAnimation("jump_down", [12]);						
 			addAnimation("walling", [6]);						
+			addAnimation("wallingaway", [7]);						
+			
 			
 			curHook = 0;
 			
@@ -271,7 +278,7 @@ package
 			}
 				
 			maxVelocity.y = 24 * size;
-			drag.x = runSpeed * 2;				
+			drag.x = defaultRunVelocity * 2;				
 			
 			// EMITTERS:
 			if ( velocity.length > 50 )
@@ -298,22 +305,23 @@ package
 				var ropeAngle:Number = Math.atan2(relY, relX);
 				
 				status = SWINGING;
+				maxVelocity.x = maxSwingVelocity;
 				
 				bOnDownSlope = false;
 				
-				// swinging is faster than walking:
-				maxVelocity.x = maxSwingVelocity; // Math.min( maxVelocity.x + FlxG.elapsed * 100, maxSwingVelocity );
-				
 				// Always start swinging at a high speed				
 				if ( !bIsSwinging )
-				{	
-					if ( relX < 0 )
-						velocity.x = maxVelocity.x;
-					else 
-						velocity.x = -maxVelocity.x;
+				{
+					//FlxG.log("curVel.x: " + velocity.x);
 					
+					if ( relX < 0 )
+						velocity.x = Math.max(defaultSwingVelocity, velocity.x);
+					else 
+						velocity.x = Math.min(-defaultSwingVelocity, velocity.x);
+					
+					//FlxG.log("newVel.x: " + velocity.x);
 					bIsSwinging = true;
-				}				
+				}					
 				
 				// calculate velocity based on swing physics
 				// (copied and edited from flixel.org, original author: Broco)
@@ -342,7 +350,7 @@ package
 					this.velocity = Point.polar(speedMagnitude, speedAngle + Math.PI / 2);
 					
 					// set acceleration in the direction of hook:
-					acceleration.x = relX;
+					acceleration.x = relX * 1.5;
 					acceleration.y = relY;					
 					acceleration.normalize(1);					
 				}
@@ -521,18 +529,30 @@ package
 			else if(FlxG.keys.DOWN && velocity.y) bDown = true;
 			
 			//ANIMATION
-			if (hooks[prevHook].exists && hooks[prevHook].bCollided)
-				play("grappling");					
+			if (hooks[prevHook].exists )
+			{
+				if( hooks[prevHook].bCollided )
+					play("grappling");					
+				else
+					play("trygrappling");
+			}
 			else if(velocity.y != 0)
 			{
-				if(velocity.y > 0) play("jump_down");
-				
-				if(velocity.y < 0) play("jump_up");
+				if (velocity.y > 0 && velocity.y > Math.abs(velocity.x)) 
+					play("jump_down");
+				else if ( Math.abs(velocity.x) > 0 )
+					play("jump_rotate");
+				else if (velocity.y < 0) 
+					play("jump_up");
 				
 			}
 			else if ( status == ONWALL )
 			{
-				play("walling");
+				if ( facing == RIGHT && FlxG.keys.LEFT 
+					|| facing == LEFT && FlxG.keys.RIGHT )
+					play("wallingaway");
+				else
+					play("walling");
 			}
 			else if(velocity.x == 0)
 			{
@@ -540,7 +560,12 @@ package
 			}
 			else
 			{
-				play("run");
+				if ( Math.abs(velocity.x) > maxRunVelocity )
+					play("runfast");
+				else if ( Math.abs(velocity.x) > defaultRunVelocity )				
+					play("runmedium");				
+				else	
+					play("runslow");
 			}	
 			
 			// SHOOT HOOK:
@@ -574,8 +599,10 @@ package
 			
 			
 			
-			// ROTATING:				
-			if ( status == ONSLOPEDOWN )			
+			// ROTATING:	
+			if (hooks[prevHook].exists && !hooks[prevHook].bCollided )
+				this.angle = 0;			
+			else if ( status == ONSLOPEDOWN )			
 				this.angle = 45;
 			else if ( status == ONSLOPEUP )
 				this.angle = -45;
@@ -608,7 +635,7 @@ package
 			else if ( status == SWINGING )
 			{
 				this.angle = (ropeAngle * (180 / Math.PI)) - 90;
-				this.angle = Math.max( -45, Math.min( 45, this.angle ) );					
+				//this.angle = Math.max( -45, Math.min( 45, this.angle ) );					
 			}
 			else if( status != SWINGING )
 				this.angle = 0;
@@ -788,7 +815,7 @@ package
 				var tileIndexBelow:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
 				
 				if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
-					|| tileIndexBelow >= playState.flanmap.mainLayer.collideIndex )
+					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex )
 				{					
 					status = ONWALL;
 					velocity.x = 0;
@@ -865,7 +892,16 @@ package
 				return hitTrigger((Contact as Trigger));
 				
 			if ( bIsSwinging )
-				hooks[prevHook].breakRelease();
+			{
+				//hooks[prevHook].breakRelease();
+				
+				this.velocity.x *= -1;
+				this.velocity.y *= -1;
+				this.acceleration.x *= -1;
+				this.acceleration.y *= -1;
+				
+				return true;				
+			}
 				
 			return super.hitCeiling(Contact);
 		}
