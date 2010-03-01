@@ -16,6 +16,9 @@ package org.flixel
 		protected var _timer:Number;
 		protected var _particle:uint;
 		
+		//new:
+		public var randomized:Boolean;
+		
 		//@desc		Constructor
 		//@param	X				The X position of the emitter
 		//@param	Y				The Y position of the emitter
@@ -169,15 +172,28 @@ package org.flixel
 		public function emit():void
 		{
 			var s:FlxSprite = _sprites[_particle];
-			s.reset(x - (s.width>>1) + FlxG.random()*width, y - (s.height>>1) + FlxG.random()*height);
+			
+			if ( randomized )
+				s.reset(x - (s.width>>1) + FlxG.random()*width, y - (s.height>>1) + FlxG.random()*height);
+			else
+				s.reset(x - (s.width >> 1), y - (s.height >> 1));
+				
 			s.velocity.x = minVelocity.x;
 			if(minVelocity.x != maxVelocity.x) s.velocity.x += FlxG.random()*(maxVelocity.x-minVelocity.x);
 			s.velocity.y = minVelocity.y;
 			if(minVelocity.y != maxVelocity.y) s.velocity.y += FlxG.random()*(maxVelocity.y-minVelocity.y);
 			s.acceleration.y = gravity;
-			s.angularVelocity = minRotation;
+			
+			if( randomized )
+				s.angularVelocity = minRotation;
+			
 			if(minRotation != maxRotation) s.angularVelocity += FlxG.random()*(maxRotation-minRotation);
-			if(s.angularVelocity != 0) s.angle = FlxG.random()*360-180;
+			
+			if ( randomized && minRotation != 0 )
+				s.angle = FlxG.random() * 360 - 180;
+			else				
+				s.angle = minRotation;
+			
 			s.drag.x = drag;
 			s.drag.y = drag;
 			_particle++;
