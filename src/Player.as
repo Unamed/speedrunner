@@ -50,8 +50,8 @@ package
 		
 		private var trail:FlxEmitter;
 		private var trail2:FlxEmitter;
-		private var trailYoffset:uint;
-		private var trail2Yoffset:uint;
+		private var trailYoffset:int;
+		private var trail2Yoffset:int;
 		
 		public const defaultRunVelocity:uint = 300;
 		public const defaultSwingVelocity:uint = 2.00 * defaultRunVelocity;			//2.0
@@ -191,24 +191,24 @@ package
 			trail2.x = this.x;		
 			trail2.setRotation(0, 0);			
 			trail2.delay = 0.01;
-			trail2.gravity = 100;
+			trail2.gravity = 0;// 100;
 			trail2.setXVelocity(0);
-			trail2.setYVelocity(0);					
+			trail2.setYVelocity(0);	
 			//trail2.setRotation(45, 45);			
 			var arr2:Array = new Array();
-			for (var i2:uint = 0; i2 < 30; i2++)
+			for (var i2:uint = 0; i2 < 60; i2++)
 			{
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(6, 6, 0x66FFFFFF))));			
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(6, 6, 0xFFFF0000))));
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(6, 6, 0x880000FF))));
 				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle(8.0).createGraphic(4, 4, 0xFF000000))));
-				arr2.push(FlxG.state.add((new PlayerTrailParticle(6.0).createGraphic(25, 50, 0x220000FF))));
+				arr2.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(30, 6, 0xFFFF0000))));
 			}
 			
-			trail2Yoffset = 22;		
+			trail2Yoffset = 10;// -25;// 22;		
 			state.add(trail2.loadSprites(arr2));
-			state.add(trail.loadSprites(arr));
+			//state.add(trail.loadSprites(arr));
 			
 			state.add(this);
 			//state.add(eyeSpr);
@@ -286,13 +286,39 @@ package
 			else if ( trail.active )
 				trail.active = false;
 				
-			if ( Math.abs(velocity.x) * 0.85 > maxRunVelocity )
+			//if ( true)//Math.abs(velocity.x) * 0.85 > maxRunVelocity )
+			//	trail2.reset(this.x, this.y);
+			//else if ( trail2.active )
+			//	trail2.active = false;
+			
+			if ( velocity.y )
 				trail2.reset(this.x, this.y);
 			else if ( trail2.active )
 				trail2.active = false;
+			
 				
 			trail.gravity = Math.max(0, maxRunVelocity - Math.abs(this.velocity.x));			
-			trail2.gravity = trail.gravity;
+			//trail2.gravity = trail.gravity;
+			
+			
+			
+			var velToRot:Number;
+			if ( velocity.length > 0 )
+			{				
+				velToRot = (( Math.asin( velocity.x / velocity.length ) / Math.PI ) * 180 ) - 90;
+								
+				// wierdness... :|
+				if ( velocity.y > 0 )
+					velToRot *= -1;
+				
+			}
+			else
+				velToRot = 0;			
+			
+			if( this.velocity.y )
+				trail2.setRotation(velToRot, velToRot);
+			else
+				trail2.setRotation(0, 0);
 			
 			
 			// IF SWINGING:
@@ -657,7 +683,7 @@ package
 			trail.y = this.y + trailYoffset;// + this.height - 8;// / 2;
 			
 			trail2.x = this.x + this.width / 2;			
-			trail2.y = this.y + trail2Yoffset;// + this.height - 8;// / 2;
+			trail2.y = this.y + this.height / 2;	//trail2Yoffset;// + this.height - 8;// / 2;
 			
 			//if( facing == RIGHT )
 			//	eyeSpr.x = this.x + eyeOffsetX;

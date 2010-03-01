@@ -26,8 +26,8 @@
 		{			
 			this.alpha = Math.max(0, alpha - FlxG.elapsed * (Math.random() * fadeSpeed));
 			
-			this.scale.x = Math.max( 0.1, scale.x - FlxG.elapsed * (Math.random() * fadeSpeed));
-			this.scale.y = scale.x;// Math.max( 0.1, scale.x - FlxG.elapsed * (Math.random() * fadeSpeed));
+			//this.scale.x = Math.max( 0.1, scale.x - FlxG.elapsed * (Math.random() * fadeSpeed));
+			this.scale.y = Math.max( 0.1, scale.y - FlxG.elapsed * (Math.random() * fadeSpeed));
 			
 			//this.scale.y = Math.max( 0.1, scale.y - FlxG.elapsed * (Math.random() * fadeSpeed));
 			
