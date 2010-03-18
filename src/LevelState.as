@@ -135,7 +135,7 @@
 			finTxt.text = FlxG.progressManager.FinishedLevel(flanmap, playTime);
 			finTxt.visible = true;
 			
-			bIsPaused = true;			
+			//bIsPaused = true;			
 		}		
 	}
 }
