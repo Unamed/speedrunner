@@ -3,6 +3,13 @@ package
 	import flash.display.Graphics;
 	import flash.geom.Point;
 	import org.flixel.*;
+	import flash.display.Shape;
+	import flash.net.URLRequest;
+	import flash.net.URLVariables;
+	import flash.net.URLLoader;
+	import flash.net.URLRequestMethod;
+	import flash.events.*;
+	
 	//import org.flixel.fefranca.debug.FlxSpriteDebug;
 
 	public class Player extends FlxSprite
@@ -84,9 +91,19 @@ package
 		//private var eyeOffsetX:uint;
 		//private var eyeOffsetY:uint;
 		
+		
+		// LOGGING:
+		private var logCntDwn:Number;
+		private var logInterval:Number = 0.1;
+		private var positions:String;
+		//private var posCnt:int;
+		private var bShouldLog:Boolean;
+		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
-			super(X, Y);			
+			super(X, Y);	
+			
+			FlxG.log("Spawned player..");
 			
 			//this.createGraphic(16, 32, 0xFF000000);
 			
@@ -139,7 +156,13 @@ package
 			if( FlxG.state is PlayState )
 				playState = FlxG.state as PlayState
 				
-			bCanHook = FlxG.progressManager.bUnlockedHook;			
+			bCanHook = FlxG.progressManager.bUnlockedHook;		
+			
+			
+			// logging:
+			logCntDwn = logInterval;
+			positions = "";// new Array();
+			//posCnt = 0;
 		}
 		
 		public function switchChar():void
@@ -203,7 +226,7 @@ package
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(6, 6, 0x880000FF))));
 				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle(8.0).createGraphic(4, 4, 0xFF000000))));
-				arr2.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(30, 6, 0xFFFF0000))));
+				arr2.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(25, 5, 0xFF000000))));
 			}
 			
 			trail2Yoffset = 10;// -25;// 22;		
@@ -212,6 +235,85 @@ package
 			
 			state.add(this);
 			//state.add(eyeSpr);
+		}
+		
+		private function logPosition():void
+		{			
+			positions += this.x+","+this.y+";";
+		}
+		
+		private function printLog():void
+		{			
+			var scriptRequest:URLRequest = new URLRequest("http://www.progamestudios.com/spdr/scoreboard.php");
+			var scriptLoader:URLLoader = new URLLoader();
+			var scriptVars:URLVariables = new URLVariables();
+			
+			scriptLoader.addEventListener(Event.COMPLETE, handleLoadSuccessful);
+			scriptLoader.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);			
+			
+			scriptVars.action = "submit";
+			scriptVars.track = "newTestTrack";
+			scriptVars.name = "testName";
+			scriptVars.score = positions;
+			scriptVars.hash = MD5.encrypt("slowcrawler"+scriptVars.name+scriptVars.score);	
+			
+			scriptRequest.method = URLRequestMethod.POST;			
+			scriptRequest.data = scriptVars;
+			scriptLoader.load(scriptRequest);
+			
+			function handleLoadSuccessful($evt:Event):void
+			{
+				trace("Message sent.");
+			}
+			function handleLoadError($evt:IOErrorEvent):void
+			{
+				trace("Message failed.");
+			}
+
+						
+			/*
+			var i:int;
+			
+			FlxG.log("Log of all positions: ");
+			FlxG.log("------------------------------------------");
+			for (i = 0; i < positions.length; i++ )
+			{
+				FlxG.log("["+i+"] "+positions[i]);				
+			}
+			*/
+		}
+		
+		override public function render():void
+		{			
+			if ( !bShouldLog && positions.length > 0 )//posCnt > 0 )
+			{				
+				drawLog();
+			}	
+			super.render();
+		}
+		
+		private function drawLog():void
+		{
+			var posArr:Array = positions.split(";");
+			
+			var i:int;			
+			for (i = 1; i < posArr.length-1; i++ )
+			{
+				var drawShape:Shape = new Shape();
+				drawShape.graphics.lineStyle(2, 0xFFFFFF);
+				
+				var locArr1:Array = posArr[i-1].split(",");
+				var locArr2:Array = posArr[i].split(",");
+				
+				var xLoc1:Number = Number(locArr1[0]);
+				var yLoc1:Number = Number(locArr1[1]);
+				var xLoc2:Number = Number(locArr2[0]);
+				var yLoc2:Number = Number(locArr2[1]);
+				
+				drawShape.graphics.moveTo(xLoc1 + FlxG.scroll.x, yLoc1 + FlxG.scroll.y);
+				drawShape.graphics.lineTo(xLoc2 + FlxG.scroll.x, yLoc2 + FlxG.scroll.y);
+				FlxG.buffer.draw(drawShape);				
+			}				
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,6 +329,18 @@ package
 					FlxG.switchState(PlayState);
 				return;
 			}		
+			
+			// logging:
+			if ( bShouldLog )
+			{
+				logCntDwn -= FlxG.elapsed;
+				if ( logCntDwn <= 0 )
+				{
+					logCntDwn = logInterval;
+					logPosition();				
+				}
+			}
+			
 			
 			// ENTERING DOORS:
 			if ( FlxG.keys.justPressed("UP") && bHitDoor )
@@ -752,10 +866,17 @@ package
 			{
 				var lState:LevelState = playState as LevelState;
 				
-				if ( Contact is StartTrigger )							
+				if ( Contact is StartTrigger )	
+				{
 					lState.startTimer();								
+					bShouldLog = true;
+				}
 				else if ( Contact is FinishTrigger )
-					lState.stopTimer();				
+				{
+					lState.stopTimer();		
+					bShouldLog = false;
+					printLog();
+				}
 			}
 			
 			return false;			
