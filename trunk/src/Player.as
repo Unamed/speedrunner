@@ -9,6 +9,7 @@ package
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequestMethod;
+	import flash.net.navigateToURL;
 	import flash.events.*;
 	
 	//import org.flixel.fefranca.debug.FlxSpriteDebug;
@@ -253,50 +254,39 @@ package
 			var sendLoader:URLLoader = new URLLoader();
 			var sendVars:URLVariables = new URLVariables();
 			
-			sendLoader.addEventListener(Event.COMPLETE, handleLoadSuccessful);
-			sendLoader.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);			
+			sendLoader.addEventListener(Event.COMPLETE, sendComplete);
+			sendLoader.addEventListener(IOErrorEvent.IO_ERROR, sendError);			
 			
-			var track:String = "level1";
-			var version:String = "7";
-			var time:String = "7";
-			var data:String = positions;// "219,1026-396,1026-557,1039-";// positions;
-			var hash:String = MD5.encrypt("slowcrawler" + time + data);	
-						
-			/*
-			// method 1:
-			sendVars.action = "submit";
-			sendVars.track = track;
-			sendVars.time = time;
-			sendVars.data = data;
-			sendVars.hash = hash;				
+			var track:String = FlxG.level.toString();
+			var version:String = FlxG.VERSIONID.toString();
+			var time:String = Math.round((playState as LevelState).playTime).toString();
+			var data:String = positions;
+			var hash:String = MD5.encrypt("slowcrawler" + time + data);							
 			
-			var sendRequest:URLRequest = new URLRequest(url);
-			sendRequest.data = sendVars;		
-			*/
-			
-			// method 2:
 			var sendRequest:URLRequest = new URLRequest(url + "?action=submit"+"&track="+track+"&version="+version+"&time="+time+"&hash="+hash+"&data="+data);
 			
 			// now send:
 			sendRequest.method = URLRequestMethod.POST;
 			sendLoader.load(sendRequest);
 			
-			
-			
-
-			
-			
-			function handleLoadSuccessful(evt:Event):void
+			function sendComplete(evt:Event):void
 			{
 				trace("Message sent. Loading data..");
-				// load vars:
-				var loadLoader:URLLoader = new URLLoader();
-				loadLoader.addEventListener(Event.COMPLETE, completeHandler);			
-				var loadRequest:URLRequest = new URLRequest(url + "???action=show&track=level1&version=7");	
-				loadRequest.method = URLRequestMethod.GET;
-				loadLoader.load(loadRequest);
 				
-				function completeHandler(event:Event):void
+				var request:URLRequest = new URLRequest(url);
+				var variables:URLVariables = new URLVariables();
+				variables.action = "show";
+				variables.track = FlxG.level.toString();
+				variables.version = FlxG.VERSIONID.toString();
+				request.data = variables;
+				
+
+				var loadLoader:URLLoader = new URLLoader();
+				loadLoader.addEventListener(Event.COMPLETE, loadComplete);
+				request.method = URLRequestMethod.POST;
+				loadLoader.load(request);				
+				
+				function loadComplete(event:Event):void
 				{
 					FlxG.log("Data Received.. ");    
 					
@@ -309,18 +299,16 @@ package
 						var userId:int = int(arr[i + 1]);
 						var completionTime:int = int(arr[i + 2]); 
 						var data:String = arr[i + 3];
-						FlxG.log("positions[" + i + "]: " + data);
+						FlxG.log("positions[" + i/4 + "]: " + data);
 						
 						if ( data.indexOf("-", 0) > 0 )
 						{
-							FlxG.log("Adding a track to the positions array..");
 							allPositions.push(data);
-							//positions = data;
 						}
 					}
 				}
 			}
-			function handleLoadError(evt:IOErrorEvent):void
+			function sendError(evt:IOErrorEvent):void
 			{
 				trace("Message failed: "+evt.text);
 			}			

@@ -22,7 +22,7 @@
 		private var bTxt:FlxText;			
 		private var bestTxt:FlxText;
 		
-		private var playTime:Number;		
+		public var playTime:Number;		
 		private var bIsTiming:Boolean;
 		private var bIsPaused:Boolean;
 		
