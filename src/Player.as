@@ -7,6 +7,7 @@ package
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequestMethod;
 	import flash.events.*;
 	
@@ -239,26 +240,30 @@ package
 		
 		private function logPosition():void
 		{			
-			positions += this.x+","+this.y+";";
+			positions += this.x+","+this.y+"-";
 		}
 		
 		private function printLog():void
 		{			
-			var scriptRequest:URLRequest = new URLRequest("http://www.progamestudios.com/spdr/scoreboard.php");
+			var scriptRequest:URLRequest = new URLRequest("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");
 			var scriptLoader:URLLoader = new URLLoader();
-			var scriptVars:URLVariables = new URLVariables();
+			var sendVars:URLVariables = new URLVariables();
+			var receiveVars:URLVariables = new URLVariables();
 			
 			scriptLoader.addEventListener(Event.COMPLETE, handleLoadSuccessful);
 			scriptLoader.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);			
 			
-			scriptVars.action = "submit";
-			scriptVars.track = "newTestTrack";
-			scriptVars.name = "testName";
-			scriptVars.score = positions;
-			scriptVars.hash = MD5.encrypt("slowcrawler"+scriptVars.name+scriptVars.score);	
+			sendVars.action = "submit";
+			sendVars.track = "aap";
+			sendVars.version = "1";
+			sendVars.time = "10";			
+			sendVars.data = positions;
+			sendVars.hash = MD5.encrypt("slowcrawler"+sendVars.time+sendVars.data);	
 			
+			FlxG.log("Sending hash.. " + sendVars.hash);
 			scriptRequest.method = URLRequestMethod.POST;			
-			scriptRequest.data = scriptVars;
+			scriptRequest.data = sendVars;
+			scriptLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
 			scriptLoader.load(scriptRequest);
 			
 			function handleLoadSuccessful($evt:Event):void
@@ -269,6 +274,18 @@ package
 			{
 				trace("Message failed.");
 			}
+			
+			
+			// load vars:	
+			receiveVars.action = "show";
+			receiveVars.track = "aap";
+			receiveVars.version = "1";
+			
+			scriptRequest.method = URLRequestMethod.GET;			
+			scriptRequest.data = receiveVars;
+			scriptLoader.load(scriptRequest);
+			
+			FlxG.log("ReceiveVars: " + receiveVars.data);
 
 						
 			/*
@@ -294,7 +311,7 @@ package
 		
 		private function drawLog():void
 		{
-			var posArr:Array = positions.split(";");
+			var posArr:Array = positions.split("-");
 			
 			var i:int;			
 			for (i = 1; i < posArr.length-1; i++ )
