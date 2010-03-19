@@ -2,15 +2,7 @@ package
 {
 	import flash.display.Graphics;
 	import flash.geom.Point;
-	import org.flixel.*;
-	import flash.display.Shape;
-	import flash.net.URLRequest;
-	import flash.net.URLVariables;
-	import flash.net.URLLoader;
-	import flash.net.URLLoaderDataFormat;
-	import flash.net.URLRequestMethod;
-	import flash.net.navigateToURL;
-	import flash.events.*;
+	import org.flixel.*;	
 	
 	//import org.flixel.fefranca.debug.FlxSpriteDebug;
 
@@ -91,17 +83,7 @@ package
 		
 		//private var eyeSpr:FlxSprite;
 		//private var eyeOffsetX:uint;
-		//private var eyeOffsetY:uint;
-		
-		
-		// LOGGING:
-		private var logCntDwn:Number;
-		private var logInterval:Number = 0.5;
-		private var positions:String;		
-		//private var posCnt:int;
-		private var bShouldLog:Boolean;
-		
-		private var allPositions:Array;
+		//private var eyeOffsetY:uint;		
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
@@ -160,15 +142,7 @@ package
 			if( FlxG.state is PlayState )
 				playState = FlxG.state as PlayState
 				
-			bCanHook = FlxG.progressManager.bUnlockedHook;		
-			
-			
-			// logging:
-			logCntDwn = logInterval;
-			positions = "";// new Array();
-			//posCnt = 0;
-			
-			allPositions = new Array();
+			bCanHook = FlxG.progressManager.bUnlockedHook;				
 		}
 		
 		public function switchChar():void
@@ -243,114 +217,6 @@ package
 			//state.add(eyeSpr);
 		}
 		
-		private function logPosition():void
-		{			
-			positions += Math.round(this.x) + "," + Math.round(this.y) + "-";			
-		}
-		
-		private function printLog():void
-		{			
-			var url:String = "http://www.progamestudios.com/casgames/spdr_stats/position_stats.php";
-			var sendLoader:URLLoader = new URLLoader();
-			var sendVars:URLVariables = new URLVariables();
-			
-			sendLoader.addEventListener(Event.COMPLETE, sendComplete);
-			sendLoader.addEventListener(IOErrorEvent.IO_ERROR, sendError);			
-			
-			var track:String = FlxG.level.toString();
-			var version:String = FlxG.VERSIONID.toString();
-			var time:String = Math.round((playState as LevelState).playTime).toString();
-			var data:String = positions;
-			var hash:String = MD5.encrypt("slowcrawler" + time + data);							
-			
-			var sendRequest:URLRequest = new URLRequest(url + "?action=submit"+"&track="+track+"&version="+version+"&time="+time+"&hash="+hash+"&data="+data);
-			
-			// now send:
-			sendRequest.method = URLRequestMethod.POST;
-			sendLoader.load(sendRequest);
-			
-			function sendComplete(evt:Event):void
-			{
-				trace("Message sent. Loading data..");
-				
-				var request:URLRequest = new URLRequest(url);
-				var variables:URLVariables = new URLVariables();
-				variables.action = "show";
-				variables.track = FlxG.level.toString();
-				variables.version = FlxG.VERSIONID.toString();
-				request.data = variables;
-				
-
-				var loadLoader:URLLoader = new URLLoader();
-				loadLoader.addEventListener(Event.COMPLETE, loadComplete);
-				request.method = URLRequestMethod.POST;
-				loadLoader.load(request);				
-				
-				function loadComplete(event:Event):void
-				{
-					FlxG.log("Data Received.. ");    
-					
-					var i:int;
-					var msg:String = event.target.data.replace("data=","");
-					var arr:Array = msg.split(";");
-					for (i = 0; i < arr.length-1; i+=4 )
-					{
-						var dbId:int = int(arr[i]);
-						var userId:int = int(arr[i + 1]);
-						var completionTime:int = int(arr[i + 2]); 
-						var data:String = arr[i + 3];
-						FlxG.log("positions[" + i/4 + "]: " + data);
-						
-						if ( data.indexOf("-", 0) > 0 )
-						{
-							allPositions.push(data);
-						}
-					}
-				}
-			}
-			function sendError(evt:IOErrorEvent):void
-			{
-				trace("Message failed: "+evt.text);
-			}			
-		}
-		
-		override public function render():void
-		{			
-			if ( !bShouldLog && positions.length > 0 )//posCnt > 0 )
-			{				
-				drawLog();
-			}	
-			super.render();
-		}
-		
-		private function drawLog():void
-		{
-			var j:int;
-			for (j = 0; j < allPositions.length; j++ )
-			{
-				var posArr:Array = allPositions[j].split("-");
-				
-				var i:int;			
-				for (i = 1; i < posArr.length-1; i++ )
-				{
-					var drawShape:Shape = new Shape();
-					drawShape.graphics.lineStyle(2, 0xFFFFFF);
-					
-					var locArr1:Array = posArr[i-1].split(",");
-					var locArr2:Array = posArr[i].split(",");
-					
-					var xLoc1:Number = Number(locArr1[0]);
-					var yLoc1:Number = Number(locArr1[1]);
-					var xLoc2:Number = Number(locArr2[0]);
-					var yLoc2:Number = Number(locArr2[1]);
-					
-					drawShape.graphics.moveTo(xLoc1 + FlxG.scroll.x, yLoc1 + FlxG.scroll.y);
-					drawShape.graphics.lineTo(xLoc2 + FlxG.scroll.x, yLoc2 + FlxG.scroll.y);
-					FlxG.buffer.draw(drawShape);				
-				}				
-			}
-		}
-		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// UPDATE
 		// (called BEFORE collision checks are done)
@@ -363,19 +229,7 @@ package
 				if(restart > 2)
 					FlxG.switchState(PlayState);
 				return;
-			}		
-			
-			// logging:
-			if ( bShouldLog )
-			{
-				logCntDwn -= FlxG.elapsed;
-				if ( logCntDwn <= 0 )
-				{
-					logCntDwn = logInterval;
-					logPosition();				
-				}
-			}
-			
+			}			
 			
 			// ENTERING DOORS:
 			if ( FlxG.keys.justPressed("UP") && bHitDoor )
@@ -903,15 +757,11 @@ package
 				
 				if ( Contact is StartTrigger )	
 				{
-					lState.startTimer();								
-					bShouldLog = true;
+					lState.startTimer();
 				}
 				else if ( Contact is FinishTrigger )
 				{
-					lState.stopTimer();
-					if( bShouldLog )
-						printLog();
-					bShouldLog = false;					
+					lState.stopTimer();								
 				}
 			}
 			
