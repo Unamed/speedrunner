@@ -95,10 +95,12 @@ package
 		
 		// LOGGING:
 		private var logCntDwn:Number;
-		private var logInterval:Number = 0.1;
-		private var positions:String;
+		private var logInterval:Number = 0.5;
+		private var positions:String;		
 		//private var posCnt:int;
 		private var bShouldLog:Boolean;
+		
+		private var allPositions:Array;
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
@@ -164,6 +166,8 @@ package
 			logCntDwn = logInterval;
 			positions = "";// new Array();
 			//posCnt = 0;
+			
+			allPositions = new Array();
 		}
 		
 		public function switchChar():void
@@ -240,64 +244,86 @@ package
 		
 		private function logPosition():void
 		{			
-			positions += this.x+","+this.y+"-";
+			positions += Math.round(this.x) + "," + Math.round(this.y) + "-";			
 		}
 		
 		private function printLog():void
 		{			
-			var scriptRequest:URLRequest = new URLRequest("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");
-			var scriptLoader:URLLoader = new URLLoader();
+			var url:String = "http://www.progamestudios.com/casgames/spdr_stats/position_stats.php";
+			var sendLoader:URLLoader = new URLLoader();
 			var sendVars:URLVariables = new URLVariables();
-			var receiveVars:URLVariables = new URLVariables();
 			
-			scriptLoader.addEventListener(Event.COMPLETE, handleLoadSuccessful);
-			scriptLoader.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);			
+			sendLoader.addEventListener(Event.COMPLETE, handleLoadSuccessful);
+			sendLoader.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);			
 			
-			sendVars.action = "submit";
-			sendVars.track = "aap";
-			sendVars.version = "1";
-			sendVars.time = "10";			
-			sendVars.data = positions;
-			sendVars.hash = MD5.encrypt("slowcrawler"+sendVars.time+sendVars.data);	
-			
-			FlxG.log("Sending hash.. " + sendVars.hash);
-			scriptRequest.method = URLRequestMethod.POST;			
-			scriptRequest.data = sendVars;
-			scriptLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
-			scriptLoader.load(scriptRequest);
-			
-			function handleLoadSuccessful($evt:Event):void
-			{
-				trace("Message sent.");
-			}
-			function handleLoadError($evt:IOErrorEvent):void
-			{
-				trace("Message failed.");
-			}
-			
-			
-			// load vars:	
-			receiveVars.action = "show";
-			receiveVars.track = "aap";
-			receiveVars.version = "1";
-			
-			scriptRequest.method = URLRequestMethod.GET;			
-			scriptRequest.data = receiveVars;
-			scriptLoader.load(scriptRequest);
-			
-			FlxG.log("ReceiveVars: " + receiveVars.data);
-
+			var track:String = "level1";
+			var version:String = "7";
+			var time:String = "7";
+			var data:String = positions;// "219,1026-396,1026-557,1039-";// positions;
+			var hash:String = MD5.encrypt("slowcrawler" + time + data);	
 						
 			/*
-			var i:int;
+			// method 1:
+			sendVars.action = "submit";
+			sendVars.track = track;
+			sendVars.time = time;
+			sendVars.data = data;
+			sendVars.hash = hash;				
 			
-			FlxG.log("Log of all positions: ");
-			FlxG.log("------------------------------------------");
-			for (i = 0; i < positions.length; i++ )
-			{
-				FlxG.log("["+i+"] "+positions[i]);				
-			}
+			var sendRequest:URLRequest = new URLRequest(url);
+			sendRequest.data = sendVars;		
 			*/
+			
+			// method 2:
+			var sendRequest:URLRequest = new URLRequest(url + "?action=submit"+"&track="+track+"&version="+version+"&time="+time+"&hash="+hash+"&data="+data);
+			
+			// now send:
+			sendRequest.method = URLRequestMethod.POST;
+			sendLoader.load(sendRequest);
+			
+			
+			
+
+			
+			
+			function handleLoadSuccessful(evt:Event):void
+			{
+				trace("Message sent. Loading data..");
+				// load vars:
+				var loadLoader:URLLoader = new URLLoader();
+				loadLoader.addEventListener(Event.COMPLETE, completeHandler);			
+				var loadRequest:URLRequest = new URLRequest(url + "???action=show&track=level1&version=7");	
+				loadRequest.method = URLRequestMethod.GET;
+				loadLoader.load(loadRequest);
+				
+				function completeHandler(event:Event):void
+				{
+					FlxG.log("Data Received.. ");    
+					
+					var i:int;
+					var msg:String = event.target.data.replace("data=","");
+					var arr:Array = msg.split(";");
+					for (i = 0; i < arr.length-1; i+=4 )
+					{
+						var dbId:int = int(arr[i]);
+						var userId:int = int(arr[i + 1]);
+						var completionTime:int = int(arr[i + 2]); 
+						var data:String = arr[i + 3];
+						FlxG.log("positions[" + i + "]: " + data);
+						
+						if ( data.indexOf("-", 0) > 0 )
+						{
+							FlxG.log("Adding a track to the positions array..");
+							allPositions.push(data);
+							//positions = data;
+						}
+					}
+				}
+			}
+			function handleLoadError(evt:IOErrorEvent):void
+			{
+				trace("Message failed: "+evt.text);
+			}			
 		}
 		
 		override public function render():void
@@ -311,26 +337,30 @@ package
 		
 		private function drawLog():void
 		{
-			var posArr:Array = positions.split("-");
-			
-			var i:int;			
-			for (i = 1; i < posArr.length-1; i++ )
+			var j:int;
+			for (j = 0; j < allPositions.length; j++ )
 			{
-				var drawShape:Shape = new Shape();
-				drawShape.graphics.lineStyle(2, 0xFFFFFF);
+				var posArr:Array = allPositions[j].split("-");
 				
-				var locArr1:Array = posArr[i-1].split(",");
-				var locArr2:Array = posArr[i].split(",");
-				
-				var xLoc1:Number = Number(locArr1[0]);
-				var yLoc1:Number = Number(locArr1[1]);
-				var xLoc2:Number = Number(locArr2[0]);
-				var yLoc2:Number = Number(locArr2[1]);
-				
-				drawShape.graphics.moveTo(xLoc1 + FlxG.scroll.x, yLoc1 + FlxG.scroll.y);
-				drawShape.graphics.lineTo(xLoc2 + FlxG.scroll.x, yLoc2 + FlxG.scroll.y);
-				FlxG.buffer.draw(drawShape);				
-			}				
+				var i:int;			
+				for (i = 1; i < posArr.length-1; i++ )
+				{
+					var drawShape:Shape = new Shape();
+					drawShape.graphics.lineStyle(2, 0xFFFFFF);
+					
+					var locArr1:Array = posArr[i-1].split(",");
+					var locArr2:Array = posArr[i].split(",");
+					
+					var xLoc1:Number = Number(locArr1[0]);
+					var yLoc1:Number = Number(locArr1[1]);
+					var xLoc2:Number = Number(locArr2[0]);
+					var yLoc2:Number = Number(locArr2[1]);
+					
+					drawShape.graphics.moveTo(xLoc1 + FlxG.scroll.x, yLoc1 + FlxG.scroll.y);
+					drawShape.graphics.lineTo(xLoc2 + FlxG.scroll.x, yLoc2 + FlxG.scroll.y);
+					FlxG.buffer.draw(drawShape);				
+				}				
+			}
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -890,9 +920,10 @@ package
 				}
 				else if ( Contact is FinishTrigger )
 				{
-					lState.stopTimer();		
-					bShouldLog = false;
-					printLog();
+					lState.stopTimer();
+					if( bShouldLog )
+						printLog();
+					bShouldLog = false;					
 				}
 			}
 			
