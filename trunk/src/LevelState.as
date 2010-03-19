@@ -40,7 +40,7 @@
 		
 		// LOGGING:
 		private var logCntDwn:Number;
-		private var logInterval:Number = 0.5;
+		private var logInterval:Number = 0.1;
 		private var positions:String;		
 		private var allPositions:Array;
 		private var bShouldLog:Boolean;		
