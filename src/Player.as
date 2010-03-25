@@ -134,7 +134,8 @@ package
 			addAnimation("jump_rotate", [18]);
 			addAnimation("jump_down", [12]);						
 			addAnimation("walling", [6]);						
-			addAnimation("wallingaway", [7]);						
+			addAnimation("wallingaway", [7]);	
+			addAnimation("stopslide", [8]);
 			
 			
 			curHook = 0;
@@ -168,23 +169,24 @@ package
 			// Trail emitter
 			trail = new FlxEmitter();			
 			trail.width = 19;// 10;
-			trail.height = 50;// 20;
+			trail.height = 1;// 20;
 			trail.y = this.y;
 			trail.x = this.x;		
-			trail.setRotation(0, 0);			
-			trail.delay = 0.01;
-			trail.gravity = 100;
+			trail.setRotation(10, 20);			
+			trail.delay = 0.05;
+			trail.gravity = 10;
 			trail.setXVelocity(0);
-			trail.setYVelocity(0);					
+			trail.setYVelocity(-100, -80);					
 			//trail.setRotation(45, 45);			
 			var arr:Array = new Array();
 			for (var i:uint = 0; i < 60; i++)
 			{
-				arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(6, 6, 0xFF000000))));			
+				arr.push(FlxG.state.add((new PlayerTrailParticle(1.0).createGraphic(6, 6, 0xFF000000))));			
+				//arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(6, 6, 0xFFFFFFFF))));			
 				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
 			}	
 			
-			trailYoffset = 0;
+			trailYoffset = 40;
 			
 			// Trail2 emitter
 			trail2 = new FlxEmitter();			
@@ -211,7 +213,7 @@ package
 			
 			trail2Yoffset = 10;// -25;// 22;		
 			state.add(trail2.loadSprites(arr2));
-			//state.add(trail.loadSprites(arr));
+			state.add(trail.loadSprites(arr));
 			
 			state.add(this);
 			//state.add(eyeSpr);
@@ -284,15 +286,34 @@ package
 			drag.x = defaultRunVelocity * 2;				
 			
 			// EMITTERS:
-			if ( velocity.length > 50 )
-				trail.reset(this.x, this.y);
-			else if ( trail.active )
-				trail.active = false;
+			//if ( velocity.length > 50 )
+			//	trail.reset(this.x, this.y);
+			//else if ( trail.active )
+			//	trail.active = false;
 				
 			//if ( true)//Math.abs(velocity.x) * 0.85 > maxRunVelocity )
 			//	trail2.reset(this.x, this.y);
 			//else if ( trail2.active )
 			//	trail2.active = false;
+			
+			if (( facing == RIGHT && velocity.x < 0 
+				|| facing == LEFT && velocity.x > 0 )
+				&& status == ONGROUND )
+			{				
+				if ( velocity.x > 0 )
+				{
+					trail.reset(this.x + 45, this.y + trailYoffset);	
+					trail.setXVelocity(100, 150);
+				}
+				else
+				{
+					trail.reset(this.x, this.y + trailYoffset);	
+					trail.setXVelocity( -150, -100);
+				}
+					
+			}
+			else
+				trail.active = false;
 			
 			if ( velocity.y )
 				trail2.reset(this.x, this.y);
@@ -589,7 +610,10 @@ package
 			}
 			else
 			{
-				if ( Math.abs(velocity.x) > maxRunVelocity )
+				if ( facing == RIGHT && velocity.x < 0 
+				|| facing == LEFT && velocity.x > 0 )				
+					play("stopslide");
+				else if ( Math.abs(velocity.x) > maxRunVelocity )
 					play("runfast");
 				else if ( Math.abs(velocity.x) > defaultRunVelocity )				
 					play("runmedium");				
@@ -682,8 +706,8 @@ package
 			
 			
 			// So I;m also re-setting the trails above, so this needs to be checked/rewritten/etc:
-			trail.x = this.x;// + this.width / 2;			
-			trail.y = this.y + trailYoffset;// + this.height - 8;// / 2;
+			//trail.x = this.x;// + this.width / 2;			
+			//trail.y = this.y + trailYoffset;// + this.height - 8;// / 2;
 			
 			trail2.x = this.x + this.width / 2;			
 			trail2.y = this.y + this.height / 2;	//trail2Yoffset;// + this.height - 8;// / 2;

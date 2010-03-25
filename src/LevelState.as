@@ -260,30 +260,49 @@
 		private function drawLog():void
 		{
 			var j:int;
+			var posArr:Array;
+			var colorId:int;
+			var color:int;	
+			var i:int;		
+			
+			var drawShape:Shape;			
+			var locArr1:Array;
+			var locArr2:Array;			
+			var xLoc1:Number;
+			var yLoc1:Number;
+			var xLoc2:Number;
+			var yLoc2:Number;
+			
 			for (j = 0; j < allPositions.length; j++ )
 			{
-				var posArr:Array = allPositions[j].split("-");
+				posArr = allPositions[j].split("-");
 				
-				var colorId:int = j % colorArray.length;
-				var color:int = colorArray[colorId];				
-				
-				var i:int;			
+				colorId = j % colorArray.length;
+				color = colorArray[colorId];
+					
 				for (i = 1; i < posArr.length-1; i++ )
 				{
-					var drawShape:Shape = new Shape();					
+					drawShape = new Shape();					
 					drawShape.graphics.lineStyle(2, color);
 					
-					var locArr1:Array = posArr[i-1].split(",");
-					var locArr2:Array = posArr[i].split(",");
+					locArr1 = posArr[i-1].split(",");
+					locArr2 = posArr[i].split(",");
 					
-					var xLoc1:Number = Number(locArr1[0]);
-					var yLoc1:Number = Number(locArr1[1]);
-					var xLoc2:Number = Number(locArr2[0]);
-					var yLoc2:Number = Number(locArr2[1]);
+					xLoc1 = Number(locArr1[0]) + FlxG.scroll.x;
+					yLoc1 = Number(locArr1[1]) + FlxG.scroll.y;
+					xLoc2 = Number(locArr2[0]) + FlxG.scroll.x;
+					yLoc2 = Number(locArr2[1]) + FlxG.scroll.y;
 					
-					drawShape.graphics.moveTo(xLoc1 + FlxG.scroll.x, yLoc1 + FlxG.scroll.y);
-					drawShape.graphics.lineTo(xLoc2 + FlxG.scroll.x, yLoc2 + FlxG.scroll.y);
-					FlxG.buffer.draw(drawShape);				
+					if((xLoc1 < -100) || (xLoc2 > FlxG.width+100) || (yLoc1 < -100) || (yLoc2 > FlxG.height+100))
+					{
+						// no drawing..	
+					}
+					else
+					{					
+						drawShape.graphics.moveTo(xLoc1 , yLoc1 );
+						drawShape.graphics.lineTo(xLoc2 , yLoc2 );
+						FlxG.buffer.draw(drawShape);				
+					}
 				}				
 			}
 		}
