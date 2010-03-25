@@ -1,6 +1,7 @@
 ﻿package  
 {
 	import flash.geom.Point;	
+	import org.flixel.FlxEmitter;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxCore;
 	import org.flixel.FlxG;
@@ -23,6 +24,7 @@
 		public var angularSpeed:Number;
 		
 		private var line:Line;
+		private var emitter:FlxEmitter;
 			
 		public function Hook(player:Player)
 		{
@@ -37,6 +39,30 @@
 			this.height = 32;
 				
 			line = new Line(player, this, 2, 0x000000);
+			
+			
+			// Trail emitter
+			emitter = new FlxEmitter();			
+			emitter.randomized = true;
+			emitter.width = 10;// 10;
+			emitter.height = 1;// 20;
+			emitter.y = this.y;
+			emitter.x = this.x;		
+			emitter.setRotation(0, 90);			
+			emitter.delay = -1;
+			emitter.gravity = 300;
+			emitter.setXVelocity(-100, 100);
+			emitter.setYVelocity(-25, 25);// 25, 75);					
+			//emitter.setRotation(45, 45);			
+			var arr:Array = new Array();
+			for (var i:uint = 0; i < 5; i++)
+			{
+				arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(4, 4, 0xFF000000))));			
+				//arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(6, 6, 0xFFFFFFFF))));			
+				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
+			}	
+			
+			FlxG.state.add(emitter.loadSprites(arr));
 		}
 		
 		public function shoot(X:int, Y:int, VelocityX:int, VelocityY:int):void
@@ -105,11 +131,28 @@
 		
 		private function collided():Boolean
 		{
+			// first, emitter:
+			if( this.velocity.x > 0 )
+				emitter.setXVelocity(-75, 300);
+			else 
+				emitter.setXVelocity(-300, 75);
+			
+			emitter.reset(this.x, this.y);	
+			emitter.restart(); 
+			
+			
 			velocity.x = 0;
 			velocity.y = 0;	
 			bCollided = true;	
 			
-			playerAccel = new Point(500,0);
+			playerAccel = new Point(500, 0);
+			
+			
+			
+//			else
+	//			trail.active = false;
+				
+				
 			return true;	
 		}
 		

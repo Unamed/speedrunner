@@ -168,20 +168,21 @@ package
 		{		
 			// Trail emitter
 			trail = new FlxEmitter();			
+			trail.randomized = true;
 			trail.width = 19;// 10;
 			trail.height = 1;// 20;
 			trail.y = this.y;
 			trail.x = this.x;		
 			trail.setRotation(10, 20);			
-			trail.delay = 0.05;
-			trail.gravity = 10;
+			trail.delay = 0.1;
+			trail.gravity = 600;
 			trail.setXVelocity(0);
-			trail.setYVelocity(-100, -80);					
+			trail.setYVelocity(-150, -150);					
 			//trail.setRotation(45, 45);			
 			var arr:Array = new Array();
 			for (var i:uint = 0; i < 60; i++)
 			{
-				arr.push(FlxG.state.add((new PlayerTrailParticle(1.0).createGraphic(6, 6, 0xFF000000))));			
+				arr.push(FlxG.state.add((new PlayerTrailParticle(1.0).createGraphic(4, 4, 0xFF000000))));			
 				//arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(6, 6, 0xFFFFFFFF))));			
 				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
 			}	
@@ -303,12 +304,12 @@ package
 				if ( velocity.x > 0 )
 				{
 					trail.reset(this.x + 45, this.y + trailYoffset);	
-					trail.setXVelocity(100, 150);
+					trail.setXVelocity(200, 300);
 				}
 				else
 				{
 					trail.reset(this.x, this.y + trailYoffset);	
-					trail.setXVelocity( -150, -100);
+					trail.setXVelocity( -300, -200);
 				}
 					
 			}
@@ -321,7 +322,7 @@ package
 				trail2.active = false;
 			
 				
-			trail.gravity = Math.max(0, maxRunVelocity - Math.abs(this.velocity.x));			
+			//trail.gravity = Math.max(0, maxRunVelocity - Math.abs(this.velocity.x));			
 			//trail2.gravity = trail.gravity;
 			
 			
