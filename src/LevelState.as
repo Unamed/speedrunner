@@ -45,7 +45,7 @@
 		private var allPositions:Array;
 		private var bShouldLog:Boolean;		
 		private var colorArray:Array = new Array(0xFFFF33, 0xFFFFFF, 0x79DCF4, 0xFF3333, 0xFFCC33, 0x99CC33);
-		private var bDrawMyOwn:Boolean = true; // decided whether or not I also want to see the commits from my own IP
+		private var bDrawMyOwn:Boolean = false; // decided whether or not I also want to see the commits from my own IP
 		
 		public function LevelState() 
 		{	
@@ -143,6 +143,10 @@
 			{
 				restartLevel();
 			}
+			else if ( FlxG.keys.justPressed("L") )
+			{
+				retreiveLogsFromServer("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");
+			}
 		}
 		
 		public function startTimer():void
@@ -168,20 +172,19 @@
 			finTxt.visible = true;
 			
 			if( bShouldLog )
-				sendLogToServer();
+				sendLogToServer("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");
 			bShouldLog = false;		
 			
-			//bIsPaused = true;			
-		}		
+			bIsPaused = true;			
+		}	
 		
 		private function logPlayerPosition():void
 		{			
 			positions += Math.round(player.x) + "," + Math.round(player.y) + "-";			
 		}
 		
-		private function sendLogToServer():void
-		{			
-			var url:String = "http://www.progamestudios.com/casgames/spdr_stats/position_stats.php";
+		private function sendLogToServer(url:String):void
+		{	
 			var sendLoader:URLLoader = new URLLoader();
 			var sendVars:URLVariables = new URLVariables();
 			
@@ -202,42 +205,7 @@
 			
 			function sendComplete(evt:Event):void
 			{
-				trace("Message sent. Loading data..");
-				
-				var request:URLRequest = new URLRequest(url);
-				var variables:URLVariables = new URLVariables();
-				variables.action = "show";
-				variables.track = FlxG.level.toString();
-				variables.version = FlxG.VERSIONID.toString();
-				request.data = variables;				
-
-				var loadLoader:URLLoader = new URLLoader();
-				loadLoader.addEventListener(Event.COMPLETE, loadComplete);
-				request.method = URLRequestMethod.POST;
-				loadLoader.load(request);				
-				
-				function loadComplete(event:Event):void
-				{
-					FlxG.log("Data Received.. ");    
-					
-					var i:int;
-					var msg:String = event.target.data.replace("data=","");
-					var arr:Array = msg.split(";");
-					for (i = 0; i < arr.length-1; i+=4 )
-					{
-						var dbId:int = int(arr[i]);
-						var userId:int = int(arr[i + 1]);
-						var completionTime:int = int(arr[i + 2]); 
-						var data:String = arr[i + 3];
-						FlxG.log("positions[" + i/4 + "]: " + data);
-						
-						if ( data.indexOf("-", 0) > 0)
-						{
-							if( userId != 1 || bDrawMyOwn)
-								allPositions.push(data);
-						}
-					}
-				}
+				trace("Message sent. Loading data..");				
 			}
 			function sendError(evt:IOErrorEvent):void
 			{
@@ -245,12 +213,51 @@
 			}			
 		}
 		
+		private function retreiveLogsFromServer(url:String):void
+		{
+			var request:URLRequest = new URLRequest(url);
+			var variables:URLVariables = new URLVariables();
+			variables.action = "show";
+			variables.track = FlxG.level.toString();
+			variables.version = FlxG.VERSIONID.toString();
+			request.data = variables;				
+
+			var loadLoader:URLLoader = new URLLoader();
+			loadLoader.addEventListener(Event.COMPLETE, loadComplete);
+			request.method = URLRequestMethod.POST;
+			loadLoader.load(request);				
+			
+			function loadComplete(event:Event):void
+			{
+				FlxG.log("Data Received.. ");   
+				allPositions = new Array();
+				
+				var i:int;
+				var msg:String = event.target.data.replace("data=","");
+				var arr:Array = msg.split(";");
+				for (i = 0; i < arr.length-1; i+=4 )
+				{
+					var dbId:int = int(arr[i]);
+					var userId:int = int(arr[i + 1]);
+					var completionTime:int = int(arr[i + 2]); 
+					var data:String = arr[i + 3];
+					FlxG.log("positions[" + i/4 + "]: " + data);
+					
+					if ( data.indexOf("-", 0) > 0)
+					{
+						if( userId > 2 || bDrawMyOwn)
+							allPositions.push(data);
+					}
+				}
+			}
+		}
+		
 		// overridden to draw log-lines, if neccessary
 		override public function render():void
 		{		
 			super.render();
 			
-			if ( !bShouldLog && positions.length > 0 )
+			if ( allPositions.length > 0 )// && positions.length > 0 )
 			{				
 				drawLog();
 			}				
