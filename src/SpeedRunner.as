@@ -1,7 +1,7 @@
 ﻿package 
 {
 	import org.flixel.*;
-	import SWFStats.*;
+	import SWFStats.Log;
 		
 	[SWF(width="800", height="600", backgroundColor="#000000")]	
 		
@@ -38,10 +38,13 @@
 			showLogo = false;
 			
 			// Stats:
-			SWFStats.Tracker.Initialise(loaderInfo.loaderURL);
+			//SWFStats.Tracker.Initialise(loaderInfo.loaderURL);
 			
-			SWFStats.Tracker.LogView();
-			SWFStats.Tracker.LogPlay();
+			//SWFStats.Tracker.LogView();
+			//SWFStats.Tracker.LogPlay();
+			
+			Log.View(153, "6635b062-cc5b-4c1b-819c-1f1b48b4ad75", root.loaderInfo.loaderURL);
+			
 		}
 	}	
 }

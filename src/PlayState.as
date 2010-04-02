@@ -39,9 +39,6 @@
 		public var player:Player;
 		public var hooks:Array;	
 		
-		private var camTarget:FlxSprite;
-		private var camOffset:Number = 75;
-		
 		private var obstacles:Array;
 		private var boosts:Array;
 		private var pickups:Array;
@@ -61,8 +58,7 @@
 		private var bgSpr2:FlxSprite;
 		
 		protected var playerStartX:Number = 100;
-		protected var playerStartY:Number = 100;
-		
+		protected var playerStartY:Number = 100;		
 			
 		// HUD:
 		private var speedometerBG:FlxSprite;
@@ -100,12 +96,8 @@
 			addFGLayer();
 			addHUDElements();
 			
-			// camera settings			
-			camTarget = new FlxSprite(player.x, player.y - camOffset, null);
-			camTarget.visible = false;;
-			this.add(camTarget);
-			
-			FlxG.follow(camTarget,1.5);
+			FlxG.cameraOffset = new Point(0, 75);
+			FlxG.follow(player, 1.5);
 			FlxG.followAdjust(1.0, 0.25);	
 			flanmap.layerMain.follow();
 		}
@@ -221,18 +213,9 @@
 			
 			// Google Analytics:			
 			if ( !tracker )
-				tracker = new GATracker(this, "UA-12125437-1", "AS3", false );
-				
-			if ( FlxG.keys.justPressed("Q") )
-			{
-				player.switchChar();
-			}
+				tracker = new GATracker(this, "UA-12125437-1", "AS3", false );			
 			
-			
-			
-			
-			// COLLISION:
-			
+			// COLLISION:			
 			var playerCol:Boolean = false;
 			//if ( tilemap.collide(player) )
 			//	playerCol = true;
@@ -278,10 +261,6 @@
 				speedometerBG2.x = 0 + (100* (Math.abs( player.maxVelocity.x ) / maxSpeed));
 				speedometerBG2.scale.x = (Math.abs( player.maxVelocity.x ) / maxSpeed);
 			}
-			
-			// CAMERA:
-			camTarget.velocity = player.velocity;
-			camTarget.y = player.y - camOffset;
 		}	
 		
 		

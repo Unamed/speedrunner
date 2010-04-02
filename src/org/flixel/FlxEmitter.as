@@ -141,11 +141,11 @@ package org.flixel
 		{
 			_timer += FlxG.elapsed;
 			if(delay < 0)
-			{
-				if(_timer > -delay) { kill(); return; }
-				if(_sprites[0].exists) return;
+			{				
+				if (_timer > -delay) {kill(); return; }
+				if (_sprites[0].exists) return;
 				var sl:uint = _sprites.length;
-				for(var i:uint = 0; i < sl; i++) emit();
+				for (var i:uint = 0; i < sl; i++) emit();
 				return;
 			}
 			while(_timer > delay)

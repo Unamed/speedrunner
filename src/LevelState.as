@@ -195,7 +195,7 @@
 			var version:String = FlxG.VERSIONID.toString();
 			var time:String = Math.round(playTime).toString();
 			var data:String = positions;
-			var hash:String = MD5.calcMD5("slowcrawler" + time + data);							
+			var hash:String = HighScores.MD5("slowcrawler" + time + data);							
 			
 			var sendRequest:URLRequest = new URLRequest(url + "?action=submit"+"&track="+track+"&version="+version+"&time="+time+"&hash="+hash+"&data="+data);
 			
@@ -236,11 +236,12 @@
 				var msg:String = event.target.data.replace("data=","");
 				var arr:Array = msg.split(";");
 				for (i = 0; i < arr.length-1; i+=4 )
-				{
+				{					
 					var dbId:int = int(arr[i]);
-					var userId:int = int(arr[i + 1]);
+					var userId:int = int(arr[i + 1]);						
 					var completionTime:int = int(arr[i + 2]); 
 					var data:String = arr[i + 3];
+					FlxG.log("userId:" + userId);
 					FlxG.log("positions[" + i/4 + "]: " + data);
 					
 					if ( data.indexOf("-", 0) > 0)

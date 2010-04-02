@@ -42,8 +42,7 @@
 				"Arrow keys to move" + "\n" +
 				"UP to enter door" + "\n" +
 				"ESC to main menu" + "\n" +
-				"SPACE to restart level" + "\n" +
-				"Q to switch character (test)"
+				"SPACE to restart level" + "\n" 
 				);			
 			gTxt.size = 12;							
 			gTxt.scrollFactor = new Point(1, 1);				

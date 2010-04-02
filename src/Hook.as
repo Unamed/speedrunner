@@ -5,12 +5,13 @@
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxCore;
 	import org.flixel.FlxG;
+	import org.flixel.fefranca.debug.FlxSpriteDebug;
 	
 	/**
 	 * ...
 	 * @author Casper van Est
 	 */
-	public class Hook extends FlxSprite
+	public class Hook extends FlxSprite//Debug
 	{		
 		[Embed(source = "../data/temp/hook_small.png")] private var ImgHook:Class;
 		
@@ -25,6 +26,8 @@
 		
 		private var line:Line;
 		private var emitter:FlxEmitter;
+		
+		private var hookableTiles:Array;
 			
 		public function Hook(player:Player)
 		{
@@ -40,6 +43,10 @@
 				
 			line = new Line(player, this, 2, 0x000000);
 			
+			hookableTiles = new Array();
+			hookableTiles.push(34);
+			hookableTiles.push(35);
+			hookableTiles.push(36);
 			
 			// Trail emitter
 			emitter = new FlxEmitter();			
@@ -49,7 +56,7 @@
 			emitter.y = this.y;
 			emitter.x = this.x;		
 			emitter.setRotation(0, 90);			
-			emitter.delay = -1;
+			emitter.delay = -0.5;
 			emitter.gravity = 300;
 			emitter.setXVelocity(-100, 100);
 			emitter.setYVelocity(-25, 25);// 25, 75);					
@@ -57,7 +64,7 @@
 			var arr:Array = new Array();
 			for (var i:uint = 0; i < 5; i++)
 			{
-				arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(4, 4, 0xFF000000))));			
+				arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(4, 4, 0xFFFFFFFF))));			
 				//arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(6, 6, 0xFFFFFFFF))));			
 				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
 			}	
@@ -74,93 +81,121 @@
 			velocity.x = VelocityX;
 			velocity.y = VelocityY;	
 			exists = true;
+			
+			angle = velocity.x > 0 ? 45 : -45;
 		}	
 		
 		//@desc		Called when this object collides with a FlxBlock on one of its sides
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitWall(Contact:FlxCore=null):Boolean { return collided(); }
+		override public function hitWall(Contact:FlxCore = null):Boolean 
+		{ 
+			// first check if it is something I can cling on to:
+			var contactXtile:uint = Contact.x / Contact.width
+			var contactYtile:uint = Contact.y / Contact.height;			
+			var tileIndex:uint = (FlxG.state as PlayState).flanmap.mainLayer.getTile(contactXtile, contactYtile);
+			
+			angle = velocity.x > 0 ? 90 : -90; 
+			
+			return collided(hookableTiles.indexOf(tileIndex) > -1);			
+		}
 		
 		//@desc		Called when this object collides with the top of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitFloor(Contact:FlxCore = null):Boolean 
-		{ 
-			if ( Contact )
-			{			
-				var contactXtile:uint = Contact.x / Contact.width
-				var contactYtile:uint = Contact.y / Contact.height;
-				
-				//var tileIndexAbove:uint = playState.tilemap.getTile(contactXtile, contactYtile + 1);
-				var tileIndexBelow:uint = (FlxG.state as PlayState).flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
-				
-				if ( tileIndexBelow >= (FlxG.state as PlayState).flanmap.mainLayer.collideIndex )
-				{
-					this.y = Contact.y + Contact.height + Contact.height;
-				}
-				else
-				{
-					this.y = Contact.y + Contact.height;
-				}
-			}
-			return collided(); 
+		{ 			
+			angle = 0;
+			return collided(checkCollision(Contact));	
 		}
 		
 		//@desc		Called when this object collides with the bottom of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitCeiling(Contact:FlxCore = null):Boolean 
 		{
+			angle = 0;
+			return collided(checkCollision(Contact));				
+		}
+		
+		private function checkCollision(Contact:FlxCore = null):Boolean
+		{			
 			if ( Contact )
-			{			
+			{					
+				// first, check if Contact is a valid tile to hook on to:
 				var contactXtile:uint = Contact.x / Contact.width
 				var contactYtile:uint = Contact.y / Contact.height;
 				
-				//var tileIndexAbove:uint = playState.tilemap.getTile(contactXtile, contactYtile + 1);
-				var tileIndexBelow:uint = (FlxG.state as PlayState).flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
+				var tileIndex:uint = (FlxG.state as PlayState).flanmap.mainLayer.getTile(contactXtile, contactYtile);
 				
-				if ( tileIndexBelow >= (FlxG.state as PlayState).flanmap.mainLayer.collideIndex )
+				if ( hookableTiles.indexOf(tileIndex) > -1 )
 				{
-					this.y = Contact.y + Contact.height + Contact.height;
+					// Yes it is! Hook onto it baby!						
+					return true;
 				}
-				else
-				{
-					this.y = Contact.y + Contact.height;
+				
+				// Otherwise, iterate downwards, to see if one of those tiles is hookable:
+				var i:int = 1;
+				var tileIndexBelow:uint = (FlxG.state as PlayState).flanmap.mainLayer.getTile(contactXtile, contactYtile + 1);
+				
+				var thereIsSomethingBelow:Boolean = tileIndexBelow >= (FlxG.state as PlayState).flanmap.mainLayer.collideIndex;
+				var bFoundACorrectSurfaceBelow:Boolean = false;
+				
+				while ( thereIsSomethingBelow )
+				{					
+					if ( hookableTiles.indexOf(tileIndexBelow) > -1 )
+					{
+						// ok! But, move me down a bit
+						this.y = Contact.y + Contact.height + Contact.height * i;
+						bFoundACorrectSurfaceBelow = true;
+						break;
+					}
+					else
+					{
+						i++;
+						tileIndexBelow = (FlxG.state as PlayState).flanmap.mainLayer.getTile(contactXtile, contactYtile - i);
+						thereIsSomethingBelow = tileIndexBelow >= (FlxG.state as PlayState).flanmap.mainLayer.collideIndex;
+					}
 				}
+								
+				return bFoundACorrectSurfaceBelow;
 			}
 			
-			return collided(); 
+			// no Contact?
+			return false;			
 		}
 		
-		private function collided():Boolean
+		private function collided(bCanHook:Boolean):Boolean
 		{
-			// first, emitter:
-			if( this.velocity.x > 0 )
-				emitter.setXVelocity(-75, 300);
-			else 
-				emitter.setXVelocity(-300, 75);
-			
-			emitter.reset(this.x, this.y);	
-			emitter.restart(); 
-			
-			
-			velocity.x = 0;
-			velocity.y = 0;	
-			bCollided = true;	
-			
-			playerAccel = new Point(500, 0);
-			
-			
-			
-//			else
-	//			trail.active = false;
+			if ( !bCanHook )
+			{
+				// do emitter and play error sound:
+				if( this.velocity.x > 0 )
+					emitter.setXVelocity(-75, 300);
+				else 
+					emitter.setXVelocity(-300, 75);
 				
+				emitter.reset(this.x, this.y);	
+				emitter.restart(); 
+				
+				// Release!
+				release();
+			}			
+			else 
+			{
+				// collide, and send impulse to player:
+				velocity.x = 0;
+				velocity.y = 0;	
+				bCollided = true;	
+				
+				playerAccel = new Point(500, 0);
+			}				
 				
 			return true;	
 		}
 		
 		override public function update():void
-		{
-			super.update();
-			
+		{			
 			playerAccel = new Point(0, 0);
+			
+			super.update();
 		}
 		
 		public function release():void 
@@ -168,6 +203,7 @@
 			super.reset(0, 0);
 			
 			bCollided = false;
+			
 			
 			velocity.x = 0;
 			velocity.y = 0;	

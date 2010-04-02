@@ -4,9 +4,9 @@ package
 	import flash.geom.Point;
 	import org.flixel.*;	
 	
-	//import org.flixel.fefranca.debug.FlxSpriteDebug;
+	import org.flixel.fefranca.debug.FlxSpriteDebug;
 
-	public class Player extends FlxSprite
+	public class Player extends FlxSprite//Debug
 	{		
 		[Embed(source = "../data/temp/player.png")] private var ImgPlayer:Class;
 		//[Embed(source="../data/temp/ninjagaidentrilogy_ryuhayabusa_sheet.png")] private var ImgRyu:Class;
@@ -62,8 +62,8 @@ package
 		
 		
 		public var currentPush:Number; // the force applied by input
-		public const defaultPush:Number = 500;
-		public const slowPush:Number = 100;
+		public const defaultPush:Number = 600;		
+		public const slowPush:Number = 150;
 		
 		static public const ONGROUND:uint = 0;
 		static public const ONWALL:uint = 1;
@@ -71,6 +71,7 @@ package
 		static public const ONSLOPEUP:uint = 3;
 		static public const INAIR:uint = 4;
 		static public const SWINGING:uint = 5;
+		private var bSliding:Boolean;
 		
 		public var status:uint = INAIR;
 		
@@ -110,7 +111,7 @@ package
 			//bounding box tweaks
 			width = 21;
 			height = 46;
-			offset.x = 2;
+			offset.x = 11;	//2
 			offset.y = 4;
 			
 			//basic player physics
@@ -136,6 +137,7 @@ package
 			addAnimation("walling", [6]);						
 			addAnimation("wallingaway", [7]);	
 			addAnimation("stopslide", [8]);
+			addAnimation("slide", [19]);
 			
 			
 			curHook = 0;
@@ -232,7 +234,7 @@ package
 				if(restart > 2)
 					FlxG.switchState(PlayState);
 				return;
-			}			
+			}
 			
 			// ENTERING DOORS:
 			if ( FlxG.keys.justPressed("UP") && bHitDoor )
@@ -286,7 +288,6 @@ package
 			maxVelocity.y = 24 * size;
 			drag.x = defaultRunVelocity * 2;				
 			
-			// EMITTERS:
 			//if ( velocity.length > 50 )
 			//	trail.reset(this.x, this.y);
 			//else if ( trail.active )
@@ -303,12 +304,12 @@ package
 			{				
 				if ( velocity.x > 0 )
 				{
-					trail.reset(this.x + 45, this.y + trailYoffset);	
+					trail.reset(this.x + this.width, this.y + trailYoffset);	
 					trail.setXVelocity(200, 300);
 				}
 				else
 				{
-					trail.reset(this.x, this.y + trailYoffset);	
+					trail.reset(this.x - this.width, this.y + trailYoffset);	
 					trail.setXVelocity( -300, -200);
 				}
 					
@@ -544,15 +545,40 @@ package
 				}
 				else // ON GROUND
 				{
+					if ( FlxG.keys.DOWN )
+					{
+						if ( !bSliding )
+							this.y += 26;
+							
+						bSliding = true;
+						this.offset.y = 26;
+						this.height = 20;
+					}
+					else
+					{				
+						if ( bSliding )
+							this.y -= 26;
+							
+						bSliding = false;						
+						this.offset.y = 4;
+						this.height = 46;
+					}
+					
 					if(FlxG.keys.LEFT)
 					{
 						facing = LEFT;
-						acceleration.x -= currentPush;
+						if( bSliding )
+							acceleration.x = Math.min( acceleration.x + currentPush, 0 );
+						else
+							acceleration.x -= currentPush;
 					}
 					else if(FlxG.keys.RIGHT)
 					{
 						facing = RIGHT;
-						acceleration.x += currentPush;
+						if( bSliding )
+							acceleration.x = Math.max( acceleration.x - currentPush, 0 );
+						else
+							acceleration.x += currentPush;
 					}
 				}
 				
@@ -604,20 +630,20 @@ package
 					play("wallingaway");
 				else
 					play("walling");
-			}
-			else if(velocity.x == 0)
-			{
-				play("idle");
-			}
+			}			
 			else
 			{
-				if ( facing == RIGHT && velocity.x < 0 
+				if ( bSliding )
+					play("slide");				
+				else if ( facing == RIGHT && velocity.x < 0 
 				|| facing == LEFT && velocity.x > 0 )				
 					play("stopslide");
 				else if ( Math.abs(velocity.x) > maxRunVelocity )
 					play("runfast");
 				else if ( Math.abs(velocity.x) > defaultRunVelocity )				
-					play("runmedium");				
+					play("runmedium");
+				else if(velocity.x == 0)
+					play("idle");
 				else	
 					play("runslow");
 			}	
@@ -691,7 +717,14 @@ package
 				this.angle = (ropeAngle * (180 / Math.PI)) - 90;
 				//this.angle = Math.max( -45, Math.min( 45, this.angle ) );					
 			}
-			else if( status != SWINGING )
+			else if ( status == ONGROUND )
+			{
+				if ( bSliding )
+					this.angle = 0;
+				else
+					this.angle = (this.velocity.x / maxBoostVelocity) * 20;				
+			}
+			else
 				this.angle = 0;
 				
 				

@@ -60,6 +60,7 @@ package org.flixel
 		static public var followMin:Point;
 		static public var followMax:Point;
 		static protected var _scrollTarget:Point;
+		static public var cameraOffset:Point;
 		
 		//graphics stuff
 		static public var scroll:Point;
@@ -842,8 +843,8 @@ package org.flixel
 			{
 				if(followTarget.exists && !followTarget.dead)
 				{
-					_scrollTarget.x = (width>>1)-followTarget.x-(followTarget.width>>1);
-					_scrollTarget.y = (height>>1)-followTarget.y-(followTarget.height>>1);
+					_scrollTarget.x = (width>>1)-followTarget.x+cameraOffset.x-(followTarget.width>>1);
+					_scrollTarget.y = (height>>1)-followTarget.y+cameraOffset.y-(followTarget.height>>1);
 					if((followLead != null) && (followTarget is FlxSprite))
 					{
 						_scrollTarget.x -= (followTarget as FlxSprite).velocity.x*followLead.x;

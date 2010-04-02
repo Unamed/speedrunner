@@ -35,18 +35,18 @@
 			if ( hook.bCollided )
 			{				
 				if ( player.facing == FlxSprite.LEFT)
-					xLoc = 1.25 * player.width;
+					xLoc = 0.75 * player.width;
 				else
-					xLoc = player.width / 2;
+					xLoc = 0.25 * player.width;
 					
 				yLoc = player.height / 2;
 			}
 			else
 			{
 				if ( player.facing == FlxSprite.LEFT)
-					xLoc = 0.5 * player.width;
+					xLoc = 0;
 				else
-					xLoc = 1.5 * player.width;
+					xLoc = player.width;
 					
 				yLoc = player.height / 8;
 			}

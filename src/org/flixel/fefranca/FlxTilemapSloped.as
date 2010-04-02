@@ -26,7 +26,7 @@
 		
 		public function FlxTilemapSloped() 
 		{
-			slopeSnapping = 3;	//ori: 3
+			slopeSnapping = 21;	//ori: 3
 			floorLeftSlopes = new Array();
 			floorRightSlopes = new Array();
 			ceilingLeftSlopes = new Array();
