@@ -1,5 +1,6 @@
 package org.flixel
 {
+	import cas.spdr.logic.ProgressManager;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
