@@ -36,15 +36,17 @@
 		{		
 			super.addHUDElements();
 			
-			var gTxt:FlxText = new FlxText(100, 1400, 500, 
-				"Welcome to SpeedRunner Prototype v0.3" + "\n" + 
+			var gTxt:FlxText = new FlxText(30, 1370, 500, 
+				"Welcome to SpeedRunner Prototype v0.4" + "\n \n" + 
 				"Controls: " + "\n" +
-				"Z - jump" + "\n" +
-				"X - shoot Grappling Hook (when unlocked)" + "\n" +
-				"Arrow keys to move" + "\n" +
+				"LEFT, RIGHT to move" + "\n" +
+				"Z - (Double) Jump (when unlocked)" + "\n" +
+				"X - Shoot Grappling Hook (when unlocked)" + "\n" +
+				"DOWN - Slide (when unlocked)" + "\n" +				
 				"UP to enter door" + "\n" +
 				"ESC to main menu" + "\n" +
-				"SPACE to restart level" + "\n" 
+				"SPACE to restart level" + "\n \n" +
+				"caspervanest [at] gmail [dot] com"
 				);			
 			gTxt.size = 12;							
 			gTxt.scrollFactor = new Point(1, 1);				
