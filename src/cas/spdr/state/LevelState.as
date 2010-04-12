@@ -45,7 +45,12 @@
 		private var allPositions:Array;
 		private var bShouldLog:Boolean;		
 		private var colorArray:Array = new Array(0xFFFF33, 0xFFFFFF, 0x79DCF4, 0xFF3333, 0xFFCC33, 0x99CC33);
-		private var bDrawMyOwn:Boolean = false; // decided whether or not I also want to see the commits from my own IP
+		private var bDrawMyOwn:Boolean = false; // decided whether or not I also want to see the commits from my own IP		
+		private var logDrawIndex:int = 0;
+		private var logDrawCnt:int = 1;
+		
+		private var logTxt1:FlxText;
+		private var logTxt2:FlxText;
 		
 		public function LevelState() 
 		{	
@@ -111,6 +116,16 @@
 			bestTxt.size = 15;							
 			bestTxt.scrollFactor = new Point(0, 0);				
 			this.add(bestTxt);	
+			
+			logTxt1 = new FlxText(10, 200, 400, "Drawing: ");			
+			logTxt1.size = 12;							
+			logTxt1.scrollFactor = new Point(0, 0);				
+			this.add(logTxt1);	
+			
+			//logTxt2 = new FlxText(10, 250, 400, "UserIds: ");			
+			//logTxt2.size = 12;							
+			//logTxt2.scrollFactor = new Point(0, 0);				
+			//this.add(logTxt2);
 		}	
 		
 		override public function update():void
@@ -147,6 +162,35 @@
 			{
 				retreiveLogsFromServer("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");
 			}
+			else if ( FlxG.keys.justPressed("U") )
+			{
+				logDrawIndex += logDrawCnt;
+				logDrawIndex %= allPositions.length;
+				
+				//if ( logDrawIndex > allPositions.length -1 )
+				//	logDrawIndex = 0;
+			}
+			else if ( FlxG.keys.justPressed("J") )
+			{
+				logDrawIndex -= logDrawCnt;				
+				if ( logDrawIndex < 0 )
+					logDrawIndex = allPositions.length +logDrawIndex;
+			}
+			else if ( FlxG.keys.justPressed("I") )
+			{
+				logDrawCnt = Math.min( logDrawCnt + 1, allPositions.length );				
+			}
+			else if ( FlxG.keys.justPressed("K") )
+			{
+				logDrawCnt = Math.max( logDrawCnt-1, 0);				
+			}
+			
+			if( allPositions.length > 0 )
+				logTxt1.text = "DrawingIndices: " + logDrawIndex + " to " + (logDrawIndex + logDrawCnt - 1);
+			else
+				logTxt1.text = "";
+			//logTxt2.text = "UserIds: 3, 5, 6, 9, 10, 11, 14";
+			
 		}
 		
 		public function startTimer():void
@@ -265,6 +309,7 @@
 						}
 					}					
 				}
+				FlxG.log("..received " + allPositions.length + " lines");
 			}
 		}
 		
@@ -297,12 +342,16 @@
 			var p1:Point;
 			var p2:Point;
 			
-			for ( i = 0; i < Math.min(allPositions.length,10); i++ )
-			{				
-				pArr = allPositions[i];
+			
+			
+			for ( i = logDrawIndex; i < logDrawIndex+logDrawCnt; i++ )
+			{			
+				var t:int = i % allPositions.length;
+								
+				pArr = allPositions[t];
 				
 				drawShape = new Shape();
-				drawShape.graphics.lineStyle(2,colorArray[i % colorArray.length]);
+				drawShape.graphics.lineStyle(2,colorArray[t % colorArray.length]);
 				
 				for ( j = 1; j < pArr.length; j++ )
 				{					
@@ -324,7 +373,7 @@
 						drawShape.graphics.lineTo(xLoc2, yLoc2);
 						FlxG.buffer.draw(drawShape);				
 					}
-				}	
+				}					
 			}
 		}
 	}
