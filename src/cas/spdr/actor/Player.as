@@ -936,8 +936,10 @@ package cas.spdr.actor
 				var contactXtile:uint = Contact.x / 16;
 				var contactYtile:uint = Contact.y / 16;
 				
-				var tileIndexAbove:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile + 1);
-				var tileIndexBelow:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
+				// top one only used for testing:
+				var tileIndex:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile);
+				var tileIndexAbove:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
+				var tileIndexBelow:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile + 1);
 				
 				// start walling when there are tiles both below AND above the collided tile
 				if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
@@ -952,7 +954,8 @@ package cas.spdr.actor
 				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex  )					
 				{
 					// regular collision.
-				}				
+					
+				}						
 				// if I've hit a single tile (no tile above or below it) -> glide past it, but only if you're in the air
 				else if( status != ONGROUND )
 				{
@@ -961,20 +964,21 @@ package cas.spdr.actor
 					// I've hit a single tile.. slide over or under it:
 					if ( yDiff > 0 )
 					{
-						//slide over..
-					//	this.y += (Contact.height + yDiff );						
+						//glide under.. 			
+						this.y += (Contact.height + yDiff );						
 						return false;
 					}
-					else 					
+					else if( yDiff < 0 ) 					
 					{
-						// slide under..
+						// glide over..	
 						this.y -= (Contact.height + yDiff );						
 						return false;
 					}
 				}
-				
+				FlxG.log("hitWall, index: "+tileIndex+" iAbove: "+tileIndexAbove+" iBelow:"+tileIndexBelow);
 			}	
-				
+			
+			
 			return super.hitWall(Contact);
 		}
 		
