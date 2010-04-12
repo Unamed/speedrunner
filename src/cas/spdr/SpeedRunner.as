@@ -24,7 +24,8 @@
 			
 			FlxG.level = 0;
 			
-			var save:FlxSave = new FlxSave("SpeedRunner03");
+			var save:FlxSave = new FlxSave();
+			save.bind("SpeedRunner03");
 			FlxG.progressManager.bUnlockedHook = (save.read("bUnlockedHook") as Boolean);
 			FlxG.progressManager.lionBest = (save.read("lionBest") as Number);
 			FlxG.progressManager.hydraBest = (save.read("hydraBest") as Number);
@@ -35,7 +36,6 @@
 			FlxG.save = 0;
 			
 			
-			help("Jump / Hook", "Nothing", "Nothing");
 			
 			showLogo = false;
 			
