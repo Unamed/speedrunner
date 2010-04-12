@@ -71,6 +71,7 @@ package cas.spdr.actor
 		public const maxRunVelocity:uint = 2.0 * defaultRunVelocity;			//1.5
 		public const maxBoostVelocity:uint = 3.00 * defaultRunVelocity;			//2.0
 		public const maxSwingVelocity:uint = maxBoostVelocity;
+		public const crawlVelocity:uint = 300;
 		
 		
 		public var currentPush:Number; // the force applied by input
@@ -84,6 +85,7 @@ package cas.spdr.actor
 		static public const INAIR:uint = 4;
 		static public const SWINGING:uint = 5;
 		private var bSliding:Boolean;
+		private var bCrawling:Boolean;
 		
 		public var status:uint = INAIR;
 		
@@ -150,6 +152,7 @@ package cas.spdr.actor
 			addAnimation("wallingaway", [7]);	
 			addAnimation("stopslide", [8]);
 			addAnimation("slide", [19]);
+			addAnimation("crawl", [20,21],4);
 			
 			
 			curHook = 0;
@@ -250,20 +253,10 @@ package cas.spdr.actor
 			
 			// ENTERING DOORS:
 			if ( FlxG.keys.justPressed("UP") && bHitDoor )
-			{
 				( FlxG.state as PlayState ).switchToLevel(switchToLevelId);				
-			}
 			
-			// release swing?
-			if ( hooks[prevHook].exists && !FlxG.keys.pressed("X") )
-			{
-				hooks[prevHook].release();				
-			}
+			checkReleaseHook();
 			
-			if ( !hooks[prevHook].bCollided )
-			{
-				bIsSwinging = false;				
-			}
 			
 			//MOVEMENT
 			// first, set defaults:		
@@ -282,7 +275,11 @@ package cas.spdr.actor
 				maxVelocity.x = maxBoostVelocity;			
 			else  
 			{
-				if ( Math.abs(velocity.x) < defaultRunVelocity )
+				if ( bCrawling )
+				{
+					maxVelocity.x = crawlVelocity;					
+				}
+				else if ( Math.abs(velocity.x) < defaultRunVelocity )
 				{		
 					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, defaultRunVelocity);			
 				}
@@ -300,64 +297,10 @@ package cas.spdr.actor
 			maxVelocity.y = 24 * size;
 			drag.x = defaultRunVelocity * 2;				
 			
-			//if ( velocity.length > 50 )
-			//	trail.reset(this.x, this.y);
-			//else if ( trail.active )
-			//	trail.active = false;
-				
-			//if ( true)//Math.abs(velocity.x) * 0.85 > maxRunVelocity )
-			//	trail2.reset(this.x, this.y);
-			//else if ( trail2.active )
-			//	trail2.active = false;
-			
-			if (( facing == RIGHT && velocity.x < 0 
-				|| facing == LEFT && velocity.x > 0 )
-				&& status == ONGROUND )
-			{				
-				if ( velocity.x > 0 )
-				{
-					trail.reset(this.x + this.width, this.y + trailYoffset);	
-					trail.setXVelocity(200, 300);
-				}
-				else
-				{
-					trail.reset(this.x - this.width, this.y + trailYoffset);	
-					trail.setXVelocity( -300, -200);
-				}
 					
-			}
-			else
-				trail.active = false;
 			
-			if ( velocity.y )
-				trail2.reset(this.x, this.y);
-			else if ( trail2.active )
-				trail2.active = false;
-			
-				
-			//trail.gravity = Math.max(0, maxRunVelocity - Math.abs(this.velocity.x));			
-			//trail2.gravity = trail.gravity;
-			
-			
-			
-			var velToRot:Number;
-			if ( velocity.length > 0 )
-			{				
-				velToRot = (( Math.asin( velocity.x / velocity.length ) / Math.PI ) * 180 ) - 90;
-								
-				// wierdness... :|
-				if ( velocity.y > 0 )
-					velToRot *= -1;
-				
-			}
-			else
-				velToRot = 0;			
-			
-			if( this.velocity.y )
-				trail2.setRotation(velToRot, velToRot);
-			else
-				trail2.setRotation(0, 0);
-			
+			// --------------------------------------------------------------------------------------------------------------------------------
+			// MOVEMENT CODE: 			
 			
 			// IF SWINGING:
 			if ( hooks[prevHook].exists && hooks[prevHook].bCollided )
@@ -428,14 +371,7 @@ package cas.spdr.actor
 					velocity.x = -50;
 				else
 					velocity.x = 50;
-				velocity.y = 0;
-				
-				
-				
-			//	if(FlxG.keys.LEFT)
-			//		facing = LEFT;
-			//	else if(FlxG.keys.RIGHT)
-			//		facing = RIGHT;				
+				velocity.y = 0;	
 								
 				// JUMPING:
 				if( FlxG.keys.justPressed("Z") )
@@ -546,14 +482,6 @@ package cas.spdr.actor
 					{					
 						acceleration.x = 0;
 					}
-					
-					// Finally, add a lot of drag, b/c jumping slows you down:
-					//if ( velocity.x && acceleration.x )
-					//{
-					//	var decrease:Number = 2.0 * FlxG.elapsed;
-					//	
-					//	velocity.x *= (1 - decrease);						
-					//}
 				}
 				else // ON GROUND
 				{
@@ -567,13 +495,30 @@ package cas.spdr.actor
 						this.height = 20;
 					}
 					else
-					{				
-						if ( bSliding )
-							this.y -= 26;
+					{		
+						// if I was sliding..
+						if ( bSliding || bCrawling )
+						{
+							if ( tryStandUp() )
+							{
+								bCrawling = false;
+								
+								this.y -= 26;
+								
+							}
+							else
+							{
+								bCrawling = true;
+							}							
+						}
 							
-						bSliding = false;						
-						this.offset.y = 4;
-						this.height = 46;
+						bSliding = false;												
+						
+						if ( !bCrawling )
+						{
+							this.offset.y = 4;
+							this.height = 46;								
+						}
 					}
 					
 					if(FlxG.keys.LEFT)
@@ -581,6 +526,11 @@ package cas.spdr.actor
 						facing = LEFT;
 						if( bSliding )
 							acceleration.x = Math.min( acceleration.x + currentPush, 0 );
+						else if ( bCrawling )
+						{
+							//?
+							acceleration.x -= currentPush;
+						}
 						else
 							acceleration.x -= currentPush;
 					}
@@ -589,6 +539,11 @@ package cas.spdr.actor
 						facing = RIGHT;
 						if( bSliding )
 							acceleration.x = Math.max( acceleration.x - currentPush, 0 );
+						else if ( bCrawling )
+						{
+							//?
+							acceleration.x += currentPush;
+						}
 						else
 							acceleration.x += currentPush;
 					}
@@ -610,14 +565,76 @@ package cas.spdr.actor
 					jumpTime = maxJumpTime;					
 				}
 			}
+			// END MOVEMENT CODE!
+			// --------------------------------------------------------------------------------------------------------------------------------
 			
 			//AIMING
 			bUp = false;
 			bDown = false;
 			if(FlxG.keys.UP) bUp = true;
-			else if(FlxG.keys.DOWN && velocity.y) bDown = true;
+			else if (FlxG.keys.DOWN && velocity.y) bDown = true;
 			
-			//ANIMATION
+			// ANIMATING:
+			playAnimation();			
+			
+			// SHOOT HOOK:
+			if ( FlxG.keys.justPressed("X") && bCanHook )
+				shootHook();
+			
+			// ROTATING:
+			doRotation(ropeAngle);			
+			 
+			// UPDATE POSITION AND ANIMATION 
+			// (but save current data for future reference..
+			// because update automatically sets velocity.y bcause of gravity)
+			var velocityBeforeUpdate:Point = new Point(velocity.x, velocity.y);			
+			super.update();	
+			
+			// THEN, update trails (we want to use the new location):
+			updateTrails(velocityBeforeUpdate);			
+			
+			// CLEAN UP: 
+			bBoosting = false;		
+			
+			// still neccessary???
+			if ( switchToAirCntDwn > 0 && status != SWINGING)
+			{
+				switchToAirCntDwn -= FlxG.elapsed;
+				if ( switchToAirCntDwn <= 0 )
+				{
+					status = INAIR;
+				}
+			}
+		}		
+		
+		// UPDATE HELPER FUNCTIONS:
+		// only to be called during update loop!
+		
+		private function checkReleaseHook():void
+		{
+			if ( hooks[prevHook].exists && !FlxG.keys.pressed("X") )
+				hooks[prevHook].release();				
+			
+			if ( !hooks[prevHook].bCollided )
+				bIsSwinging = false;				
+		}
+		
+		private function tryStandUp():Boolean
+		{
+			var hitPoint:Point = new Point();
+			var hit1:Boolean = playState.flanmap.mainLayer.ray(x, y, x, y - 26, hitPoint);
+			var hit2:Boolean = playState.flanmap.mainLayer.ray(x + width, y, x + width, y - 26, hitPoint);
+			
+			if ( hit1 || hit2 )
+				return false;
+			// else..
+			return true;
+			
+		}
+		
+		// finds out which animation should be played
+		private function playAnimation():void
+		{
 			if (hooks[prevHook].exists )
 			{
 				if( hooks[prevHook].bCollided )
@@ -632,13 +649,11 @@ package cas.spdr.actor
 				else if ( Math.abs(velocity.x) > 0 )
 					play("jump_rotate");
 				else if (velocity.y < 0) 
-					play("jump_up");
-				
+					play("jump_up");				
 			}
 			else if ( status == ONWALL )
 			{
-				if ( facing == RIGHT && FlxG.keys.LEFT 
-					|| facing == LEFT && FlxG.keys.RIGHT )
+				if ( facing == RIGHT && FlxG.keys.LEFT || facing == LEFT && FlxG.keys.RIGHT )
 					play("wallingaway");
 				else
 					play("walling");
@@ -646,9 +661,10 @@ package cas.spdr.actor
 			else
 			{
 				if ( bSliding )
-					play("slide");				
-				else if ( facing == RIGHT && velocity.x < 0 
-				|| facing == LEFT && velocity.x > 0 )				
+					play("slide");
+				else if ( bCrawling )
+					play("crawl");
+				else if ( facing == RIGHT && velocity.x < 0 || facing == LEFT && velocity.x > 0 )				
 					play("stopslide");
 				else if ( Math.abs(velocity.x) > maxRunVelocity )
 					play("runfast");
@@ -658,40 +674,40 @@ package cas.spdr.actor
 					play("idle");
 				else	
 					play("runslow");
-			}	
+			}				
+		}
+		
+		private function shootHook():void
+		{
+			var bXVel:int = 0;
+			var bYVel:int = 0;
+			var bX:int = x;
+			var bY:int = y;	
 			
-			// SHOOT HOOK:
-			if ( FlxG.keys.justPressed("X") && bCanHook )
+			bY -= hooks[curHook].height - 4;
+			bYVel = -hookVel;
+			
+			if(facing == RIGHT)
 			{
-				var bXVel:int = 0;
-				var bYVel:int = 0;
-				var bX:int = x;
-				var bY:int = y;	
-				
-				bY -= hooks[curHook].height - 4;
-				bYVel = -hookVel;
-				
-				if(facing == RIGHT)
-				{
-					bX += width - 4;
-					bXVel = hookVel;
-				}
-				else
-				{
-					bX -= hooks[curHook].width - 4;
-					bXVel = -hookVel;
-				}			
-				
-				hooks[curHook].shoot(bX, bY, bXVel, bYVel);
-				
-				prevHook = curHook;
-				if(++curHook >= hooks.length)
-					curHook = 0;
+				bX += width - 4;
+				bXVel = hookVel;
 			}
+			else
+			{
+				bX -= hooks[curHook].width - 4;
+				bXVel = -hookVel;
+			}			
 			
+			hooks[curHook].shoot(bX, bY, bXVel, bYVel);
 			
-			
-			// ROTATING:	
+			prevHook = curHook;
+			if(++curHook >= hooks.length)
+				curHook = 0;			
+		}
+		
+		// Finds out and sets the correct rotation
+		private function doRotation(ropeAngle:Number):void
+		{
 			if (hooks[prevHook].exists && !hooks[prevHook].bCollided )
 				this.angle = 0;			
 			else if ( status == ONSLOPEDOWN )			
@@ -738,49 +754,55 @@ package cas.spdr.actor
 			}
 			else
 				this.angle = 0;
-				
-				
 			
-			 
-			//UPDATE POSITION AND ANIMATION
-			super.update();	
-			
-			//if ( facing == LEFT )
-			//	this._flipped = 1;
-			//else
-			//	this._flipped = 0;
-			
-			
-			// So I;m also re-setting the trails above, so this needs to be checked/rewritten/etc:
-			//trail.x = this.x;// + this.width / 2;			
-			//trail.y = this.y + trailYoffset;// + this.height - 8;// / 2;
-			
-			trail2.x = this.x + this.width / 2;			
-			trail2.y = this.y + this.height / 2;	//trail2Yoffset;// + this.height - 8;// / 2;
-			
-			//if( facing == RIGHT )
-			//	eyeSpr.x = this.x + eyeOffsetX;
-			//else
-			//	eyeSpr.x = this.x + (eyeOffsetX - this.width)+1;
-			//eyeSpr.y = this.y + eyeOffsetY;
-			
-			// RESET SOME STUFF:
-			//if ( status == ONWALL )//|| status == ONSLOPEDOWN)
-				//status = INAIR;
-			
-			
-			//bOnDownSlope = false;
-			//bWalling = false;
-			bBoosting = false;		
-			
-			if ( switchToAirCntDwn > 0 && status != SWINGING)
-			{
-				switchToAirCntDwn -= FlxG.elapsed;
-				if ( switchToAirCntDwn <= 0 )
+		}
+		
+		private function updateTrails(oldVelocity:Point):void 
+		{
+			// Sliding effect:
+			if (( facing == RIGHT && velocity.x < 0 
+				|| facing == LEFT && velocity.x > 0 )
+				&& status == ONGROUND )
+			{				
+				if ( velocity.x > 0 )
 				{
-					status = INAIR;
+					trail.reset(this.x + this.width, this.y + trailYoffset);	
+					trail.setXVelocity(200, 300);
 				}
+				else
+				{
+					trail.reset(this.x - this.width, this.y + trailYoffset);	
+					trail.setXVelocity( -300, -200);
+				}
+					
 			}
+			else
+				trail.active = false;				
+				
+			// "Q-music" effect:
+			var velToRot:Number;
+			if ( velocity.length > 0 )
+			{				
+				velToRot = (( Math.asin( velocity.x / velocity.length ) / Math.PI ) * 180 ) - 90;
+								
+				// wierdness... :|
+				if ( velocity.y > 0 )
+					velToRot *= -1;				
+			}
+			else
+				velToRot = 0;	
+				
+			if ( oldVelocity.y )
+			{
+				trail2.reset(this.x + this.width / 2, this.y + this.height / 2);
+				trail2.setRotation(velToRot, velToRot);
+			}
+			else if ( trail2.active )
+			{
+				trail2.active = false;
+				trail2.setRotation(0, 0);
+			}				
+			
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -917,23 +939,22 @@ package cas.spdr.actor
 				var tileIndexAbove:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile + 1);
 				var tileIndexBelow:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
 				
+				// start walling when there are tiles both below AND above the collided tile
 				if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
 					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex )
 				{					
 					status = ONWALL;
-					velocity.x = 0;
-					
-					/*
-					if ( velocity.x > 0 )
-						facing = LEFT;
-					else	
-						facing = RIGHT;
-					*/
-						
+					velocity.x = 0;						
 					velocity.y = 0;
 					jumpTime = 0;		
 				}
-				else
+				// if there is a tile above the collided tile -> regular collision
+				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex  )					
+				{
+					// regular collision.
+				}				
+				// if I've hit a single tile (no tile above or below it) -> glide past it, but only if you're in the air
+				else if( status != ONGROUND )
 				{
 					var yDiff:Number = this.y - (Contact.y + Contact.height / 2);
 					
@@ -941,16 +962,17 @@ package cas.spdr.actor
 					if ( yDiff > 0 )
 					{
 						//slide over..
-						this.y += (Contact.height + yDiff );						
+					//	this.y += (Contact.height + yDiff );						
 						return false;
 					}
-					else
+					else 					
 					{
 						// slide under..
 						this.y -= (Contact.height + yDiff );						
 						return false;
 					}
 				}
+				
 			}	
 				
 			return super.hitWall(Contact);

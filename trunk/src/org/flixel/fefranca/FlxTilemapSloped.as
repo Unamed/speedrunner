@@ -53,10 +53,10 @@
 			var blocks:Array = new Array();
 			
 			//First make a list of all the blocks we'll use for collision
-			var ix:uint = Math.floor((Core.x - x)/_tileSize);
-			var iy:uint = Math.floor((Core.y - y)/_tileSize);
-			var iw:uint = Math.ceil((Core.x - x + Core.width)/_tileSize) - ix;
-			var ih:uint = Math.ceil((Core.y - y + Core.height + 2)/_tileSize) - iy;
+			var ix:uint = Math.floor((Core.x - x)/_tileWidth);
+			var iy:uint = Math.floor((Core.y - y)/_tileHeight);
+			var iw:uint = Math.ceil((Core.x - x + Core.width)/_tileWidth) - ix;
+			var ih:uint = Math.ceil((Core.y - y + Core.height + 2)/_tileHeight) - iy;
 			
 			//Slope related variables
 			var blockX:Number;
@@ -79,13 +79,13 @@
 					if (dd >= collideIndex) {
 						//Slope UP  _/
 						if (floorLeftSlopes.indexOf(dd) != -1) {
-							blockX = x + (ix + c) * _tileSize;
-							blockY = y + (iy + r) * _tileSize;
+							blockX = x + (ix + c) * _tileWidth;
+							blockY = y + (iy + r) * _tileHeight;
 							dotX = Core.x + Core.width * 0.5;
 							//Character inside slope
-							if (dotX  >= blockX && dotX < blockX + _tileSize + slopeSnapping) {
+							if (dotX  >= blockX && dotX < blockX + _tileWidth + slopeSnapping) {
 								//y position of the slope at the current x position (y = f(x))
-								slopeY = blockY + _tileSize + blockX - dotX;
+								slopeY = blockY + _tileHeight + blockX - dotX;
 								if (Core.y + Core.height >= slopeY - slopeSnapping) {
 									if (Core.y - Core.last.y >= -1) {
 										Core.hitFloor(this);
@@ -98,11 +98,11 @@
 						}
 						//Slope DOWN \_
 						else if (floorRightSlopes.indexOf(dd) != -1) {
-							blockX = x + (ix + c) * _tileSize;
-							blockY = y + (iy + r) * _tileSize;
+							blockX = x + (ix + c) * _tileWidth;
+							blockY = y + (iy + r) * _tileHeight;
 							dotX = Core.x + Core.width * 0.5;
 							//Character inside slope
-							if (dotX  >= blockX - slopeSnapping && dotX < blockX + _tileSize) {
+							if (dotX  >= blockX - slopeSnapping && dotX < blockX + _tileWidth) {
 								slopeY = blockY - blockX + dotX;
 								if (Core.y + Core.height >= slopeY - slopeSnapping) {
 									if (Core.y - Core.last.y >= -1) {	
@@ -116,11 +116,11 @@
 						}
 						//Ceiling Slope TOP LEFT \_
 						else if (ceilingLeftSlopes.indexOf(dd) != -1) {
-							blockX = x + (ix + c) * _tileSize;
-							blockY = y + (iy + r) * _tileSize;
+							blockX = x + (ix + c) * _tileWidth;
+							blockY = y + (iy + r) * _tileHeight;
 							dotX = Core.x + Core.width * 0.5;
 							//Character inside slope
-							if (dotX  >= blockX && dotX < blockX + _tileSize) {
+							if (dotX  >= blockX && dotX < blockX + _tileWidth) {
 								slopeY = blockY - blockX + dotX;
 								if (Core.y <= slopeY + slopeSnapping) {
 									coreSprite = Core as FlxSprite;
@@ -133,12 +133,12 @@
 						}
 						//Ceiling Slope TOP RIGHT _/
 						else if (ceilingRightSlopes.indexOf(dd) != -1) {
-							blockX = x + (ix + c) * _tileSize;
-							blockY = y + (iy + r) * _tileSize;
+							blockX = x + (ix + c) * _tileWidth;
+							blockY = y + (iy + r) * _tileHeight;
 							dotX = Core.x + Core.width * 0.5;
 							//Character inside slope
-							if (dotX  >= blockX && dotX < blockX + _tileSize) {
-								slopeY = blockY + _tileSize + blockX - dotX;
+							if (dotX  >= blockX && dotX < blockX + _tileWidth) {
+								slopeY = blockY + _tileHeight + blockX - dotX;
 								if (Core.y <= slopeY + slopeSnapping) {
 									coreSprite = Core as FlxSprite;
 									if (coreSprite.velocity.y < 0) coreSprite.velocity.y = 0;
@@ -149,7 +149,7 @@
 							}
 						}
 						else {
-							blocks.push( { x:x + (ix + c) * _tileSize, y:y + (iy + r) * _tileSize, data:dd } );
+							blocks.push( { x:x + (ix + c) * _tileWidth, y:y + (iy + r) * _tileHeight, data:dd } );
 						}				 
 					}
 				}
@@ -174,7 +174,7 @@
 				{
 					d = blocks[i].data;
 					if(_callbacks[d] != null)
-						_callbacks[d](Core,_block.x/_tileSize,_block.y/_tileSize,d);
+						_callbacks[d](Core,_block.x/_tileWidth,_block.y/_tileHeight,d);
 					hx = true;
 				}
 			}
@@ -189,7 +189,7 @@
 				{
 					d = blocks[i].data;
 					if(_callbacks[d] != null)
-						_callbacks[d](Core,_block.x/_tileSize,_block.y/_tileSize,d);
+						_callbacks[d](Core,_block.x/_tileWidth,_block.y/_tileHeight,d);
 					hy = true;
 				}
 			}

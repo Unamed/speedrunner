@@ -50,8 +50,8 @@
 		private var logDrawCnt:int = 1;
 		
 		private var logTxt1:FlxText;
-		private var logTxt2:FlxText;
-		
+		private var logTxt2:FlxText;		
+				
 		public function LevelState() 
 		{	
 			playTime = 0;
@@ -117,15 +117,15 @@
 			bestTxt.scrollFactor = new Point(0, 0);				
 			this.add(bestTxt);	
 			
-			logTxt1 = new FlxText(10, 200, 400, "Drawing: ");			
+			logTxt1 = new FlxText(10, 200, 400, "");			
 			logTxt1.size = 12;							
 			logTxt1.scrollFactor = new Point(0, 0);				
 			this.add(logTxt1);	
 			
-			//logTxt2 = new FlxText(10, 250, 400, "UserIds: ");			
-			//logTxt2.size = 12;							
-			//logTxt2.scrollFactor = new Point(0, 0);				
-			//this.add(logTxt2);
+			logTxt2 = new FlxText(10, 250, 400, "");			
+			logTxt2.size = 12;							
+			logTxt2.scrollFactor = new Point(0, 0);				
+			this.add(logTxt2);
 		}	
 		
 		override public function update():void
@@ -185,11 +185,17 @@
 				logDrawCnt = Math.max( logDrawCnt-1, 0);				
 			}
 			
-			if( allPositions.length > 0 )
-				logTxt1.text = "DrawingIndices: " + logDrawIndex + " to " + (logDrawIndex + logDrawCnt - 1);
+			if ( allPositions.length > 0 )
+			{
+				if ( logDrawCnt > 1 )
+					logTxt1.text = "DrawingIndices: " + logDrawIndex + " to " + (logDrawIndex + logDrawCnt - 1) + " (of " + (allPositions.length - 1) + ")";
+				else
+					logTxt1.text = "DrawingIndex: " + logDrawIndex + " (of " + (allPositions.length - 1) + ")";					
+				
+			}
 			else
 				logTxt1.text = "";
-			//logTxt2.text = "UserIds: 3, 5, 6, 9, 10, 11, 14";
+			
 			
 		}
 		
@@ -236,7 +242,7 @@
 			sendLoader.addEventListener(IOErrorEvent.IO_ERROR, sendError);			
 			
 			var track:String = FlxG.level.toString();
-			var version:String = FlxG.VERSIONID.toString();
+			var version:String = FlxG.LIBRARY_MAJOR_VERSION.toString() + ":"+ FlxG.LIBRARY_MINOR_VERSION.toString();
 			var time:String = Math.round(playTime).toString();
 			var data:String = positions;
 			var hash:String = HighScores.MD5("slowcrawler" + time + data);							
@@ -262,8 +268,8 @@
 			var request:URLRequest = new URLRequest(url);
 			var variables:URLVariables = new URLVariables();
 			variables.action = "show";
-			variables.track = FlxG.level.toString();
-			variables.version = FlxG.VERSIONID.toString();
+			variables.track = FlxG.level.toString();			
+			variables.version = FlxG.LIBRARY_MAJOR_VERSION.toString() + ":"+ FlxG.LIBRARY_MINOR_VERSION.toString();
 			request.data = variables;				
 
 			var loadLoader:URLLoader = new URLLoader();
@@ -296,6 +302,9 @@
 						{							
 							var dataArray:Array = data.split("-");
 							pointArray = new Array();
+							
+							pointArray.push(userId);
+							pointArray.push(completionTime);
 							
 							for (j = 0; j < dataArray.length-1; j++ )
 							{
@@ -342,6 +351,9 @@
 			var p1:Point;
 			var p2:Point;
 			
+			var ids:String = "UserIds: ";
+			var times:String = "CompletionTimes: ";
+			
 			
 			
 			for ( i = logDrawIndex; i < logDrawIndex+logDrawCnt; i++ )
@@ -352,8 +364,14 @@
 				
 				drawShape = new Shape();
 				drawShape.graphics.lineStyle(2,colorArray[t % colorArray.length]);
+						
+				ids += pArr[0] + " ";
+				times += pArr[1] + " ";
 				
-				for ( j = 1; j < pArr.length; j++ )
+				//logTxt2.text += "UserId: " + pArr[0] +"\n";
+				//logTxt2.text += "CompletionTime: " + pArr[1] +"\n";
+				
+				for ( j = 3; j < pArr.length; j++ )
 				{					
 					p1 = Point(pArr[j - 1]);					
 					xLoc1 = p1.x + FlxG.scroll.x;
@@ -375,6 +393,8 @@
 					}
 				}					
 			}
+			
+			logTxt2.text = ids + "\n" + times;
 		}
 	}
 }
