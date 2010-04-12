@@ -233,22 +233,37 @@
 				allPositions = new Array();
 				
 				var i:int;
+				var j:int;
+				var pointArray:Array;
+				
 				var msg:String = event.target.data.replace("data=","");
-				var arr:Array = msg.split(";");
+				var arr:Array = msg.split(";");				
+				
 				for (i = 0; i < arr.length-1; i+=4 )
 				{					
 					var dbId:int = int(arr[i]);
 					var userId:int = int(arr[i + 1]);						
 					var completionTime:int = int(arr[i + 2]); 
 					var data:String = arr[i + 3];
-					FlxG.log("userId:" + userId);
-					FlxG.log("positions[" + i/4 + "]: " + data);
-					
+				
 					if ( data.indexOf("-", 0) > 0)
 					{
-						if( userId > 2 || bDrawMyOwn)
-							allPositions.push(data);
-					}
+						if ( userId > 2 || bDrawMyOwn )
+						{							
+							var dataArray:Array = data.split("-");
+							pointArray = new Array();
+							
+							for (j = 0; j < dataArray.length-1; j++ )
+							{
+								var tempLocArr:Array = dataArray[j].split(",");
+								var loc:Point = new Point(Number(tempLocArr[0]), Number(tempLocArr[1]));							
+								
+								pointArray.push(loc);
+							}
+							
+							allPositions.push(pointArray);		
+						}
+					}					
 				}
 			}
 		}
@@ -256,9 +271,9 @@
 		// overridden to draw log-lines, if neccessary
 		override public function render():void
 		{		
-			super.render();
+			super.render();			
 			
-			if ( allPositions.length > 0 )// && positions.length > 0 )
+			if ( allPositions.length > 0 )
 			{				
 				drawLog();
 			}				
@@ -267,51 +282,49 @@
 		// draws all position-lines
 		private function drawLog():void
 		{
-			var j:int;
-			var posArr:Array;
-			var colorId:int;
-			var color:int;	
 			var i:int;		
+			var j:int;
+			var pArr:Array;
+			var colorId:int;
+			var color:uint;
 			
-			var drawShape:Shape;			
-			var locArr1:Array;
-			var locArr2:Array;			
+			var drawShape:Shape;// = new Shape();			
 			var xLoc1:Number;
 			var yLoc1:Number;
 			var xLoc2:Number;
 			var yLoc2:Number;
 			
-			for (j = 0; j < allPositions.length; j++ )
-			{
-				posArr = allPositions[j].split("-");
+			var p1:Point;
+			var p2:Point;
+			
+			for ( i = 0; i < Math.min(allPositions.length,10); i++ )
+			{				
+				pArr = allPositions[i];
 				
-				colorId = j % colorArray.length;
-				color = colorArray[colorId];
+				drawShape = new Shape();
+				drawShape.graphics.lineStyle(2,colorArray[i % colorArray.length]);
+				
+				for ( j = 1; j < pArr.length; j++ )
+				{					
+					p1 = Point(pArr[j - 1]);					
+					xLoc1 = p1.x + FlxG.scroll.x;
+					yLoc1 = p1.y + FlxG.scroll.y;
 					
-				for (i = 1; i < posArr.length-1; i++ )
-				{
-					drawShape = new Shape();					
-					drawShape.graphics.lineStyle(2, color);
-					
-					locArr1 = posArr[i-1].split(",");
-					locArr2 = posArr[i].split(",");
-					
-					xLoc1 = Number(locArr1[0]) + FlxG.scroll.x;
-					yLoc1 = Number(locArr1[1]) + FlxG.scroll.y;
-					xLoc2 = Number(locArr2[0]) + FlxG.scroll.x;
-					yLoc2 = Number(locArr2[1]) + FlxG.scroll.y;
+					p2 = Point(pArr[j]);
+					xLoc2 = p2.x + FlxG.scroll.x;
+					yLoc2 = p2.y + FlxG.scroll.y;
 					
 					if((xLoc1 < -100) || (xLoc2 > FlxG.width+100) || (yLoc1 < -100) || (yLoc2 > FlxG.height+100))
 					{
-						// no drawing..	
+						// no drawing..							
 					}
 					else
 					{					
-						drawShape.graphics.moveTo(xLoc1 , yLoc1 );
-						drawShape.graphics.lineTo(xLoc2 , yLoc2 );
+						drawShape.graphics.moveTo(xLoc1, yLoc1);
+						drawShape.graphics.lineTo(xLoc2, yLoc2);
 						FlxG.buffer.draw(drawShape);				
 					}
-				}				
+				}	
 			}
 		}
 	}
