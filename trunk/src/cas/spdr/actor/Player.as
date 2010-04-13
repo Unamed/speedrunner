@@ -928,7 +928,11 @@ package cas.spdr.actor
 				return hitTrigger((Contact as Trigger));
 				
 			if ( bIsSwinging )
-				hooks[prevHook].breakRelease();			
+			{
+				FlxG.log("HitWall while swinging");
+				hooks[prevHook].breakRelease();		
+				
+			}
 			
 				
 			if ( playState )
@@ -941,8 +945,21 @@ package cas.spdr.actor
 				var tileIndexAbove:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
 				var tileIndexBelow:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile + 1);
 				
-				// start walling when there are tiles both below AND above the collided tile
-				if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
+				FlxG.log("hitWall ("+contactXtile+", "+contactYtile+"), index: "+tileIndex+" iAbove: "+tileIndexAbove+" iBelow:"+tileIndexBelow+" (y = "+y+")");
+				
+				// MMMMmmaybe there was this weird case where I'm hitting a wall, but above it is a slope.
+				// In that case, I should prob. be on top of that slope, right? 
+				if ( tileIndexAbove == 32 || tileIndexAbove == 33 )						
+				{
+					playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 34);
+					this.y -= 3 * Contact.height;
+					this.last.y = this.y;	// this line is needed, otherwise a hitCeiling will be detected (which messes up this hack)
+					
+					return false;
+				}					
+					
+				// Otherwise, start walling when there are tiles both below AND above the collided tile
+				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
 					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex )
 				{					
 					status = ONWALL;
@@ -955,30 +972,53 @@ package cas.spdr.actor
 				{
 					// regular collision.
 					
-				}						
-				// if I've hit a single tile (no tile above or below it) -> glide past it, but only if you're in the air
-				else if( status != ONGROUND )
-				{
-					var yDiff:Number = this.y - (Contact.y + Contact.height / 2);
 					
-					// I've hit a single tile.. slide over or under it:
-					if ( yDiff > 0 )
+					
+				}						
+				// if I've hit a single tile (no tile above it) -> glide over it (conditions apply!!!)
+				else if ( tileIndexAbove < playState.flanmap.mainLayer.collideIndex ) 
+				{
+					// WARNING! RATHER UGLY HACKING CODE:
+					// There are 3 scenarios in which this (tileIndexAbove != collisionTile) might happen:
+					// 1 - while in air
+					// 2 - a bug when coming from slope, but missing the last slopeTile
+					// 3 - walking against a wall that is just as high as me 					
+					// In the first two cases, I want to apply a nice piece of gliding over code. However, 
+					// in case 3, I want regular collision! This ugly code will identify which case we're dealing with:
+					
+					var bPossiblyInCaseThree:Boolean = true;
+					
+					if ( status == INAIR )
+						bPossiblyInCaseThree = false;
+						
+					if ( bPossiblyInCaseThree )
 					{
-						//glide under.. 			
-						this.y += (Contact.height + yDiff );						
+						var tileIndexLeft:uint = playState.flanmap.mainLayer.getTile(contactXtile-1, contactYtile);
+						var tileIndexLeft2:uint = playState.flanmap.mainLayer.getTile(contactXtile-2, contactYtile);
+						var tileIndexRight:uint = playState.flanmap.mainLayer.getTile(contactXtile + 1, contactYtile);
+						var tileIndexRight2:uint = playState.flanmap.mainLayer.getTile(contactXtile + 2, contactYtile);
+						
+						if ( playState.flanmap.mainLayer.floorRightSlopes.indexOf(tileIndexRight) > -1 
+							|| playState.flanmap.mainLayer.floorRightSlopes.indexOf(tileIndexRight2) > -1 
+							|| playState.flanmap.mainLayer.floorLeftSlopes.indexOf(tileIndexLeft) > -1 
+							|| playState.flanmap.mainLayer.floorLeftSlopes.indexOf(tileIndexLeft2) > -1 )
+						{
+							bPossiblyInCaseThree = false;
+						}								
+					}
+					
+					if ( !bPossiblyInCaseThree )
+					{
+						playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 36);
+						this.y -= 1 * Contact.height;
+						this.last.y = this.y;	// this line is needed, otherwise a hitCeiling will be detected (which messes up this hack)
+						
 						return false;
 					}
-					else if( yDiff < 0 ) 					
-					{
-						// glide over..	
-						this.y -= (Contact.height + yDiff );						
-						return false;
-					}
-				}
-				FlxG.log("hitWall, index: "+tileIndex+" iAbove: "+tileIndexAbove+" iBelow:"+tileIndexBelow);
+				}				
 			}	
 			
-			
+			playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 35);
 			return super.hitWall(Contact);
 		}
 		
@@ -994,9 +1034,28 @@ package cas.spdr.actor
 				return hitPickup((Contact as Pickup));
 			if (Contact is Door )
 				return hitDoor((Contact as Door));
+			
+			var contactXtile:uint = Contact.x / 16;
+			var contactYtile:uint = Contact.y / 16;			
+			var tileIndex:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile);			
+						
+			if ( bIsSwinging )
+			{	
+				FlxG.log("hitFloor (" + tileIndex + ")");
+				
+				if ( tileIndex == 32 || tileIndex == 33 )
+				{
+					FlxG.log("hitFloor on slope..");
+					hooks[prevHook].breakRelease();							
+					bIsSwinging = false;
+				}
+				
+				// bounce:
+				//velocity.x = 0;
+			}		
 				
 			status = ONGROUND;			
-			jumpTime = 0;			
+			jumpTime = 0;	
 			
 			return super.hitFloor(Contact); 
 		}
@@ -1020,6 +1079,8 @@ package cas.spdr.actor
 			if ( Contact is Trigger )
 				return hitTrigger((Contact as Trigger));
 				
+			FlxG.log("hitCeiling");
+			
 			if ( bIsSwinging )
 			{
 				//hooks[prevHook].breakRelease();
