@@ -37,7 +37,7 @@
 			super.addHUDElements();
 			
 			var gTxt:FlxText = new FlxText(30, 1370, 500, 
-				"Welcome to SpeedRunner Prototype v0.4" + "\n \n" + 
+				"Welcome to FlowRunner Prototype v0.4" + "\n \n" + 
 				"Controls: " + "\n" +
 				"LEFT, RIGHT to move" + "\n" +
 				"Z - (Double) Jump (when unlocked)" + "\n" +
