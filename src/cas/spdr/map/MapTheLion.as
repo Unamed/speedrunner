@@ -8,6 +8,7 @@ package cas.spdr.map
 	import cas.spdr.gfx.sprite.Pickup;
 	import cas.spdr.gfx.sprite.PlayerStart;
 	import cas.spdr.gfx.sprite.StartTrigger;
+	import cas.spdr.actor.MovingBlock;
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxTilemapSloped;
 	
@@ -67,6 +68,11 @@ package cas.spdr.map
 		override public function addSpritesToLayerMain(onAddCallback:Function = null):void {
 			var obj:FlxSprite;
 			
+			// temp test:
+			var mb:MovingBlock = new MovingBlock(400, 950, 600, 950, 256, 64, 100, true, Img_Main );
+			FlxG.state.add( mb );
+			onAddCallback(mb);
+		
 			obj = new Pickup(592, 976);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;

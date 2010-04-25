@@ -1,7 +1,6 @@
 ﻿package cas.spdr.state
 {
-	import cas.spdr.actor.Hook;
-	import cas.spdr.actor.Player;
+	import cas.spdr.actor.*;	
 	import cas.spdr.gfx.sprite.BoostSection;
 	import cas.spdr.gfx.sprite.Door;
 	import cas.spdr.gfx.sprite.FinishTrigger;
@@ -57,6 +56,7 @@
 		private var triggers:Array;
 		private var slopeDowns:Array;
 		private var slopeUps:Array;
+		private var movingBlocks:Array;
 		private var doors:Array;
 		private var start:StartTrigger;
 		private var finish:FinishTrigger;
@@ -100,6 +100,7 @@
 			boosts = new Array();
 			triggers = new Array();
 			doors = new Array();
+			movingBlocks = new Array();
 			
 			addBackGround();
 			addBGLayer();
@@ -245,6 +246,7 @@
 			FlxG.collideArray(pickups, player);
 			FlxG.collideArray(doors, player);
 			FlxG.collideArray(boosts, player);
+			FlxG.collideArray(movingBlocks, player);
 			//start.collide(player);
 			
 			if ( finish != null ) 
@@ -277,7 +279,7 @@
 		
 		
 		
-		protected function onAddSpriteCallback(obj:FlxSprite):void
+		protected function onAddSpriteCallback(obj:FlxCore):void
 		{			
 			if ( obj is Obstacle )
 			{
@@ -328,6 +330,10 @@
 			else if (obj is StartTrigger )
 			{				
 				start = (obj as StartTrigger);								
+			}
+			else if (obj is MovingBlock )
+			{				
+				movingBlocks.push(obj);								
 			}
 		}		
 	}
