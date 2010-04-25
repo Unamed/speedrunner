@@ -525,7 +525,43 @@ package cas.spdr.actor
 						this.velocity.y = 0;// -= 100;
 						this.jumpTime = 0;
 						bDidDoubleJump = true;
-					}		
+					}	
+					
+					if ( FlxG.keys.DOWN )
+					{
+						if ( !bSliding )
+							this.y += 26;
+							
+						bSliding = true;
+						this.offset.y = 26;
+						this.height = 20;
+					}
+					else
+					{		
+						// if I was sliding..
+						if ( bSliding || bCrawling )
+						{
+							if ( tryStandUp() )
+							{
+								bCrawling = false;
+								
+								this.y -= 26;
+								
+							}
+							else
+							{
+								bCrawling = true;
+							}							
+						}
+							
+						bSliding = false;												
+						
+						if ( !bCrawling )
+						{
+							this.offset.y = 4;
+							this.height = 46;								
+						}
+					}
 				}
 				else // ON GROUND
 				{
@@ -688,7 +724,9 @@ package cas.spdr.actor
 			}
 			else if(velocity.y != 0)
 			{
-				if (velocity.y > 0 && velocity.y > Math.abs(velocity.x)) 
+				if ( bSliding )
+					play("slide");
+				else if (velocity.y > 0 && velocity.y > Math.abs(velocity.x)) 
 					play("jump_down");
 				else if ( bDidDoubleJump )
 					play("jump_rotate");
