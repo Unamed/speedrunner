@@ -51,7 +51,7 @@ package org.flixel
 		 * @param	TileGraphic The graphic class that contains the tiles that should fill this block.
 		 * @param	Empties		The number of "empty" tiles to add to the auto-fill algorithm (e.g. 8 tiles + 4 empties = 1/3 of block will be open holes).
 		 */
-		public function loadGraphic(TileGraphic:Class,Empties:uint=0):void
+		virtual public function loadGraphic(TileGraphic:Class,Empties:uint=0):void
 		{
 			if(TileGraphic == null)
 				return;

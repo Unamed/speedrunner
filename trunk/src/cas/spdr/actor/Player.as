@@ -44,6 +44,7 @@ package cas.spdr.actor
 		//private var swingSpeed:uint = 1.750 * runSpeed; //1.30 * runSpeed bij snel
 		
 		private var jumpTime:Number;
+		private var bDidDoubleJump:Boolean;
 		private var maxJumpTime:Number = 0.25;
 		
 		private var fallAccel:Number = 32 * size;
@@ -90,6 +91,7 @@ package cas.spdr.actor
 		public var status:uint = INAIR;
 		
 		private var switchToAirCntDwn:Number = 0;
+		private var releaseWallCntDwn:Number = 0;
 		
 		
 		private var charIndx:int;
@@ -146,6 +148,7 @@ package cas.spdr.actor
 			addAnimation("grappling", [14]);			
 			addAnimation("trygrappling", [15]);			
 			addAnimation("jump_up", [13]);
+			addAnimation("jump_forward", [4]);
 			addAnimation("jump_rotate", [18]);
 			addAnimation("jump_down", [12]);						
 			addAnimation("walling", [6]);						
@@ -315,6 +318,7 @@ package cas.spdr.actor
 				maxVelocity.x = maxSwingVelocity;
 				
 				bOnDownSlope = false;
+				bDidDoubleJump = false;
 				
 				// Always start swinging at a high speed				
 				if ( !bIsSwinging )
@@ -365,21 +369,52 @@ package cas.spdr.actor
 			// WALL MOVEMENT:
 			else if ( status == ONWALL )//bWalling )
 			{
-				maxVelocity.x = defaultRunVelocity;
+				maxVelocity.x = defaultRunVelocity;				
 				
+				// make sure I stick to the wall:
 				if( facing == LEFT )
 					velocity.x = -50;
-				else
+				else 
 					velocity.x = 50;
+				
+				releaseWallCntDwn -= FlxG.elapsed;
+				
+				if( ( FlxG.keys.LEFT || FlxG.keys.RIGHT ) )
+				{
+					releaseWallCntDwn = 0.5;
+				}
+				
+				if ( releaseWallCntDwn <= 0 )
+				{
+					// release wall!
+					// make sure I stick to the wall:
+					if ( facing == LEFT )
+					{
+						velocity.x = 50;
+						facing = RIGHT;
+					}
+					else 
+					{
+						velocity.x = -50;
+						facing = LEFT;
+					}						
+					status - INAIR;					
+				}
 				velocity.y = 0;	
 								
 				// JUMPING:
 				if( FlxG.keys.justPressed("Z") )
 				{		
 					if ( facing == RIGHT )
+					{
 						velocity.x -= jumpFromWallPower;
+						facing = LEFT;
+					}
 					else
+					{
 						velocity.x += jumpFromWallPower;
+						facing = RIGHT;
+					}
 						
 					status = INAIR;
 				}				
@@ -482,6 +517,15 @@ package cas.spdr.actor
 					{					
 						acceleration.x = 0;
 					}
+					
+					// DOUBLE JUMPING:
+					if( FlxG.keys.justPressed("Z") && !bDidDoubleJump )
+					{	
+						FlxG.log("Double jump!");
+						this.velocity.y = 0;// -= 100;
+						this.jumpTime = 0;
+						bDidDoubleJump = true;
+					}		
 				}
 				else // ON GROUND
 				{
@@ -558,7 +602,7 @@ package cas.spdr.actor
 					
 					// hmm gaat nog niet echt lekker :(
 					if ( jumpTime < maxJumpTime )
-						velocity.y -= ((maxJumpTime - jumpTime) / maxJumpTime) * jumpPower * FlxG.elapsed;
+						velocity.y -= ((maxJumpTime - jumpTime) / maxJumpTime) * jumpPower * FlxG.elapsed;					
 				}
 				else if ( status == INAIR )
 				{
@@ -646,9 +690,11 @@ package cas.spdr.actor
 			{
 				if (velocity.y > 0 && velocity.y > Math.abs(velocity.x)) 
 					play("jump_down");
-				else if ( Math.abs(velocity.x) > 0 )
+				else if ( bDidDoubleJump )
 					play("jump_rotate");
-				else if (velocity.y < 0) 
+				else if ( Math.abs(velocity.x) > 0 )
+					play("jump_forward");				
+				else 
 					play("jump_up");				
 			}
 			else if ( status == ONWALL )
@@ -714,7 +760,7 @@ package cas.spdr.actor
 				this.angle = 45;
 			else if ( status == ONSLOPEUP )
 				this.angle = -45;
-			else if ( status == INAIR )
+			else if ( status == INAIR && bDidDoubleJump )
 			{					
 				if ( FlxG.keys.Z && Math.abs(this.velocity.x) > 0)
 				{	
@@ -868,6 +914,7 @@ package cas.spdr.actor
 				status = ONSLOPEDOWN;
 				
 				jumpTime = 0;
+				bDidDoubleJump = false;
 				
 				xdiff = this.x - Contact.x;
 				this.y = Contact.y - this.height + xdiff - 2;
@@ -877,6 +924,7 @@ package cas.spdr.actor
 				status = ONSLOPEUP;
 				
 				jumpTime = 0;
+				bDidDoubleJump = false;
 				
 				xdiff = (Contact.x + Contact.width) - (this.x + this.width);
 				this.y = Contact.y - this.height + xdiff - 2;				
@@ -951,7 +999,7 @@ package cas.spdr.actor
 				// In that case, I should prob. be on top of that slope, right? 
 				if ( tileIndexAbove == 32 || tileIndexAbove == 33 )						
 				{
-					playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 34);
+					//playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 34);
 					this.y -= 3 * Contact.height;
 					this.last.y = this.y;	// this line is needed, otherwise a hitCeiling will be detected (which messes up this hack)
 					
@@ -961,11 +1009,15 @@ package cas.spdr.actor
 				// Otherwise, start walling when there are tiles both below AND above the collided tile
 				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
 					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex )
-				{					
-					status = ONWALL;
+				{		
+					if ( velocity.x > 0 && FlxG.keys.RIGHT 
+						|| velocity.x < 0 && FlxG.keys.LEFT )
+						status = ONWALL;
+						
 					velocity.x = 0;						
 					velocity.y = 0;
-					jumpTime = 0;		
+					jumpTime = 0;
+					bDidDoubleJump = false;
 				}
 				// if there is a tile above the collided tile -> regular collision
 				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex  )					
@@ -1009,7 +1061,7 @@ package cas.spdr.actor
 					
 					if ( !bPossiblyInCaseThree )
 					{
-						playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 36);
+						//playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 36);
 						this.y -= 1 * Contact.height;
 						this.last.y = this.y;	// this line is needed, otherwise a hitCeiling will be detected (which messes up this hack)
 						
@@ -1018,7 +1070,7 @@ package cas.spdr.actor
 				}				
 			}	
 			
-			playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 35);
+			//playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 35);
 			return super.hitWall(Contact);
 		}
 		
@@ -1055,7 +1107,8 @@ package cas.spdr.actor
 			}		
 				
 			status = ONGROUND;			
-			jumpTime = 0;	
+			jumpTime = 0;
+			bDidDoubleJump = false;
 			
 			return super.hitFloor(Contact); 
 		}
