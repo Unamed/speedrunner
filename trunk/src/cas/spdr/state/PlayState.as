@@ -242,7 +242,8 @@
 			if ( !playerCol )
 				player.hitNothing();
 			
-			FlxG.collideArray(obstacles, player);
+			if( ! player.isStumbling() )
+				FlxG.collideArray(obstacles, player);
 			FlxG.collideArray(pickups, player);
 			FlxG.collideArray(doors, player);
 			FlxG.collideArray(boosts, player);

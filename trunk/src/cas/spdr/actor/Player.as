@@ -87,6 +87,8 @@ package cas.spdr.actor
 		static public const SWINGING:uint = 5;
 		private var bSliding:Boolean;
 		private var bCrawling:Boolean;
+		private var bStumbling:Boolean;
+		private var stumbleCntDwn:Number;
 		
 		public var status:uint = INAIR;
 		
@@ -148,7 +150,7 @@ package cas.spdr.actor
 			addAnimation("grappling", [14]);			
 			addAnimation("trygrappling", [15]);			
 			addAnimation("jump_up", [13]);
-			addAnimation("jump_forward", [4]);
+			addAnimation("jump_forward", [4,5,10,11],12);
 			addAnimation("jump_rotate", [18]);
 			addAnimation("jump_down", [12]);						
 			addAnimation("walling", [6]);						
@@ -156,6 +158,7 @@ package cas.spdr.actor
 			addAnimation("stopslide", [8]);
 			addAnimation("slide", [19]);
 			addAnimation("crawl", [20,21],4);
+			addAnimation("stumble", [16,17,18],8);
 			
 			
 			curHook = 0;
@@ -252,6 +255,13 @@ package cas.spdr.actor
 				if(restart > 2)
 					FlxG.switchState(PlayState);
 				return;
+			}
+			
+			if ( bStumbling )
+			{
+				stumbleCntDwn -= FlxG.elapsed;
+				if ( stumbleCntDwn < 0 )
+					bStumbling = false;
 			}
 			
 			// ENTERING DOORS:
@@ -633,6 +643,7 @@ package cas.spdr.actor
 				if( FlxG.keys.pressed("Z") )
 				{
 					status = INAIR;
+					bStumbling = false;
 					jumpTime += FlxG.elapsed;
 					acceleration.y = fallAccel;
 					
@@ -744,7 +755,9 @@ package cas.spdr.actor
 			}			
 			else
 			{
-				if ( bSliding )
+				if ( bStumbling )				
+					play("stumble");
+				else if ( bSliding )
 					play("slide");
 				else if ( bCrawling )
 					play("crawl");
@@ -977,9 +990,12 @@ package cas.spdr.actor
 		
 		public function hitObstacle(Contact:Obstacle):Boolean
 		{
-			this.velocity.x = 0;				
+			this.velocity.x *= 0.5;				
 			this.velocity.y = 0;
-			this.flicker(2);
+			
+			bStumbling = true;
+			stumbleCntDwn = 0.5;
+			//this.flicker(2);
 			
 			if ( bIsSwinging )
 				hooks[prevHook].breakRelease();
@@ -1193,5 +1209,10 @@ package cas.spdr.actor
 		{
 			this.hooks = hooks;			
 		}		
+		
+		public function isStumbling():Boolean
+		{
+			return bStumbling;
+		}
 	}
 }
