@@ -1,9 +1,6 @@
 ﻿package  cas.spdr.logic
 {
-	import cas.spdr.map.MapBase;
-	import cas.spdr.map.MapTheHind;
-	import cas.spdr.map.MapTheHydra;
-	import cas.spdr.map.MapTheLion;
+	import cas.spdr.map.*;
 	import org.flixel.FlxG;
 	/**
 	 * ...
@@ -33,11 +30,23 @@
 		private var hindBronze:Number = 20.0;
 		public var hindBest:Number;// = 99.99;
 		
+		private var l4Gold:Number = 20.0;
+		private var l4Silver:Number = 25.0;
+		private var l4Bronze:Number = 30.0;
+		public var l4Best:Number;// = 99.99;
+		
+		private var l5Gold:Number = 25.0;
+		private var l5Silver:Number = 30.0;
+		private var l5Bronze:Number = 40.0;
+		public var l5Best:Number;// = 99.99;
+		
 		public function ProgressManager() 
 		{
 			lionBest = 99.99;
 			hydraBest = 99.99;
 			hindBest = 99.99;
+			l4Best = 99.99;
+			l5Best = 99.99;
 		}
 		
 		// Returns a party reason string value if finishing the level in playTime is worthy of throwing a party
@@ -98,6 +107,8 @@
 				return hydraGold;
 			else if ( level is MapTheHind )
 				return hindGold;
+			else if ( level is MapLevel4 )
+				return l4Gold;
 			else
 				return 99;
 			
@@ -111,6 +122,8 @@
 				return hydraSilver;
 			else if ( level is MapTheHind )
 				return hindSilver;
+			else if ( level is MapLevel4 )
+				return l4Silver;
 			else
 				return 99;
 		}
@@ -123,6 +136,8 @@
 				return hydraBronze;
 			else if ( level is MapTheHind )
 				return hindBronze;
+			else if ( level is MapLevel4 )
+				return l4Bronze;
 			else
 				return 99;
 		}
@@ -135,6 +150,8 @@
 				return hydraBest;
 			else if ( level is MapTheHind )
 				return hindBest;
+			else if ( level is MapLevel4 )
+				return l4Best;
 			else
 				return 99;
 		}
@@ -155,7 +172,12 @@
 			{
 				hindBest = playTime;
 				FlxG.saves[FlxG.save].write("hindBest", hindBest);				
-			}			
+			}	
+			else if ( level is MapLevel4 )
+			{
+				l4Best = playTime;
+				FlxG.saves[FlxG.save].write("l4Best", l4Best);				
+			}	
 		}
 	}
 

@@ -1140,6 +1140,8 @@ package cas.spdr.actor
 				return hitPickup((Contact as Pickup));
 			if (Contact is Door )
 				return hitDoor((Contact as Door));
+			if (Contact is Obstacle )
+				return hitObstacle((Contact as Obstacle));
 			
 			var contactXtile:uint = Contact.x / 16;
 			var contactYtile:uint = Contact.y / 16;			
