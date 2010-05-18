@@ -21,6 +21,8 @@
 			FlxG.levels.push(MapTheLion);
 			FlxG.levels.push(MapTheHydra);
 			FlxG.levels.push(MapTheHind);
+			FlxG.levels.push(MapLevel4);
+			FlxG.levels.push(MapLevel5);
 			
 			FlxG.level = 0;
 			

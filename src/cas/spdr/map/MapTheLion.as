@@ -69,9 +69,9 @@ package cas.spdr.map
 			var obj:FlxSprite;
 			
 			// temp test:
-			var mb:MovingBlock = new MovingBlock(400, 950, 600, 950, 256, 64, 100, true, Img_Main );
-			FlxG.state.add( mb );
-			onAddCallback(mb);
+			//var mb:MovingBlock = new MovingBlock(400, 950, 600, 950, 256, 64, 100, true, Img_Main );
+			//FlxG.state.add( mb );
+			//onAddCallback(mb);
 		
 			obj = new Pickup(592, 976);;
 			obj.x+=obj.offset.x;
