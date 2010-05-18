@@ -39,6 +39,7 @@
 		private var currentMapIndex:uint;	
 		
 		// LOGGING:
+		private var bDisableLogging:Boolean = true;
 		private var logCntDwn:Number;
 		private var logInterval:Number = 0.1;
 		private var positions:String;		
@@ -97,22 +98,26 @@
 			this.add(finTxt);
 			
 			// goals:
-			gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(flanmap).toFixed(2));			
+			//gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(flanmap).toFixed(2));			
+			gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(FlxG.level).toFixed(2));			
 			gTxt.size = 15;							
 			gTxt.scrollFactor = new Point(0, 0);				
 			this.add(gTxt);	
 			
-			sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(flanmap).toFixed(2));			
+			//sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(flanmap).toFixed(2));			
+			sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(FlxG.level).toFixed(2));			
 			sTxt.size = 15;							
 			sTxt.scrollFactor = new Point(0, 0);				
 			this.add(sTxt);	
 			
-			bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(flanmap).toFixed(2));			
+			//bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(flanmap).toFixed(2));			
+			bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(FlxG.level).toFixed(2));			
 			bTxt.size = 15;							
 			bTxt.scrollFactor = new Point(0, 0);				
 			this.add(bTxt);	
 			
-			bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(flanmap).toFixed(2));			
+			//bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(flanmap).toFixed(2));			
+			bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(FlxG.level).toFixed(2));			
 			bestTxt.size = 15;							
 			bestTxt.scrollFactor = new Point(0, 0);				
 			this.add(bestTxt);	
@@ -218,10 +223,11 @@
 			//SWFStats.LevelMetrics.Log("Finished", currentMapIndex+1);
 			//SWFStats.LevelMetrics.LogRanged("CompletionTime", currentMapIndex+1, playTime);				
 						
-			finTxt.text = FlxG.progressManager.FinishedLevel(flanmap, playTime);
+			//finTxt.text = FlxG.progressManager.FinishedLevel(flanmap, playTime);
+			finTxt.text = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
 			finTxt.visible = true;
 			
-			if( bShouldLog )
+			if( bShouldLog && !bDisableLogging)			
 				sendLogToServer("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");
 			bShouldLog = false;		
 			

@@ -22,7 +22,8 @@
 				{
 					var door:Door = ( this._layer.children()[i] as Door );					
 					var dMap:Class = FlxG.levels[door.levelId];					
-					var lTime:Number = FlxG.progressManager.getBestTime(new dMap());					
+					//var lTime:Number = FlxG.progressManager.getBestTime(new dMap());					
+					var lTime:Number = FlxG.progressManager.getBestTime(door.levelId);					
 					
 					var tTxt:FlxText = new FlxText(door.x - 10, door.y - 20, 100, "Best: " + lTime.toFixed(2));
 					tTxt.size = 12;							
