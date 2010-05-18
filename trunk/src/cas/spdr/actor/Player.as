@@ -35,7 +35,12 @@ package cas.spdr.actor
 		private var hooks:Array;
 		private var curHook:uint;
 		public var prevHook:uint;	
+		
+		// unlocked powers:
 		private var bCanHook:Boolean;
+		private var bCanWalljump:Boolean;
+		private var bCanSlide:Boolean;
+		private var bCanDoubleJump:Boolean;
 		
 		private var bIsSwinging:Boolean;		
 		
@@ -166,7 +171,11 @@ package cas.spdr.actor
 			if( FlxG.state is PlayState )
 				playState = FlxG.state as PlayState
 				
-			bCanHook = FlxG.progressManager.bUnlockedHook;				
+			// check my unlocked powers:
+			bCanHook = FlxG.progressManager.HasUnlockedHook();
+			bCanWalljump = FlxG.progressManager.HasUnlockedWalljump();
+			bCanSlide = FlxG.progressManager.HasUnlockedSlide();
+			bCanDoubleJump = FlxG.progressManager.HasUnlockedDoubleJump();
 		}
 		
 		public function switchChar():void
@@ -529,7 +538,7 @@ package cas.spdr.actor
 					}
 					
 					// DOUBLE JUMPING:
-					if( FlxG.keys.justPressed("Z") && !bDidDoubleJump )
+					if( FlxG.keys.justPressed("Z") && !bDidDoubleJump && bCanDoubleJump )
 					{	
 						FlxG.log("Double jump!");
 						this.velocity.y = 0;// -= 100;
@@ -537,7 +546,7 @@ package cas.spdr.actor
 						bDidDoubleJump = true;
 					}	
 					
-					if ( FlxG.keys.DOWN )
+					if ( FlxG.keys.DOWN && bCanSlide )
 					{
 						if ( !bSliding )
 							this.y += 26;
@@ -575,12 +584,26 @@ package cas.spdr.actor
 				}
 				else // ON GROUND
 				{
-					if ( FlxG.keys.DOWN )
+					if ( FlxG.keys.DOWN && bCanSlide )
 					{
-						if ( !bSliding )
-							this.y += 26;
+						if ( !bCrawling && Math.abs( velocity.x ) > 10 )
+						{
+							if ( !(bSliding || bCrawling) )
+								this.y += 26;
+								
+							bSliding = true;
+							bCrawling = false;
 							
-						bSliding = true;
+						}
+						else
+						{
+							if ( !(bSliding || bCrawling) )
+								this.y += 26;
+								
+							bSliding = false;
+							bCrawling = true;
+						}
+						
 						this.offset.y = 26;
 						this.height = 20;
 					}
@@ -591,10 +614,8 @@ package cas.spdr.actor
 						{
 							if ( tryStandUp() )
 							{
-								bCrawling = false;
-								
-								this.y -= 26;
-								
+								bCrawling = false;								
+								this.y -= 26;								
 							}
 							else
 							{
@@ -647,7 +668,6 @@ package cas.spdr.actor
 					jumpTime += FlxG.elapsed;
 					acceleration.y = fallAccel;
 					
-					// hmm gaat nog niet echt lekker :(
 					if ( jumpTime < maxJumpTime )
 						velocity.y -= ((maxJumpTime - jumpTime) / maxJumpTime) * jumpPower * FlxG.elapsed;					
 				}
@@ -1062,10 +1082,11 @@ package cas.spdr.actor
 					
 				// Otherwise, start walling when there are tiles both below AND above the collided tile
 				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
-					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex )
+					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex 
+					&& bCanWalljump )
 				{		
 					if ( velocity.x > 0 && FlxG.keys.RIGHT 
-						|| velocity.x < 0 && FlxG.keys.LEFT )
+						|| velocity.x < 0 && FlxG.keys.LEFT )						
 						status = ONWALL;
 						
 					velocity.x = 0;						

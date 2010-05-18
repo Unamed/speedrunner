@@ -27,17 +27,11 @@
 			FlxG.level = 0;
 			
 			var save:FlxSave = new FlxSave();
-			save.bind("SpeedRunner03");
-			FlxG.progressManager.bUnlockedHook = (save.read("bUnlockedHook") as Boolean);
-			FlxG.progressManager.lionBest = (save.read("lionBest") as Number);
-			FlxG.progressManager.hydraBest = (save.read("hydraBest") as Number);
-			FlxG.progressManager.hindBest = (save.read("hindBest") as Number);
-			
+			save.bind("SpeedRunner04");
+			FlxG.progressManager.readSaveData(save);						
 			FlxG.saves = new Array();
 			FlxG.saves.push( save );		
 			FlxG.save = 0;
-			
-			
 			
 			showLogo = false;
 			
@@ -47,7 +41,8 @@
 			//SWFStats.Tracker.LogView();
 			//SWFStats.Tracker.LogPlay();
 			
-			Log.View(153, "6635b062-cc5b-4c1b-819c-1f1b48b4ad75", root.loaderInfo.loaderURL);
+			// swfstats.. 
+			//Log.View(153, "6635b062-cc5b-4c1b-819c-1f1b48b4ad75", root.loaderInfo.loaderURL);
 			
 		}
 	}	

@@ -276,6 +276,12 @@
 				speedometerBG2.x = 0 + (100* (Math.abs( player.maxVelocity.x ) / maxSpeed));
 				speedometerBG2.scale.x = (Math.abs( player.maxVelocity.x ) / maxSpeed);
 			}
+			
+			// For testing purposes:
+			if ( FlxG.keys.justPressed("R") )
+			{
+				FlxG.progressManager.clearSaveData();
+			}
 		}	
 		
 		

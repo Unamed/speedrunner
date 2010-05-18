@@ -2,76 +2,157 @@
 {
 	import cas.spdr.map.*;
 	import org.flixel.FlxG;
+	import org.flixel.FlxSave;
 	/**
 	 * ...
 	 * @author Casper van Est
 	 */
 	public class ProgressManager
 	{
-		public var bUnlockedHook:Boolean;
-		public var bUnlockedWallJump:Boolean;
-		public var bUnlockedSlide:Boolean;
-		public var bUnlockedSuperJump:Boolean;
+		private var unlockedPowers:Array; 	//Booleans
 		
+		private var goldTimes:Array; 		//Numbers
+		private var silverTimes:Array; 		//Numbers
+		private var bronzeTimes:Array; 		//Numbers
+		private var bestTimes:Array; 		//Numbers
+		
+		private var mySave:FlxSave;
+		
+		// Test:
 		public var nCollectedPickups:uint = 0;
-		
-		private var lionGold:Number = 13.0;
-		private var lionSilver:Number = 16.0;
-		private var lionBronze:Number = 20.0;
-		public var lionBest:Number;// = 99.99;
-		
-		private var hydraGold:Number = 13.0;
-		private var hydraSilver:Number = 16.0;
-		private var hydraBronze:Number = 20.0;
-		public var hydraBest:Number;// = 99.99;
-		
-		private var hindGold:Number = 13.0;
-		private var hindSilver:Number = 16.0;
-		private var hindBronze:Number = 20.0;
-		public var hindBest:Number;// = 99.99;
-		
-		private var l4Gold:Number = 20.0;
-		private var l4Silver:Number = 25.0;
-		private var l4Bronze:Number = 30.0;
-		public var l4Best:Number;// = 99.99;
-		
-		private var l5Gold:Number = 25.0;
-		private var l5Silver:Number = 30.0;
-		private var l5Bronze:Number = 40.0;
-		public var l5Best:Number;// = 99.99;
 		
 		public function ProgressManager() 
 		{
-			lionBest = 99.99;
-			hydraBest = 99.99;
-			hindBest = 99.99;
-			l4Best = 99.99;
-			l5Best = 99.99;
+			unlockedPowers = new Array();			
+			goldTimes = new Array();
+			silverTimes = new Array();
+			bronzeTimes = new Array();
+			bestTimes = new Array();
+			
+			unlockedPowers[0] = false;	//hook
+			unlockedPowers[1] = false;	//walljump
+			unlockedPowers[2] = false;	//slide
+			unlockedPowers[3] = false;	//doublejump
+			unlockedPowers[4] = false;	//TBA			
+			
+			goldTimes[0] = 99.0	//MainMenu
+			goldTimes[1] = 13.0	//Lion
+			goldTimes[2] = 13.0	//Hydra
+			goldTimes[3] = 13.0	//Hind
+			goldTimes[4] = 20.0	//L4
+			goldTimes[5] = 25.0	//L5
+			
+			silverTimes[0] = 99.0	//MainMenu
+			silverTimes[1] = 16.0	//Lion
+			silverTimes[2] = 16.0	//Hydra
+			silverTimes[3] = 16.0	//Hind
+			silverTimes[4] = 25.0	//L4
+			silverTimes[5] = 30.0	//L5
+			
+			bronzeTimes[0] = 99.0	//MainMenu
+			bronzeTimes[1] = 20.0	//Lion
+			bronzeTimes[2] = 20.0	//Hydra
+			bronzeTimes[3] = 20.0	//Hind
+			bronzeTimes[4] = 35.0	//L4
+			bronzeTimes[5] = 50.0	//L5
+			
+			bestTimes[0] = 99.0	//MainMenu
+			bestTimes[1] = 99.0	//Lion
+			bestTimes[2] = 99.0	//Hydra
+			bestTimes[3] = 99.0	//Hind
+			bestTimes[4] = 99.0	//L4
+			bestTimes[5] = 99.0	//L5
 		}
 		
-		// Returns a party reason string value if finishing the level in playTime is worthy of throwing a party
-		public function FinishedLevel(finishedLevel:MapBase, playTime:Number):String
-		{			
+		public function HasUnlockedHook():Boolean
+		{
+			return unlockedPowers[0];			
+		}
+		
+		public function UnlockHook():Boolean
+		{
+			if ( HasUnlockedHook() )
+				return false;
+				
+			unlockedPowers[0] = true;
+			FlxG.saves[FlxG.save].write("unlocked0", unlockedPowers[0]);
+			return true;
+		}
+		
+		public function HasUnlockedWalljump():Boolean
+		{
+			return unlockedPowers[1];			
+		}
+		
+		public function UnlockWalljump():Boolean
+		{
+			if ( HasUnlockedWalljump() )
+				return false;
+				
+			unlockedPowers[1] = true;
+			FlxG.saves[FlxG.save].write("unlocked1", unlockedPowers[1]);
+			return true;
+		}
+		
+		public function HasUnlockedSlide():Boolean
+		{
+			return unlockedPowers[2];			
+		}
+		
+		public function UnlockSlide():Boolean
+		{
+			if ( HasUnlockedSlide() )
+				return false;
+				
+			unlockedPowers[2] = true;
+			FlxG.saves[FlxG.save].write("unlocked2", unlockedPowers[2]);
+			return true;
+		}
+		
+		public function HasUnlockedDoubleJump():Boolean
+		{
+			return unlockedPowers[3];			
+		}
+		
+		public function UnlockDoubleJump():Boolean
+		{
+			if ( HasUnlockedDoubleJump() )
+				return false;
+				
+			unlockedPowers[3] = true;
+			FlxG.saves[FlxG.save].write("unlocked3", unlockedPowers[3]);
+			return true;
+		}
+		
+		
+		public function FinishedLevel(levelId:int, playTime:Number):String
+		{
 			var sParty:String = "";	
 			
-			if ( getBestTime(finishedLevel) == 0 || playTime < getBestTime(finishedLevel) )
+			if ( getBestTime(levelId) == 0 || playTime < getBestTime(levelId) )
 			{
 				sParty = "New Record!";	
-				setBestTime(finishedLevel, playTime);
+				setBestTime(levelId, playTime);
 			}			
 			
-			if ( playTime < getBronzeTime(finishedLevel) && UnlockPower(finishedLevel) )
+			if ( playTime < getBronzeTime(levelId) && TryUnlockPower(levelId) )
 			{
-				if( finishedLevel is MapTheLion )
+				if( levelId == 1 )
 					sParty = "Unlocked Grappling Hook!";
+				else if ( levelId == 2 || levelId == 3 )
+					sParty = "Unlocked Wall Jumping!";
+				else if ( levelId == 4 )
+					sParty = "Unlocked Sliding!";					
+				else if ( levelId == 5 )
+					sParty = "Unlocked Double Jumping!";
 			}
 			else
 			{			
-				if ( playTime > getGoldTime(finishedLevel) )
+				if ( playTime > getGoldTime(levelId) )
 				{
-					if ( playTime > getSilverTime(finishedLevel) )
+					if ( playTime > getSilverTime(levelId) )
 					{
-						if ( playTime < getBronzeTime(finishedLevel) )
+						if ( playTime < getBronzeTime(levelId) )
 							sParty = "Bronze Medal!";						
 					}
 					else
@@ -81,104 +162,96 @@
 					sParty = "Gold Medal!";
 			}
 			
-			return sParty;
+			return sParty;			
 		}
 		
 		// Tries to unlock a power, corresponding to the finished level
 		// returns true if something was unlocked
-		public function UnlockPower(level:MapBase):Boolean
+		public function TryUnlockPower(levelId:int):Boolean
 		{
-			if ( level is MapTheLion && !bUnlockedHook )
-			{
-				// throw a party!
-				bUnlockedHook = true;
-				FlxG.saves[FlxG.save].write("bUnlockedHook", bUnlockedHook);
-				return true;
-			}				
+			if ( levelId == 1 )
+				return UnlockHook();				
+			else if ( levelId == 2 || levelId == 3 )
+				return UnlockWalljump();
+			else if ( levelId == 4 )
+				return UnlockSlide();
+			else if ( levelId == 5 )
+				return UnlockDoubleJump();
 			else 
 				return false;
 		}
 		
-		public function getGoldTime(level:MapBase):Number
+		public function getGoldTime(levelId:int):Number
 		{
-			if ( level is MapTheLion )
-				return lionGold;
-			else if ( level is MapTheHydra )
-				return hydraGold;
-			else if ( level is MapTheHind )
-				return hindGold;
-			else if ( level is MapLevel4 )
-				return l4Gold;
+			if( levelId < goldTimes.length )
+				return goldTimes[levelId];
 			else
-				return 99;
+				return 99.99;
+		}
+		
+		public function getSilverTime(levelId:int):Number
+		{
+			if( levelId < silverTimes.length )
+				return silverTimes[levelId];
+			else
+				return 99.99;
+		}
+		
+		public function getBronzeTime(levelId:int):Number
+		{
+			if( levelId < bronzeTimes.length )
+				return bronzeTimes[levelId];
+			else
+				return 99.99;
+		}
+		
+		public function getBestTime(levelId:int):Number
+		{
+			if( levelId < bestTimes.length )
+				return bestTimes[levelId];
+			else
+				return 99.99;
+		}
+		
+		public function setBestTime(levelId:int, playTime:Number):void
+		{			
+			bestTimes[levelId] = playTime;			
+			FlxG.saves[FlxG.save].write("best"+levelId, playTime);			
+		}
+		
+		public function readSaveData(save:FlxSave):void
+		{
+			mySave = save;
 			
-		}
-		
-		public function getSilverTime(level:MapBase):Number
-		{
-			if ( level is MapTheLion )
-				return lionSilver;
-			else if ( level is MapTheHydra )
-				return hydraSilver;
-			else if ( level is MapTheHind )
-				return hindSilver;
-			else if ( level is MapLevel4 )
-				return l4Silver;
-			else
-				return 99;
-		}
-		
-		public function getBronzeTime(level:MapBase):Number
-		{
-			if ( level is MapTheLion )
-				return lionBronze;
-			else if ( level is MapTheHydra )
-				return hydraBronze;
-			else if ( level is MapTheHind )
-				return hindBronze;
-			else if ( level is MapLevel4 )
-				return l4Bronze;
-			else
-				return 99;
-		}
-		
-		public function getBestTime(level:MapBase):Number
-		{
-			if ( level is MapTheLion )
-				return lionBest;
-			else if ( level is MapTheHydra )
-				return hydraBest;
-			else if ( level is MapTheHind )
-				return hindBest;
-			else if ( level is MapLevel4 )
-				return l4Best;
-			else
-				return 99;
-		}
-		
-		public function setBestTime(level:MapBase, playTime:Number):void
-		{
-			if ( level is MapTheLion )
+			for ( var i:int = 0; i < unlockedPowers.length; i++ )
 			{
-				lionBest = playTime;
-				FlxG.saves[FlxG.save].write("lionBest", lionBest);
+				unlockedPowers[i] = (save.read("unlocked"+i) as Boolean);
 			}
-			else if ( level is MapTheHydra )
+			
+			for ( var j:int = 0; j < bestTimes.length; j++ )
 			{
-				hydraBest = playTime;
-				FlxG.saves[FlxG.save].write("hydraBest", hydraBest);
+				bestTimes[j] = (save.read("best"+j) as Number);
+			}			
+		}
+		
+		public function clearSaveData():Boolean
+		{
+			for ( var i:int = 0; i < unlockedPowers.length; i++ )
+			{
+				unlockedPowers[i] = false;
 			}
-			else if ( level is MapTheHind )
+			
+			for ( var j:int = 0; j < bestTimes.length; j++ )
 			{
-				hindBest = playTime;
-				FlxG.saves[FlxG.save].write("hindBest", hindBest);				
-			}	
-			else if ( level is MapLevel4 )
+				bestTimes[j] = 99.99;
+			}		
+			
+			if ( mySave != null )
 			{
-				l4Best = playTime;
-				FlxG.saves[FlxG.save].write("l4Best", l4Best);				
-			}	
+				return mySave.erase();
+			}
+			
+			return false;
 		}
 	}
-
 }
