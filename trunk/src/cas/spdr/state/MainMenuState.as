@@ -20,12 +20,11 @@
 			{
 				if ( this._layer.children()[i] is Door )
 				{
-					var door:Door = ( this._layer.children()[i] as Door );					
-					var dMap:Class = FlxG.levels[door.levelId];					
-					//var lTime:Number = FlxG.progressManager.getBestTime(new dMap());					
-					var lTime:Number = FlxG.progressManager.getBestTime(door.levelId);					
+					var door:Door = ( this._layer.children()[i] as Door );	
+					var bestResult:String = FlxG.progressManager.getBestResult(door.levelId);					
 					
-					var tTxt:FlxText = new FlxText(door.x - 10, door.y - 20, 100, "Best: " + lTime.toFixed(2));
+					
+					var tTxt:FlxText = new FlxText(door.x - 10, door.y - 20, 100, "Best: " + bestResult);
 					tTxt.size = 12;							
 					tTxt.scrollFactor = new Point(1, 1);				
 					this.add(tTxt);						
@@ -38,7 +37,7 @@
 			super.addHUDElements();
 			
 			var gTxt:FlxText = new FlxText(30, 1370, 500, 
-				"Welcome to FlowRunner Prototype v0.4" + "\n \n" + 
+				"Welcome to SpeedRunner Prototype v0.5" + "\n \n" + 
 				"Controls: " + "\n" +
 				"LEFT, RIGHT to move" + "\n" +
 				"Z - (Double) Jump (when unlocked)" + "\n" +
@@ -52,6 +51,12 @@
 			gTxt.size = 12;							
 			gTxt.scrollFactor = new Point(1, 1);				
 			this.add(gTxt);	
+			
+			var cTxt:FlxText = new FlxText(30, 170, 500, "Currency: " + FlxG.progressManager.getCredits());				
+			cTxt.size = 12;							
+			cTxt.scrollFactor = new Point(0, 0);				
+			this.add(cTxt);	
+			
 		}
 		
 		override public function addGameElements():void

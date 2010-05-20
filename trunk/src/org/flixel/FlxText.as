@@ -171,7 +171,7 @@ package org.flixel
 				height += 4; //account for 2px gutter on top and bottom
 				_framePixels = new BitmapData(width,height,true,0);
 				_bh = height;
-				_tf.height = height;
+				_tf.height = 500;// height;
 				_r = new Rectangle(0,0,width,height);
 				_regen = false;
 			}

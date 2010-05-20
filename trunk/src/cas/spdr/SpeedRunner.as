@@ -23,6 +23,8 @@
 			FlxG.levels.push(MapTheHind);
 			FlxG.levels.push(MapLevel4);
 			FlxG.levels.push(MapLevel5);
+			FlxG.levels.push(MapLevel6);
+			FlxG.levels.push(MapOptionsMenu);
 			
 			FlxG.level = 0;
 			
