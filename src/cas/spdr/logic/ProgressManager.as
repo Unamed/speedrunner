@@ -45,33 +45,37 @@
 			goldTimes[1] = 13.0	//Lion
 			goldTimes[2] = 13.0	//Hydra
 			goldTimes[3] = 13.0	//Hind
-			goldTimes[4] = 20.0	//L4
-			goldTimes[5] = 25.0	//L5
-			goldTimes[6] = 20.0	//L6
+			goldTimes[4] = 20.0	
+			goldTimes[5] = 25.0	
+			goldTimes[6] = 20.0	
+			goldTimes[7] = 20.0	
 			
 			silverTimes[0] = 99.0	//MainMenu
 			silverTimes[1] = 16.0	//Lion
 			silverTimes[2] = 16.0	//Hydra
 			silverTimes[3] = 16.0	//Hind
-			silverTimes[4] = 25.0	//L4
-			silverTimes[5] = 30.0	//L5
-			silverTimes[6] = 30.0	//L6
+			silverTimes[4] = 25.0	
+			silverTimes[5] = 30.0	
+			silverTimes[6] = 30.0	
+			silverTimes[7] = 30.0	
 			
 			bronzeTimes[0] = 99.0	//MainMenu
 			bronzeTimes[1] = 20.0	//Lion
-			bronzeTimes[2] = 20.0	//Hydra
+			bronzeTimes[2] = 25.0	//Hydra
 			bronzeTimes[3] = 20.0	//Hind
-			bronzeTimes[4] = 35.0	//L4
-			bronzeTimes[5] = 50.0	//L5
-			bronzeTimes[6] = 40.0	//L6
+			bronzeTimes[4] = 35.0	
+			bronzeTimes[5] = 50.0	
+			bronzeTimes[6] = 40.0	
+			bronzeTimes[7] = 40.0	
 			
 			bestTimes[0] = 99.0	//MainMenu
 			bestTimes[1] = 99.0	//Lion
 			bestTimes[2] = 99.0	//Hydra
 			bestTimes[3] = 99.0	//Hind
-			bestTimes[4] = 99.0	//L4
-			bestTimes[5] = 99.0	//L5
-			bestTimes[6] = 99.0	//L5
+			bestTimes[4] = 99.0	
+			bestTimes[5] = 99.0	
+			bestTimes[6] = 99.0	
+			bestTimes[7] = 99.0	
 			
 			nCollectedPickups = 0;
 			nUsedPickups = 0;
@@ -83,6 +87,7 @@
 			collectedPickups[4] = "00000000000000000000000000000000000000000000000000";
 			collectedPickups[5] = "00000000000000000000000000000000000000000000000000";
 			collectedPickups[6] = "00000000000000000000000000000000000000000000000000";
+			collectedPickups[7] = "00000000000000000000000000000000000000000000000000";
 			
 			saveQueueItems = new Array();
 			saveQueueObjects = new Array();
@@ -222,9 +227,9 @@
 					msg = "Unlocked Grappling Hook!";
 				else if ( levelId == 2 || levelId == 3 )
 					msg = "Unlocked Wall Jumping!";
-				else if ( levelId == 4 )
+				else if ( levelId == 4 || levelId == 5 )
 					msg = "Unlocked Sliding!";					
-				else if ( levelId == 5 )
+				else if ( levelId == 6 )
 					msg = "Unlocked Double Jumping!";
 			}
 			else
@@ -248,9 +253,9 @@
 				msg = "Shoot the grappling hook at white surfaces with X";
 			else if ( levelId == 2 || levelId == 3 )
 				msg = "Jump onto walls, hold on, and jump away again with Z";
-			else if ( levelId == 4 )
+			else if ( levelId == 4 || levelId == 5 )
 				msg = "Slide under obstacles by holding DOWN";					
-			else if ( levelId == 5 )
+			else if ( levelId == 6 )
 				msg = "Cross large gaps by double jumping, press Z while in the air";
 			
 			return msg;		
@@ -264,9 +269,9 @@
 				return UnlockHook();				
 			else if ( levelId == 2 || levelId == 3 )
 				return UnlockWalljump();
-			else if ( levelId == 4 )
+			else if ( levelId == 4 || levelId == 5 )
 				return UnlockSlide();
-			else if ( levelId == 5 )
+			else if ( levelId == 6 )
 				return UnlockDoubleJump();
 			else 
 				return false;

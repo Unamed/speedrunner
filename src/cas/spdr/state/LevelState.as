@@ -1,5 +1,6 @@
 ﻿package cas.spdr.state
 {
+	import cas.spdr.actor.MessageCntDwnDialog;
 	import cas.spdr.actor.MessageDialog;
 	import cas.spdr.gfx.sprite.Pickup;
 	import org.flixel.FlxSprite;
@@ -33,7 +34,8 @@
 		private var bTxt:FlxText;			
 		private var bestTxt:FlxText;
 		
-		private var messageDialog:MessageDialog;
+		private var finishDialog:MessageDialog;
+		private var startDialog:MessageDialog;
 		
 		public var playTime:Number;		
 		private var bIsTiming:Boolean;
@@ -75,6 +77,8 @@
 			super.initLevel();		
 			
 			setPickupsFromSaveData(FlxG.progressManager.getCollectedPickups(FlxG.level));
+			
+			startDialog.playMessage("Go!");
 		}
 		
 		public function switchToMainMenu():void 
@@ -91,9 +95,16 @@
 		{		
 			super.addHUDElements();
 			
-			messageDialog = new MessageDialog(800, 0);
-			messageDialog.scrollFactor = new Point(0, 0);			
-			messageDialog.addMeToState(this);
+			finishDialog = new MessageDialog();
+			finishDialog.scrollFactor = new Point(0, 0);
+			finishDialog.setOnFinishCallback( this.endLevel );
+			finishDialog.addMeToState(this);
+			
+			startDialog = new MessageDialog();
+			startDialog.scrollFactor = new Point(0, 0);	
+			startDialog.setOnFinishCallback( this.startTimer );
+			startDialog.bClearOnFinish = true;
+			startDialog.addMeToState(this);
 			
 			// TEXTS:
 			timerTxt = new FlxText(500, 10, 200, "Timer");
@@ -235,7 +246,10 @@
 			bShouldLog = true;
 			
 			//tracker.trackPageview("/started");// "/FisherGirl");
-			//tracker.trackEvent("Timing Events", "Started", "Label", playTime );				
+			//tracker.trackEvent("Timing Events", "Started", "Label", playTime );	
+			
+			
+			
 		}
 		
 		public function stopTimer():void
@@ -249,10 +263,10 @@
 				if ( bNeedsAddMsg )
 				{
 					var addMsg:String = FlxG.progressManager.getUnlockedPowerMessageForLevel(FlxG.level);
-					messageDialog.playMessage(msg, addMsg);
+					finishDialog.playMessage(msg, addMsg);
 				}
 				else
-					messageDialog.playMessage(msg);
+					finishDialog.playMessage(msg);
 			}
 			
 			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );				
@@ -271,7 +285,7 @@
 					
 		}	
 		
-		public function EndLevel():void
+		public function endLevel():void
 		{
 			bIsPaused = true;
 			
