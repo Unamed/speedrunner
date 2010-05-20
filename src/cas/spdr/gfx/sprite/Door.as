@@ -1,6 +1,7 @@
 ﻿package cas.spdr.gfx.sprite
 {
 	import org.flixel.FlxSprite;
+	import cas.spdr.gfx.GraphicsLibrary;
 	
 	/**
 	 * ...
@@ -16,7 +17,8 @@
 		{
 			super(X, Y, SimpleGraphic);
 			
-			loadGraphic(DoorIcon,false, false,32,64);
+			//loadGraphic(DoorIcon, false, false, 32, 64);
+			loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DOOR), false, false, 32, 64);
 		}		
 	}
 }

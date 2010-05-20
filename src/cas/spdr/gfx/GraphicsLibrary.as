@@ -16,6 +16,7 @@
 		
 		[Embed(source = "/../data/temp/obstacle.png")] private var ObstacleIcon:Class;
 		[Embed(source = "/../data/temp/pickup.png")] private var PickupIcon:Class;
+		[Embed(source = "/../data/temp/pickup_Alt.png")] private var PickupAltIcon:Class;
 		[Embed(source = "/../data/temp/BoostSection.png")] private var BoostImg:Class;
 		[Embed(source = "/../data/temp/player.png")] private var ImgPlayer:Class;
 		//[Embed(source="/../data/temp/ninjagaidentrilogy_ryuhayabusa_sheet.png")] private var ImgRyu:Class;
@@ -24,6 +25,7 @@
 		[Embed(source = "/../data/temp/tile_slope_up.png")] private var SlopeUpTile:Class;
 		[Embed(source = "/../data/temp/tile_slope_down.png")] private var SlopeDownTile:Class;
 		[Embed(source = "/../data/temp/hook_small.png")] private var ImgHook:Class;
+		[Embed(source = "/../data/temp/messageDialog.png")] private var MessageDialog:Class;
 		
 		public static const TILES_BACKGROUND:uint = 0;
 		public static const TILES_FOREGROUND:uint = 1;
@@ -41,6 +43,8 @@
 		public static const SPRITE_SLOPE_UP:uint = 6;
 		public static const SPRITE_SLOPE_DOWN:uint = 7;
 		public static const SPRITE_HOOK:uint = 8;
+		public static const SPRITE_COIN_PICKUP_ALT:uint = 9;
+		public static const SPRITE_MESSAGE_DIALOG:uint = 10;
 		
 		private var tiles:Array = new Array();
 		private var sprites:Array = new Array();
@@ -58,7 +62,7 @@
 			images[IMAGE_BACKGROUND] = bgIm;
 			
 			sprites[SPRITE_OBSTACLE] = ObstacleIcon;
-			sprites[SPRITE_COIN_PICKUP] = PickupIcon;
+			sprites[SPRITE_COIN_PICKUP] = PickupIcon;			
 			sprites[SPRITE_BOOST] = BoostImg;
 			sprites[SPRITE_PLAYER] = ImgPlayer;
 			sprites[SPRITE_RYU] = ImgRyu;
@@ -66,6 +70,8 @@
 			sprites[SPRITE_SLOPE_UP] = SlopeUpTile;
 			sprites[SPRITE_SLOPE_DOWN] = SlopeDownTile;
 			sprites[SPRITE_HOOK] = ImgHook;
+			sprites[SPRITE_COIN_PICKUP_ALT] = PickupAltIcon;
+			sprites[SPRITE_MESSAGE_DIALOG] = MessageDialog;
 		}
 		
 		public static function get Instance():GraphicsLibrary

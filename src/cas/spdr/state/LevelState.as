@@ -1,5 +1,7 @@
 ﻿package cas.spdr.state
 {
+	import cas.spdr.actor.MessageDialog;
+	import cas.spdr.gfx.sprite.Pickup;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxText;
 	import org.flixel.FlxG;
@@ -30,6 +32,8 @@
 		private var sTxt:FlxText;	
 		private var bTxt:FlxText;			
 		private var bestTxt:FlxText;
+		
+		private var messageDialog:MessageDialog;
 		
 		public var playTime:Number;		
 		private var bIsTiming:Boolean;
@@ -68,7 +72,9 @@
 		override public function initLevel():void
 		{	
 			flanmap = new FlxG.levels[FlxG.level];
-			super.initLevel();			
+			super.initLevel();		
+			
+			setPickupsFromSaveData(FlxG.progressManager.getCollectedPickups(FlxG.level));
 		}
 		
 		public function switchToMainMenu():void 
@@ -85,17 +91,17 @@
 		{		
 			super.addHUDElements();
 			
+			messageDialog = new MessageDialog(800, 0);
+			messageDialog.scrollFactor = new Point(0, 0);			
+			messageDialog.addMeToState(this);
+			
 			// TEXTS:
 			timerTxt = new FlxText(500, 10, 200, "Timer");
 			timerTxt.size = 15;							
 			timerTxt.scrollFactor = new Point(0, 0);				
 			this.add(timerTxt);	
 			
-			finTxt = new FlxText(250, 250, 500, "Congratulations!");			
-			finTxt.size = 25;							
-			finTxt.scrollFactor = new Point(0, 0);
-			finTxt.visible = false;
-			this.add(finTxt);
+			
 			
 			// goals:
 			//gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(flanmap).toFixed(2));			
@@ -122,6 +128,8 @@
 			bestTxt.scrollFactor = new Point(0, 0);				
 			this.add(bestTxt);	
 			
+			
+			
 			logTxt1 = new FlxText(10, 200, 400, "");			
 			logTxt1.size = 12;							
 			logTxt1.scrollFactor = new Point(0, 0);				
@@ -131,7 +139,22 @@
 			logTxt2.size = 12;							
 			logTxt2.scrollFactor = new Point(0, 0);				
 			this.add(logTxt2);
+			
+			
 		}	
+		
+		// test:
+		public function setPickupsFromSaveData(data:String):void
+		{			
+			for ( var i:int = 0; i < pickups.length; i++ )
+			{
+				var bChar:String = data.charAt(i);								
+				if ( bChar == "1" )
+				{
+					(pickups[i] as Pickup).PreviouslyPickedUp();
+				}
+			}			
+		}
 		
 		override public function update():void
 		{
@@ -217,22 +240,49 @@
 		
 		public function stopTimer():void
 		{
-			bIsTiming = false;
+			if ( bIsTiming )
+			{
+				bIsTiming = false;
+				
+				var bNeedsAddMsg:Boolean = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
+				var msg:String = FlxG.progressManager.getFinishedMessage(FlxG.level, playTime, bNeedsAddMsg);
+				if ( bNeedsAddMsg )
+				{
+					var addMsg:String = FlxG.progressManager.getUnlockedPowerMessageForLevel(FlxG.level);
+					messageDialog.playMessage(msg, addMsg);
+				}
+				else
+					messageDialog.playMessage(msg);
+			}
+			
 			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );				
 			
 			//SWFStats.LevelMetrics.Log("Finished", currentMapIndex+1);
 			//SWFStats.LevelMetrics.LogRanged("CompletionTime", currentMapIndex+1, playTime);				
 						
 			//finTxt.text = FlxG.progressManager.FinishedLevel(flanmap, playTime);
-			finTxt.text = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
-			finTxt.visible = true;
+			
+			//finTxt.text = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
+			//finTxt.visible = true;
+			
+			
+			
+			
+					
+		}	
+		
+		public function EndLevel():void
+		{
+			bIsPaused = true;
+			
+			FlxG.log("Saving..");
+			FlxG.progressManager.executeSaves();
+			FlxG.log("Done.");
 			
 			if( bShouldLog && !bDisableLogging)			
 				sendLogToServer("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");
-			bShouldLog = false;		
-			
-			bIsPaused = true;			
-		}	
+			bShouldLog = false;	
+		}
 		
 		private function logPlayerPosition():void
 		{			

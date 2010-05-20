@@ -1,21 +1,13 @@
 ﻿package cas.spdr.state
 {
 	import cas.spdr.actor.*;	
-	import cas.spdr.gfx.sprite.BoostSection;
-	import cas.spdr.gfx.sprite.Door;
-	import cas.spdr.gfx.sprite.FinishTrigger;
-	import cas.spdr.gfx.sprite.Obstacle;
-	import cas.spdr.gfx.sprite.Pickup;
-	import cas.spdr.gfx.sprite.PlayerStart;
-	import cas.spdr.gfx.sprite.SlopeDown;
-	import cas.spdr.gfx.sprite.SlopeUp;
-	import cas.spdr.gfx.sprite.StartTrigger;
+	import cas.spdr.gfx.sprite.*;
 	import cas.spdr.map.MapBase;
 	import flash.geom.Point;
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxGradientBackground;
-	
-	import flash.filters.BlurFilter;
+	import cas.spdr.gfx.GraphicsLibrary;
+		
 	
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
@@ -25,20 +17,7 @@
 	 * @author Casper van Est
 	 */
 	public class PlayState extends FlxState
-	{
-		// embeds:		
-		[Embed(source = "/../data/temp/main_flan.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;
-		[Embed(source = "/../data/temp/bg_flan.txt", mimeType = "application/octet-stream")] private var BgMap:Class;
-		[Embed(source = "/../data/temp/fg_map.txt", mimeType = "application/octet-stream")] private var FgMap:Class;
-		//[Embed(source = "/../data/temp/tiles_new_small.png")] private var ImgTiles:Class;
-		[Embed(source = "/../data/temp/tiles_black_32.png")] private var ImgTiles:Class; 
-		[Embed(source = "/../data/temp/tiles_background.png")] private var BgTiles:Class;
-		[Embed(source = "/../data/temp/tiles_foreground.png")] private var FgTiles:Class;
-		
-		[Embed(source = "/../data/temp/bgIm.png")] private var bgIm:Class;
-		
-		//[Embed(source = "../data/temp/MapCSV_SR_Playground_Collision.txt", mimeType = "application/octet-stream")] private var TxtMap:Class;		
-		
+	{		
 		// FLAN CODE:
 		public var flanmap:MapBase;
 		
@@ -52,7 +31,7 @@
 		
 		private var obstacles:Array;
 		private var boosts:Array;
-		private var pickups:Array;
+		protected var pickups:Array;
 		private var triggers:Array;
 		private var slopeDowns:Array;
 		private var slopeUps:Array;
@@ -122,7 +101,7 @@
 			else 			
 				bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFFA75452, 0xFF661111);		// reddish..	
 			
-			bgSpr2 = new FlxSprite(0, 0, bgIm);
+			bgSpr2 = new FlxSprite(0, 0, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND));
 			bgSpr2.scrollFactor = new Point(0, 0);
 			bgSpr2.width = 800;
 			bgSpr2.height = 600;
@@ -246,6 +225,7 @@
 				FlxG.collideArray(obstacles, player);
 			FlxG.collideArray(pickups, player);
 			FlxG.collideArray(doors, player);
+			FlxG.collideArray(triggers, player);
 			FlxG.collideArray(boosts, player);
 			FlxG.collideArray(movingBlocks, player);
 			//start.collide(player);
@@ -338,10 +318,22 @@
 			{				
 				start = (obj as StartTrigger);								
 			}
+			
+			else if (obj is Trigger )
+			{				
+				triggers.push(obj);
+			}
+			
+			
 			else if (obj is MovingBlock )
 			{				
 				movingBlocks.push(obj);								
 			}
-		}		
+		}	
+		
+		public function getPickupIndex(pickup:Pickup):int
+		{
+			return pickups.indexOf(pickup);
+		}
 	}
 }

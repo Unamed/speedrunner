@@ -1,28 +1,18 @@
 package cas.spdr.actor
 {
-	import cas.spdr.gfx.sprite.BoostSection;
-	import cas.spdr.gfx.sprite.Door;
-	import cas.spdr.gfx.sprite.FinishTrigger;
-	import cas.spdr.gfx.sprite.Obstacle;
-	import cas.spdr.gfx.sprite.Pickup;
-	import cas.spdr.gfx.sprite.PlayerTrailParticle;
-	import cas.spdr.gfx.sprite.SlopeDown;
-	import cas.spdr.gfx.sprite.SlopeUp;
-	import cas.spdr.gfx.sprite.StartTrigger;
-	import cas.spdr.gfx.sprite.Trigger;
+	import cas.spdr.gfx.sprite.*;
 	import cas.spdr.state.LevelState;
 	import cas.spdr.state.PlayState;
 	import flash.display.Graphics;
 	import flash.geom.Point;
 	import org.flixel.*;	
+	import cas.spdr.gfx.GraphicsLibrary;
 	
 	import org.flixel.fefranca.debug.FlxSpriteDebug;
 
 	public class Player extends FlxSprite//Debug
 	{		
-		[Embed(source = "/../data/temp/player.png")] private var ImgPlayer:Class;
-		//[Embed(source="/../data/temp/ninjagaidentrilogy_ryuhayabusa_sheet.png")] private var ImgRyu:Class;
-		[Embed(source="/../data/temp/player_sheet_black2.png")] private var ImgRyu:Class;
+		
 		
 		private var size:uint = 50;	
 		
@@ -67,21 +57,34 @@ package cas.spdr.actor
 		private var switchToLevelId:uint;
 		private var bHitDoor:Boolean;
 		
+		private var bHitUseTrigger:Boolean;
+		private var useTriggerEffect:String;
+		
 		private var trail:FlxEmitter;
 		private var trail2:FlxEmitter;
 		private var trailYoffset:int;
 		private var trail2Yoffset:int;
 		
-		public const defaultRunVelocity:uint = 300;
-		public const defaultSwingVelocity:uint = 2.00 * defaultRunVelocity;			//2.0
-		public const maxRunVelocity:uint = 2.0 * defaultRunVelocity;			//1.5
-		public const maxBoostVelocity:uint = 3.00 * defaultRunVelocity;			//2.0
-		public const maxSwingVelocity:uint = maxBoostVelocity;
-		public const crawlVelocity:uint = 300;
+		public var defaultRunVelocity:uint;// = 300;
+		public var defaultSwingVelocity:uint;// = 2.00 * defaultRunVelocity;			//2.0
+		public var maxRunVelocity:uint;// = 2.0 * defaultRunVelocity;			//1.5
+		public var maxBoostVelocity:uint;// = 3.00 * defaultRunVelocity;			//2.0
+		public var maxSwingVelocity:uint;// = maxBoostVelocity;
+		public var crawlVelocity:uint;// = 300;		
+		
+		public const pushLevel1:Number = 400;
+		public const pushLevel2:Number = 500;
+		public const pushLevel3:Number = 600;
+		public const pushLevel4:Number = 700;
+		
+		public const runVelocityLevel1:uint = 200;
+		public const runVelocityLevel2:uint = 250;
+		public const runVelocityLevel3:uint = 300;
+		public const runVelocityLevel4:uint = 350;
 		
 		
 		public var currentPush:Number; // the force applied by input
-		public const defaultPush:Number = 600;		
+		public var defaultPush:Number = 600;		
 		public const slowPush:Number = 150;
 		
 		static public const ONGROUND:uint = 0;
@@ -99,32 +102,13 @@ package cas.spdr.actor
 		
 		private var switchToAirCntDwn:Number = 0;
 		private var releaseWallCntDwn:Number = 0;
-		
-		
-		private var charIndx:int;
-		
-		//public var progressManager:ProgressManager;
-		
-		//private var eyeSpr:FlxSprite;
-		//private var eyeOffsetX:uint;
-		//private var eyeOffsetY:uint;		
+				
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
 			super(X, Y);	
+			this.loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_RYU), true, true, 45, 51);			
 			
-			FlxG.log("Spawned player..");
-			
-			//this.createGraphic(16, 32, 0xFF000000);
-			
-			//eyeOffsetX = 7;
-			//eyeOffsetY = 2;
-			//eyeSpr = new FlxSprite(X + eyeOffsetX, Y + eyeOffsetY, null);
-			//eyeSpr.createGraphic(4, 4, 0xFFFFFFFF);
-			
-			//this.createGraphic(4, 4, 0x00FFFFFF);			
-			this.loadGraphic(ImgRyu, true, true, 45, 51);
-			charIndx = 1;
 			restart = 0;
 			
 			this._curFrame = 0;
@@ -176,25 +160,55 @@ package cas.spdr.actor
 			bCanWalljump = FlxG.progressManager.HasUnlockedWalljump();
 			bCanSlide = FlxG.progressManager.HasUnlockedSlide();
 			bCanDoubleJump = FlxG.progressManager.HasUnlockedDoubleJump();
-		}
-		
-		public function switchChar():void
-		{
-			if ( charIndx == 1 )
-			{
-				this.loadGraphic(ImgPlayer, false, true, 25, 50, false);
-				charIndx = 0;
-			}
-			else
-			{
-				this.loadGraphic(ImgRyu, true, true, 45, 51);
-				charIndx = 1;
-			}
-				
-			this.height = 46;
-			this.width = 21;
 			
-		}
+			// check my speedLevel:					
+			switch( FlxG.progressManager.getSpeedLevel() )
+			{
+				case(1):					
+					defaultRunVelocity = runVelocityLevel1;
+					break;
+				case(2):					
+					defaultRunVelocity = runVelocityLevel2;
+					break;
+				case(3):					
+					defaultRunVelocity = runVelocityLevel3;
+					break;
+				case(4):					
+					defaultRunVelocity = runVelocityLevel4;
+					break;
+				default:					
+					defaultRunVelocity = runVelocityLevel1;
+			}
+			
+			// check my Accelerarion level:					
+			switch( FlxG.progressManager.getAccelLevel() )
+			{
+				case(1):
+					defaultPush = pushLevel1;					
+					break;
+				case(2):
+					defaultPush = pushLevel2;					
+					break;
+				case(3):
+					defaultPush = pushLevel3;					
+					break;
+				case(4):
+					defaultPush = pushLevel4;
+					break;
+				default:
+					defaultPush = pushLevel1;					
+			}
+			
+			defaultSwingVelocity = 2.00 * defaultRunVelocity;			//2.0
+			maxRunVelocity = 2.0 * defaultRunVelocity;			//1.5
+			maxBoostVelocity = 3.00 * defaultRunVelocity;			//2.0
+			maxSwingVelocity = maxBoostVelocity;
+			crawlVelocity = 300;
+			
+			// debug:
+			FlxG.log("defPush: " + defaultPush);
+			FlxG.log("defVel: " + defaultRunVelocity);
+		}		
 		
 		public function addToState(state:FlxState):void
 		{		
@@ -273,9 +287,14 @@ package cas.spdr.actor
 					bStumbling = false;
 			}
 			
-			// ENTERING DOORS:
-			if ( FlxG.keys.justPressed("UP") && bHitDoor )
-				( FlxG.state as PlayState ).switchToLevel(switchToLevelId);				
+			// ENTERING DOORS AND USING USETRIGGERS:
+			if ( FlxG.keys.justPressed("UP") )
+			{
+				if( bHitDoor )
+					( FlxG.state as PlayState ).switchToLevel(switchToLevelId);				
+				else if ( bHitUseTrigger )
+					FlxG.progressManager.upgradeSetting( useTriggerEffect );				
+			}
 			
 			checkReleaseHook();
 			
@@ -972,6 +991,12 @@ package cas.spdr.actor
 				{
 					lState.stopTimer();								
 				}
+				else if ( Contact is UseTrigger )
+				{
+					// net als door..	
+					bHitUseTrigger = true;
+					useTriggerEffect = (Contact as UseTrigger).effect;
+				}
 			}
 			
 			return false;			
@@ -1025,7 +1050,7 @@ package cas.spdr.actor
 		
 		public function hitPickup(Contact:Pickup):Boolean
 		{
-			Contact.PickedUp();			
+			Contact.PickedUp(FlxG.state as PlayState);			
 			
 			return false;
 		}

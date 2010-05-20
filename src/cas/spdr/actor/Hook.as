@@ -10,6 +10,7 @@
 	import org.flixel.FlxCore;
 	import org.flixel.FlxG;
 	import org.flixel.fefranca.debug.FlxSpriteDebug;
+	import cas.spdr.gfx.GraphicsLibrary;
 	
 	/**
 	 * ...
@@ -17,7 +18,7 @@
 	 */
 	public class Hook extends FlxSprite//Debug
 	{		
-		[Embed(source = "/../data/temp/hook_small.png")] private var ImgHook:Class;
+		//[Embed(source = "/../data/temp/hook_small.png")] private var ImgHook:Class;
 		
 		public var bCollided:Boolean;
 		public var playerAccel:Point;
@@ -36,7 +37,8 @@
 		public function Hook(player:Player)
 		{
 			super();
-			loadGraphic(ImgHook);	
+			//loadGraphic(ImgHook);
+			this.loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_HOOK));
 			exists = false;
 			bCollided = false;
 			
