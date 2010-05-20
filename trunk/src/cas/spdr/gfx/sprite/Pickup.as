@@ -30,7 +30,7 @@
 			FlxG.progressManager.pickedUp(index, FlxG.level);
 			
 			// play sound.. (but not now :))
-			//FlxG.play(PickupSound);
+			FlxG.play(PickupSound);
 			
 			// play pickup anim..	
 		}	

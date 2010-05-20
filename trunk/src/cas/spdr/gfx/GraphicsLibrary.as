@@ -26,6 +26,7 @@
 		[Embed(source = "/../data/temp/tile_slope_down.png")] private var SlopeDownTile:Class;
 		[Embed(source = "/../data/temp/hook_small.png")] private var ImgHook:Class;
 		[Embed(source = "/../data/temp/messageDialog.png")] private var MessageDialog:Class;
+		[Embed(source = "/../data/temp/finish.png")] private var Finish:Class;
 		
 		public static const TILES_BACKGROUND:uint = 0;
 		public static const TILES_FOREGROUND:uint = 1;
@@ -45,6 +46,7 @@
 		public static const SPRITE_HOOK:uint = 8;
 		public static const SPRITE_COIN_PICKUP_ALT:uint = 9;
 		public static const SPRITE_MESSAGE_DIALOG:uint = 10;
+		public static const SPRITE_FINISH:uint = 11;
 		
 		private var tiles:Array = new Array();
 		private var sprites:Array = new Array();
@@ -72,6 +74,7 @@
 			sprites[SPRITE_HOOK] = ImgHook;
 			sprites[SPRITE_COIN_PICKUP_ALT] = PickupAltIcon;
 			sprites[SPRITE_MESSAGE_DIALOG] = MessageDialog;
+			sprites[SPRITE_FINISH] = Finish;
 		}
 		
 		public static function get Instance():GraphicsLibrary

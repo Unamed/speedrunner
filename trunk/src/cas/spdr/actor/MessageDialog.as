@@ -13,25 +13,30 @@
 	public class MessageDialog extends FlxSprite
 	{
 		private var bPlaying:Boolean;
+		private var bClearing:Boolean;
 		private var bFinished:Boolean;
 		//public var message:String;
 		public var textField:FlxText;
 		public var additonalTextField:FlxText;
 		public var optionsTextField:FlxText;
 		
-		public function MessageDialog(X:int = 0, Y:int = 0, SimpleGraphic:Class = null) 
+		private var onFinishCallback:Function = null;
+		
+		public var bClearOnFinish:Boolean;
+		
+		public function MessageDialog()
 		{
-			super(X, Y, SimpleGraphic);
+			super(800, 0, null);
 			
 			loadGraphic( GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_MESSAGE_DIALOG), false, false, 800, 600, false);
 			//this.alpha = 0.5;
 			
-			textField = new FlxText(140, 300, 500, "Congratulations!");			
+			textField = new FlxText(140, 300, 500, "Main Text");			
 			textField.size = 25;							
 			textField.scrollFactor = new Point(0, 0);
 			textField.visible = false;
 			
-			additonalTextField = new FlxText(200, 350, 600, "Additional text..");			
+			additonalTextField = new FlxText(200, 350, 600, "Additional Text.");			
 			additonalTextField.size = 15;										
 			additonalTextField.scrollFactor = new Point(0, 0);
 			additonalTextField.visible = false;
@@ -64,27 +69,53 @@
 			// performed the update AFTER it is really finished:
 			if ( bFinished )
 			{
-				(FlxG.state as LevelState).EndLevel();
+				if ( onFinishCallback != null )
+					onFinishCallback();
+				
 				bFinished = false;
+				
+				if ( bClearOnFinish ) 
+					bClearing = true;									
 			}
 				
-			if ( bPlaying && this.x <= 0 )
-			{				
-				bPlaying = false;
-				textField.visible = true;
-				additonalTextField.visible = true;
-				optionsTextField.visible = true;
-				super.update();
-				this.x = 0;
-				bFinished = true;
+			if ( bClearing )
+			{
+				this.acceleration.x = -5000;	
+				
+				if ( this.x <= -1000 )
+				{
+					bClearing = false;
+					textField.visible = false;
+					additonalTextField.visible = false;
+					optionsTextField.visible = false;
+				}
 			}
 			
-			if ( !bPlaying )
-				return;
-			
-			this.acceleration.x = -5000;							
-			super.update();
+			if ( bPlaying )
+			{
+				this.acceleration.x = -5000;							
+				
+				if( this.x <= 0 )			
+				{				
+					bPlaying = false;
+					textField.visible = true;
+					additonalTextField.visible = true;
+					optionsTextField.visible = true;
+					super.update();
+					this.x = 0;
+					bFinished = true;
+				}
+			}							
+				
+			if( bPlaying || bClearing )
+				super.update();
 		}		
+		
+		public function setOnFinishCallback( callback:Function ):void
+		{
+			onFinishCallback = callback;
+			
+		}
 	}
 
 }

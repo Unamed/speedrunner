@@ -985,7 +985,7 @@ package cas.spdr.actor
 				
 				if ( Contact is StartTrigger )	
 				{
-					lState.startTimer();
+					//lState.startTimer();
 				}
 				else if ( Contact is FinishTrigger )
 				{
