@@ -1,6 +1,5 @@
 ﻿package cas.spdr.state
-{
-	import cas.spdr.actor.MessageCntDwnDialog;
+{	
 	import cas.spdr.actor.MessageDialog;
 	import cas.spdr.gfx.sprite.Pickup;
 	import org.flixel.FlxSprite;
