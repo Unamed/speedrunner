@@ -979,24 +979,14 @@ package cas.spdr.actor
 		
 		private function hitTrigger(Contact:Trigger):Boolean 
 		{
-			if ( playState is LevelState )
+			if ( Contact is FinishTrigger && playState is LevelState )
+			{		
+				(playState as LevelState).stopTimer();											
+			}
+			else if ( Contact is UseTrigger )
 			{
-				var lState:LevelState = playState as LevelState;
-				
-				if ( Contact is StartTrigger )	
-				{
-					//lState.startTimer();
-				}
-				else if ( Contact is FinishTrigger )
-				{
-					lState.stopTimer();								
-				}
-				else if ( Contact is UseTrigger )
-				{
-					// net als door..	
-					bHitUseTrigger = true;
-					useTriggerEffect = (Contact as UseTrigger).effect;
-				}
+				bHitUseTrigger = true;
+				useTriggerEffect = (Contact as UseTrigger).effect;
 			}
 			
 			return false;			

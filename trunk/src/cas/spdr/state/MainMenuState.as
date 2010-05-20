@@ -16,6 +16,7 @@
 			flanmap = new MapMainMenu();	
 			super();
 			
+			// Display best results over each level door
 			for ( var i:uint = 0; i < this._layer.children().length; i++ )
 			{
 				if ( this._layer.children()[i] is Door )
@@ -23,8 +24,7 @@
 					var door:Door = ( this._layer.children()[i] as Door );	
 					var bestResult:String = FlxG.progressManager.getBestResult(door.levelId);					
 					
-					
-					var tTxt:FlxText = new FlxText(door.x - 10, door.y - 20, 100, "Best: " + bestResult);
+					var tTxt:FlxText = new FlxText(door.x - 10, door.y - 20, 100, "Lvl"+door.levelId+": " + bestResult);
 					tTxt.size = 12;							
 					tTxt.scrollFactor = new Point(1, 1);				
 					this.add(tTxt);						

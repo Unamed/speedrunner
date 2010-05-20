@@ -20,19 +20,23 @@
 		
 		public function PickedUp(state:PlayState):void
 		{
+			if ( !dead )
+			{
+				// inform progress manager I've been picked up:
+				// first, find my index:
+				var index:int = state.getPickupIndex(this);
+				FlxG.progressManager.pickedUp(index, FlxG.level);
+				
+				// play sound.. (but not now :))				
+				//FlxG.play(PickupSound);
+				
+				// play pickup anim..		
+				
+			}
+			
 			// disable me:
 			this.visible = false;
 			this.dead = true;
-			
-			// inform progress manager I've been picked up:
-			// first, find my index:
-			var index:int = state.getPickupIndex(this);
-			FlxG.progressManager.pickedUp(index, FlxG.level);
-			
-			// play sound.. (but not now :))
-			FlxG.play(PickupSound);
-			
-			// play pickup anim..	
 		}	
 		
 		public function PreviouslyPickedUp():void
