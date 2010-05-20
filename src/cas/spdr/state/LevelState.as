@@ -39,7 +39,6 @@
 		
 		public var playTime:Number;		
 		private var bIsTiming:Boolean;
-		private var bIsPaused:Boolean;
 		
 		private var maps:Array;		
 		private var currentMapIndex:uint;	
@@ -81,10 +80,7 @@
 			startDialog.playMessage("Go!");
 		}
 		
-		public function switchToMainMenu():void 
-		{
-			FlxG.switchState(MainMenuState);				
-		}
+		
 		
 		public function restartLevel():void
 		{			
@@ -168,9 +164,8 @@
 		}
 		
 		override public function update():void
-		{
-			if( !bIsPaused )
-				super.update();
+		{			
+			super.update();
 				
 			// logging:
 			if ( bShouldLog )
@@ -188,12 +183,8 @@
 			
 			timerTxt.text = "Timer: " + playTime.toFixed(2);	
 			
-			// Various Input
-			if ( FlxG.keys.justPressed("ESC") )
-			{
-				switchToMainMenu();	
-			}	
-			else if ( FlxG.keys.justPressed("SPACE") )
+			// Various Input				
+			if ( FlxG.keys.justPressed("SPACE") )
 			{
 				restartLevel();
 			}

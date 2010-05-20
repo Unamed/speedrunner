@@ -56,6 +56,9 @@
 		private var speedometerBG2:FlxSprite;
 		private var speedometer:FlxSprite;
 		
+		
+		protected var bIsPaused:Boolean;
+		
 		public function PlayState() 
 		{
 			super();			
@@ -184,7 +187,15 @@
 		// 3. Perform collision checks		
 		override public function update():void
 		{
-			// RUN UPDATE ON ALL CHILDS:
+			// First (and always, irregardless of pause), process input:			
+			if ( FlxG.keys.justPressed("ESC") )
+				switchToMainMenu();	
+			
+			// Don't perform collisions or updates when game is paused:
+			if ( bIsPaused )
+				return;
+				
+			// RUN UPDATE ON ALL CHILDS:	
 			super.update();
 			
 			/*
@@ -221,8 +232,9 @@
 			if ( !playerCol )
 				player.hitNothing();
 			
-			if( ! player.isStumbling() )
+			if( !player.isStumbling() )
 				FlxG.collideArray(obstacles, player);
+				
 			FlxG.collideArray(pickups, player);
 			FlxG.collideArray(doors, player);
 			FlxG.collideArray(triggers, player);
@@ -262,9 +274,17 @@
 			{
 				FlxG.progressManager.clearSaveData();
 			}
-		}	
+			
+			if ( FlxG.keys.justPressed("O") )
+			{
+				FlxG.switchState(OptionsMenuState);				
+			}
+		}
 		
-		
+		public function switchToMainMenu():void 
+		{
+			FlxG.switchState(MainMenuState);				
+		}
 		
 		protected function onAddSpriteCallback(obj:FlxCore):void
 		{			
