@@ -1,12 +1,14 @@
 ﻿package cas.spdr.state
 {	
-	import cas.spdr.actor.MessageDialog;
+	import cas.spdr.actor.*;
 	import cas.spdr.gfx.sprite.Pickup;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxText;
 	import org.flixel.FlxG;
 	import flash.geom.Point;
 	import flash.display.Shape;
+	
+	import cas.spdr.gfx.GraphicsLibrary;
 	
 	import SWFStats.*;
 	
@@ -76,7 +78,8 @@
 			
 			setPickupsFromSaveData(FlxG.progressManager.getCollectedPickups(FlxG.level));
 			
-			startDialog.playMessage("Go!");
+			startDialog.playMessage("Go!");			
+			player.active = false;
 		}
 		
 		
@@ -90,15 +93,12 @@
 		{		
 			super.addHUDElements();
 			
-			finishDialog = new MessageDialog();
-			finishDialog.scrollFactor = new Point(0, 0);
+			finishDialog = new FinishMessageDialog();
 			finishDialog.setOnFinishCallback( this.endLevel );
 			finishDialog.addMeToState(this);
 			
-			startDialog = new MessageDialog();
-			startDialog.scrollFactor = new Point(0, 0);	
-			startDialog.setOnFinishCallback( this.startTimer );
-			startDialog.bClearOnFinish = true;
+			startDialog = new StartMessageDialog();			
+			startDialog.setOnFinishCallback( this.startTimer );					
 			startDialog.addMeToState(this);
 			
 			// TEXTS:
@@ -106,8 +106,6 @@
 			timerTxt.size = 15;							
 			timerTxt.scrollFactor = new Point(0, 0);				
 			this.add(timerTxt);	
-			
-			
 			
 			// goals:
 			//gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(flanmap).toFixed(2));			
@@ -229,7 +227,8 @@
 		}
 		
 		public function startTimer():void
-		{
+		{			
+			player.active = true;
 			playTime = 0;
 			bIsTiming = true;	
 			
@@ -277,7 +276,8 @@
 		
 		public function endLevel():void
 		{
-			bIsPaused = true;
+			//bIsPaused = true;
+			player.active = false;
 			
 			FlxG.log("Saving..");
 			FlxG.progressManager.executeSaves();
