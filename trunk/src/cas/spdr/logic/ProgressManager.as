@@ -16,7 +16,7 @@
 		private var bronzeTimes:Array; 		//Numbers
 		private var bestTimes:Array; 		//Numbers
 		private var collectedPickups:Array;	//Strings
-		private var nCollectedPickups:int;
+		private var nCollectedPickups:int;		
 		
 		private var nUsedPickups:int;
 		private var speedLevel:int;
@@ -39,8 +39,8 @@
 			unlockedPowers[1] = false;	//walljump
 			unlockedPowers[2] = false;	//slide
 			unlockedPowers[3] = false;	//doublejump
-			unlockedPowers[4] = false;	//TBA			
-			
+			unlockedPowers[4] = false;	//TBA	
+						
 			goldTimes[0] = 99.0	//MainMenu
 			goldTimes[1] = 13.0	//Lion
 			goldTimes[2] = 13.0	//Hydra
@@ -204,9 +204,11 @@
 		// returns true if a new power was unlocked
 		public function FinishedLevel(levelId:int, playTime:Number):Boolean
 		{	
+			// first set the best time
 			if ( getBestTime(levelId) == 0 || playTime < getBestTime(levelId) )
 				setBestTime(levelId, playTime);
 			
+			// then see if this unlocks a new power
 			if ( playTime < getBronzeTime(levelId) && TryUnlockPower(levelId) )
 				return true;
 			
@@ -265,16 +267,35 @@
 		// returns true if something was unlocked
 		public function TryUnlockPower(levelId:int):Boolean
 		{
-			if ( levelId == 1 )
-				return UnlockHook();				
-			else if ( levelId == 2 || levelId == 3 )
-				return UnlockWalljump();
-			else if ( levelId == 4 || levelId == 5 )
-				return UnlockSlide();
-			else if ( levelId == 6 )
-				return UnlockDoubleJump();
-			else 
-				return false;
+			switch( levelId ) 
+			{
+				case (1):
+					return UnlockHook();				
+					break;
+				case (2):
+				case (3):
+					if( hasFinishedLevel(2) && hasFinishedLevel(3) )
+						return UnlockWalljump();
+					break;
+				case (4):
+				case (5):
+					if( hasFinishedLevel(4) && hasFinishedLevel(5) )
+						return UnlockSlide();
+					break;
+				case (6):
+					return UnlockDoubleJump();
+					break;
+				default:
+					return false;
+			}
+			
+			return false;
+		}
+		
+		// Returns whether or not a bronze medal was achieved on level<levelId> 
+		public function hasFinishedLevel(levelId:int):Boolean
+		{
+			return ( getBestTime(levelId) < getBronzeTime(levelId) );
 		}
 		
 		public function upgradeSetting(effect:String):void

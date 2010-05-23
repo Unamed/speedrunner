@@ -72,16 +72,21 @@ package cas.spdr.actor
 		public var maxSwingVelocity:uint;// = maxBoostVelocity;
 		public var crawlVelocity:uint;// = 300;		
 		
-		public const pushLevel1:Number = 400;
-		public const pushLevel2:Number = 500;
+		public const pushLevel1:Number = 500;
+		public const pushLevel2:Number = 550;
 		public const pushLevel3:Number = 600;
-		public const pushLevel4:Number = 700;
+		public const pushLevel4:Number = 650;
+		public const pushLevel5:Number = 700;
+		public const pushLevel6:Number = 750;
+		public const pushLevel7:Number = 800;
 		
-		public const runVelocityLevel1:uint = 200;
-		public const runVelocityLevel2:uint = 250;
+		public const runVelocityLevel1:uint = 250;
+		public const runVelocityLevel2:uint = 275;
 		public const runVelocityLevel3:uint = 300;
-		public const runVelocityLevel4:uint = 350;
-		
+		public const runVelocityLevel4:uint = 325;
+		public const runVelocityLevel5:uint = 350;
+		public const runVelocityLevel6:uint = 375;
+		public const runVelocityLevel7:uint = 400;		
 		
 		public var currentPush:Number; // the force applied by input
 		public var defaultPush:Number = 600;		
@@ -176,6 +181,15 @@ package cas.spdr.actor
 				case(4):					
 					defaultRunVelocity = runVelocityLevel4;
 					break;
+				case(5):					
+					defaultRunVelocity = runVelocityLevel5;
+					break;
+				case(6):					
+					defaultRunVelocity = runVelocityLevel6;
+					break;
+				case(7):					
+					defaultRunVelocity = runVelocityLevel7;
+					break;				
 				default:					
 					defaultRunVelocity = runVelocityLevel1;
 			}
@@ -194,6 +208,15 @@ package cas.spdr.actor
 					break;
 				case(4):
 					defaultPush = pushLevel4;
+					break;
+				case(5):
+					defaultPush = pushLevel5;
+					break;
+				case(6):
+					defaultPush = pushLevel6;
+					break;
+				case(7):
+					defaultPush = pushLevel7;
 					break;
 				default:
 					defaultPush = pushLevel1;					
@@ -263,7 +286,9 @@ package cas.spdr.actor
 			state.add(trail.loadSprites(arr));
 			
 			state.add(this);
-			//state.add(eyeSpr);
+			
+			trail.active = false;
+			trail2.active = false;
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -407,6 +432,7 @@ package cas.spdr.actor
 			// WALL MOVEMENT:
 			else if ( status == ONWALL )//bWalling )
 			{
+				FlxG.log("walling..");
 				maxVelocity.x = defaultRunVelocity;				
 				
 				// make sure I stick to the wall:
@@ -422,10 +448,13 @@ package cas.spdr.actor
 					releaseWallCntDwn = 0.5;
 				}
 				
+				// immediately release when pressing down:
+				if ( FlxG.keys.DOWN )
+					releaseWallCntDwn = -1;
+				
 				if ( releaseWallCntDwn <= 0 )
 				{
 					// release wall!
-					// make sure I stick to the wall:
 					if ( facing == LEFT )
 					{
 						velocity.x = 50;
@@ -438,7 +467,10 @@ package cas.spdr.actor
 					}						
 					status - INAIR;					
 				}
+				
+				// no velocity..
 				velocity.y = 0;	
+				acceleration.y = 0;
 								
 				// JUMPING:
 				if( FlxG.keys.justPressed("Z") )
@@ -944,13 +976,7 @@ package cas.spdr.actor
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// COLLISION HANDLING: 
 		// (Performed AFTER update() is called!
-		// hitTrigger
-		// hitSlope
-		// hitBoost
-		// hitObstacle
-		// hitWall
-		// hitFloor
-		// hitCeiling
+		// hitXXX..
 		
 		public function hitNothing():void
 		{	
@@ -1082,7 +1108,7 @@ package cas.spdr.actor
 				var tileIndexAbove:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
 				var tileIndexBelow:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile + 1);
 				
-				FlxG.log("hitWall ("+contactXtile+", "+contactYtile+"), index: "+tileIndex+" iAbove: "+tileIndexAbove+" iBelow:"+tileIndexBelow+" (y = "+y+")");
+				//FlxG.log("hitWall ("+contactXtile+", "+contactYtile+"), index: "+tileIndex+" iAbove: "+tileIndexAbove+" iBelow:"+tileIndexBelow+" (y = "+y+")");
 				
 				// MMMMmmaybe there was this weird case where I'm hitting a wall, but above it is a slope.
 				// In that case, I should prob. be on top of that slope, right? 
@@ -1100,9 +1126,21 @@ package cas.spdr.actor
 					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex 
 					&& bCanWalljump )
 				{		
-					if ( velocity.x > 0 && FlxG.keys.RIGHT 
-						|| velocity.x < 0 && FlxG.keys.LEFT )						
+					//if ( velocity.x > 0 && FlxG.keys.RIGHT 
+					//	|| velocity.x < 0 && FlxG.keys.LEFT )						
+					if ( FlxG.keys.RIGHT || FlxG.keys.LEFT )
+					{
 						status = ONWALL;
+						
+						// make sure I'm now looking at the wall:
+						if ( velocity.x > 0 )
+							facing = RIGHT;
+						else
+							facing = LEFT;
+					}
+					else
+						FlxG.log("huh..");
+					
 						
 					velocity.x = 0;						
 					velocity.y = 0;
@@ -1113,7 +1151,7 @@ package cas.spdr.actor
 				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex  )					
 				{
 					// regular collision.
-					
+					return super.hitWall(Contact);
 					
 					
 				}						
