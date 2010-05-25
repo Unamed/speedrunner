@@ -15,7 +15,7 @@
 		[Embed(source = "/../data/temp/bgIm.png")] private var bgIm:Class;
 		
 		[Embed(source = "/../data/temp/obstacle.png")] private var ObstacleIcon:Class;
-		[Embed(source = "/../data/temp/pickup.png")] private var PickupIcon:Class;
+		[Embed(source = "/../data/temp/pickup_anim.png")] private var PickupIcon:Class;
 		[Embed(source = "/../data/temp/pickup_Alt.png")] private var PickupAltIcon:Class;
 		[Embed(source = "/../data/temp/BoostSection.png")] private var BoostImg:Class;
 		[Embed(source = "/../data/temp/player.png")] private var ImgPlayer:Class;
