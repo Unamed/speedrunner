@@ -1,9 +1,6 @@
 ﻿package cas.spdr.actor 
-{
-	//import cas.spdr.state.LevelState;
+{	
 	import org.flixel.*;
-	//import cas.spdr.gfx.GraphicsLibrary;
-	//import org.flixel.FlxText;
 	import flash.geom.Point;
 	
 	/**

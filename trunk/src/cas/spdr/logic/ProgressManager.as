@@ -226,9 +226,9 @@
 			if ( bUnlockedAPower )
 			{				
 				if( levelId == 1 )
-					msg = "Unlocked Grappling Hook!";
+					msg = "Unlocked Magnet Swing!";
 				else if ( levelId == 2 || levelId == 3 )
-					msg = "Unlocked Wall Jumping!";
+					msg = "Unlocked Magnet Gloves!";
 				else if ( levelId == 4 || levelId == 5 )
 					msg = "Unlocked Sliding!";					
 				else if ( levelId == 6 )
@@ -252,9 +252,9 @@
 			var msg:String = "";
 						
 			if( levelId == 1 )
-				msg = "Shoot the grappling hook at white surfaces with X";
+				msg = "Shoot the magnet at white surfaces by holding X and swing!";
 			else if ( levelId == 2 || levelId == 3 )
-				msg = "Jump onto walls, hold on, and jump away again with Z";
+				msg = "Jump onto white walls to hold on, and jump away again with Z";
 			else if ( levelId == 4 || levelId == 5 )
 				msg = "Slide under obstacles by holding DOWN";					
 			else if ( levelId == 6 )

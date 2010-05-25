@@ -47,7 +47,8 @@
 				}
 				else
 				{
-					textField.text = int(cntDwn * 3).toString();// .toFixed(0);
+					
+					textField.text = Math.ceil(cntDwn).toString();// .toFixed(0);
 					this.velocity.x = 0;
 				}
 				
@@ -73,7 +74,7 @@
 					this.velocity.x = 0;
 					
 					bClearing = true;	
-					cntDwn = 1;					
+					cntDwn = 3;					
 				}
 			}	
 			
