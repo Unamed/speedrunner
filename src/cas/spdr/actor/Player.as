@@ -1122,8 +1122,8 @@ package cas.spdr.actor
 				}					
 					
 				// Otherwise, start walling when there are tiles both below AND above the collided tile
-				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex 
-					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex 
+				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex + 3
+					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex + 3
 					&& bCanWalljump )
 				{		
 					//if ( velocity.x > 0 && FlxG.keys.RIGHT 
