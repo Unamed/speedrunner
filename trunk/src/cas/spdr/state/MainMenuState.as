@@ -1,9 +1,12 @@
 ﻿package cas.spdr.state
 {	
+	import cas.spdr.actor.LevelInfoDialog;
+	import cas.spdr.actor.MessageDialog;
 	import cas.spdr.gfx.sprite.Door;
 	import cas.spdr.map.MapMainMenu;
 	import org.flixel.*;
 	import flash.geom.Point;
+	import cas.spdr.gfx.GraphicsLibrary;
 	
 	/**
 	 * ...
@@ -11,6 +14,9 @@
 	 */
 	public class MainMenuState extends PlayState
 	{		
+		private var levelInfoMessage:MessageDialog;
+		
+		
 		public function MainMenuState() 
 		{
 			flanmap = new MapMainMenu();	
@@ -36,7 +42,7 @@
 		{		
 			super.addHUDElements();
 			
-			var gTxt:FlxText = new FlxText(30, 1370, 500, 
+			var gTxt:FlxText = new FlxText(1822, 1370, 500, 
 				"Welcome to SpeedRunner Prototype v0.5" + "\n \n" + 
 				"Controls: " + "\n" +
 				"LEFT, RIGHT to move" + "\n" +
@@ -52,11 +58,26 @@
 			gTxt.scrollFactor = new Point(1, 1);				
 			this.add(gTxt);	
 			
+			var lTxt:FlxText = new FlxText(1966, 1220, 500, "Level Select ->");			
+			lTxt.size = 12;							
+			lTxt.scrollFactor = new Point(1, 1);				
+			this.add(lTxt);	
+			
+			var oTxt:FlxText = new FlxText(1822, 1220, 500, "<- Options");			
+			oTxt.size = 12;							
+			oTxt.scrollFactor = new Point(1, 1);							
+			this.add(oTxt);	
+			
 			var cTxt:FlxText = new FlxText(30, 170, 500, "Currency: " + FlxG.progressManager.getCredits());				
 			cTxt.size = 12;							
 			cTxt.scrollFactor = new Point(0, 0);				
 			this.add(cTxt);	
 			
+			
+			levelInfoMessage = new LevelInfoDialog();// 0, 0, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_MESSAGE_DIALOG_START));			
+			//levelInfoMessage.setOnFinishCallback( this.startTimer );					
+			levelInfoMessage.addMeToState(this);
+			levelInfoMessage.visible = true;
 		}
 		
 		override public function addGameElements():void
@@ -81,6 +102,18 @@
 			}
 			
 			super.addGameElements();
+		}
+		
+		public function showLevelInfo( levelId:int):void
+		{			
+			if ( !levelInfoMessage.bPlaying )
+			{
+				levelInfoMessage.playMessage(
+					"Level " + levelId, 
+					"Best time: " + FlxG.progressManager.getBestTime(levelId).toFixed(2) + "\n" +
+					"Needed for gold: " + FlxG.progressManager.getGoldTime(levelId).toFixed(2));
+			}
+			
 		}
 	}
 }

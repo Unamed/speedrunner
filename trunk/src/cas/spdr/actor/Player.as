@@ -2,6 +2,7 @@ package cas.spdr.actor
 {
 	import cas.spdr.gfx.sprite.*;
 	import cas.spdr.state.LevelState;
+	import cas.spdr.state.MainMenuState;
 	import cas.spdr.state.PlayState;
 	import flash.display.Graphics;
 	import flash.geom.Point;
@@ -107,6 +108,8 @@ package cas.spdr.actor
 		
 		private var switchToAirCntDwn:Number = 0;
 		private var releaseWallCntDwn:Number = 0;
+		
+		private var explosionEmitter:FlxEmitter;
 				
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
@@ -153,6 +156,7 @@ package cas.spdr.actor
 			addAnimation("slide", [19]);
 			addAnimation("crawl", [20,21],4);
 			addAnimation("stumble", [16,17,18],8);
+			addAnimation("dead", [ 22],24,false);
 			
 			
 			curHook = 0;
@@ -251,11 +255,10 @@ package cas.spdr.actor
 			var arr:Array = new Array();
 			for (var i:uint = 0; i < 60; i++)
 			{
-				arr.push(FlxG.state.add((new PlayerTrailParticle(1.0).createGraphic(4, 4, 0xFF000000))));			
+				arr.push(FlxG.state.add((new PlayerTrailParticle(1.0,0,0,null,true).createGraphic(4, 4, 0xFF000000))));			
 				//arr.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(6, 6, 0xFFFFFFFF))));			
 				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
-			}	
-			
+			}				
 			trailYoffset = 40;
 			
 			// Trail2 emitter
@@ -279,11 +282,24 @@ package cas.spdr.actor
 				//arr.push(FlxG.state.add((new PlayerTrailParticle().createGraphic(16, 32, 0x22FFFFFF))));			
 				//arr2.push(FlxG.state.add((new PlayerTrailParticle(8.0).createGraphic(4, 4, 0xFF000000))));
 				arr2.push(FlxG.state.add((new PlayerTrailParticle(3.0).createGraphic(25, 5, 0xFF000000))));
-			}
-			
+			}			
 			trail2Yoffset = 10;// -25;// 22;		
+			
+			explosionEmitter = new FlxEmitter();
+			explosionEmitter.delay = -2.0;
+			explosionEmitter.setXVelocity(-200, 200);
+			explosionEmitter.setYVelocity( -400, -100);	
+			explosionEmitter.randomized = true;
+			explosionEmitter.gravity = 400;
+			var arr3:Array = new Array();
+			for (var i3:uint = 0; i3 < 25; i3++)
+			{				
+				arr3.push( FlxG.state.add( ( new PlayerTrailParticle(1.0,0,0,null,true).createGraphic(10, 10, 0xFF000000) ) ) );	
+			}			
+			
 			state.add(trail2.loadSprites(arr2));
 			state.add(trail.loadSprites(arr));
+			state.add(explosionEmitter.loadSprites(arr3));
 			
 			state.add(this);
 			
@@ -313,6 +329,11 @@ package cas.spdr.actor
 			}
 			
 			// ENTERING DOORS AND USING USETRIGGERS:
+			if ( bHitDoor && FlxG.state is MainMenuState)
+			{				
+				(FlxG.state as MainMenuState).showLevelInfo(switchToLevelId);
+			}
+			
 			if ( FlxG.keys.justPressed("UP") )
 			{
 				if( bHitDoor )
@@ -756,7 +777,8 @@ package cas.spdr.actor
 			updateTrails(velocityBeforeUpdate);			
 			
 			// CLEAN UP: 
-			bBoosting = false;		
+			bBoosting = false;	
+			bHitDoor = false;
 			
 			// still neccessary???
 			if ( switchToAirCntDwn > 0 && status != SWINGING)
@@ -843,6 +865,24 @@ package cas.spdr.actor
 				else	
 					play("runslow");
 			}				
+		}
+		
+		private function explode():void
+		{
+			if ( ! FlxG.state is LevelState )
+				return;
+			
+			explosionEmitter.setXVelocity(this.velocity.x -100, this.velocity.x + 100);
+			//explosionEmitter.setXVelocity(this.velocity.x -100, this.velocity.x + 100);
+			explosionEmitter.reset(x + this.width/2, y + height/2);
+			explosionEmitter.restart();
+			
+			play("dead");
+			
+			(FlxG.state as LevelState).endLevel();
+			
+			FlxG.quake(0.01, 0.25);
+			
 		}
 		
 		private function shootHook():void
@@ -1058,6 +1098,8 @@ package cas.spdr.actor
 			stumbleCntDwn = 0.5;
 			//this.flicker(2);
 			
+			explode();
+			
 			if ( bIsSwinging )
 				hooks[prevHook].breakRelease();
 			
@@ -1075,14 +1117,14 @@ package cas.spdr.actor
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitWall(Contact:FlxCore = null):Boolean 
 		{
+			if (Contact is Door )
+				return hitDoor((Contact as Door));
+				
 			if (Contact is BoostSection )
 				return hitBoost();	
 				
 			if (Contact is Pickup )
 				return hitPickup((Contact as Pickup));
-				
-			if (Contact is Door )
-				return hitDoor((Contact as Door));
 			
 			if ( Contact is Obstacle )
 				return hitObstacle((Contact as Obstacle));
@@ -1093,10 +1135,8 @@ package cas.spdr.actor
 			if ( bIsSwinging )
 			{
 				FlxG.log("HitWall while swinging");
-				hooks[prevHook].breakRelease();		
-				
+				hooks[prevHook].breakRelease();	
 			}
-			
 				
 			if ( playState )
 			{					
@@ -1206,14 +1246,16 @@ package cas.spdr.actor
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitFloor(Contact:FlxCore = null):Boolean 
 		{ 	
+			if (Contact is Door )
+				return hitDoor((Contact as Door));
+				
 			if (Contact is BoostSection )
 				return hitBoost();			
 			if ( Contact is Trigger )
 				return hitTrigger((Contact as Trigger));
 			if (Contact is Pickup )
 				return hitPickup((Contact as Pickup));
-			if (Contact is Door )
-				return hitDoor((Contact as Door));
+			
 			if (Contact is Obstacle )
 				return hitObstacle((Contact as Obstacle));
 			
@@ -1247,14 +1289,14 @@ package cas.spdr.actor
 		//@return	Whether you wish the FlxBlock to collide with it or not
 		override public function hitCeiling(Contact:FlxCore = null):Boolean 
 		{ 
+			if (Contact is Door )
+				return hitDoor((Contact as Door));
+				
 			if (Contact is BoostSection )
 				return hitBoost();	
 			
 			if (Contact is Pickup )
 				return hitPickup((Contact as Pickup));
-				
-			if (Contact is Door )
-				return hitDoor((Contact as Door));
 			
 			if ( Contact is Obstacle )
 				return hitObstacle((Contact as Obstacle));
