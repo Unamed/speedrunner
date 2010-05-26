@@ -27,6 +27,7 @@
 		[Embed(source = "/../data/temp/hook_small.png")] private var ImgHook:Class;
 		[Embed(source = "/../data/temp/messageDialog.png")] private var MessageDialog:Class;
 		[Embed(source = "/../data/temp/startDialog.png")] private var MessageDialogStart:Class;
+		[Embed(source = "/../data/temp/levelPopupDialog.png")] private var MessageDialogLevelInfo:Class;
 		[Embed(source = "/../data/temp/finish.png")] private var Finish:Class;
 		
 		public static const TILES_BACKGROUND:uint = 0;
@@ -48,7 +49,8 @@
 		public static const SPRITE_COIN_PICKUP_ALT:uint = 9;
 		public static const SPRITE_MESSAGE_DIALOG:uint = 10;
 		public static const SPRITE_MESSAGE_DIALOG_START:uint = 11;
-		public static const SPRITE_FINISH:uint = 12;
+		public static const SPRITE_MESSAGE_DIALOG_LEVELINFO:uint = 12;		
+		public static const SPRITE_FINISH:uint = 13;
 		
 		private var tiles:Array = new Array();
 		private var sprites:Array = new Array();
@@ -77,6 +79,7 @@
 			sprites[SPRITE_COIN_PICKUP_ALT] = PickupAltIcon;
 			sprites[SPRITE_MESSAGE_DIALOG] = MessageDialog;
 			sprites[SPRITE_MESSAGE_DIALOG_START] = MessageDialogStart;
+			sprites[SPRITE_MESSAGE_DIALOG_LEVELINFO] = MessageDialogLevelInfo;
 			sprites[SPRITE_FINISH] = Finish;
 		}
 		

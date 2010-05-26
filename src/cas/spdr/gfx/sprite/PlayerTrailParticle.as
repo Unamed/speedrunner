@@ -11,12 +11,14 @@
 	public class PlayerTrailParticle extends FlxSprite
 	{
 		private var fadeSpeed:Number;
+		private var bScaleX:Boolean;
 		
-		public function PlayerTrailParticle(FadeSpeed:Number = 1.0, X:int = 0, Y:int = 0, SimpleGraphic:Class = null) 
+		public function PlayerTrailParticle(FadeSpeed:Number = 1.0, X:int = 0, Y:int = 0, SimpleGraphic:Class = null, bScaleX:Boolean = false) 
 		{
 			super(X, Y, SimpleGraphic);
 			this.alpha = 100;
 			this.fadeSpeed = FadeSpeed;
+			this.bScaleX = bScaleX;
 			
 		}
 		
@@ -24,7 +26,9 @@
 		{			
 			this.alpha = Math.max(0, alpha - FlxG.elapsed * (Math.random() * fadeSpeed));
 			
-			//this.scale.x = Math.max( 0.1, scale.x - FlxG.elapsed * (Math.random() * fadeSpeed));
+			if( bScaleX )
+				this.scale.x = Math.max( 0.1, scale.x - FlxG.elapsed * (Math.random() * fadeSpeed));
+				
 			this.scale.y = Math.max( 0.1, scale.y - FlxG.elapsed * (Math.random() * fadeSpeed));
 			
 			//this.scale.y = Math.max( 0.1, scale.y - FlxG.elapsed * (Math.random() * fadeSpeed));

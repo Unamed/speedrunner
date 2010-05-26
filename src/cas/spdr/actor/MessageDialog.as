@@ -9,20 +9,20 @@
 	 */
 	public class MessageDialog extends FlxSprite
 	{
-		protected var bPlaying:Boolean;
+		public var bPlaying:Boolean;
 		protected var bFinished:Boolean;
 		
 		protected var textField:FlxText;
 		protected var additonalTextField:FlxText;
-		
+				
 		protected var onFinishCallback:Function = null;
 		
 		protected var moveSpeed:Number;
 		
 		
-		public function MessageDialog(X:int = 0, Y:int = 0)
+		public function MessageDialog(X:int = 0, Y:int = 0, SimpleGraphic:Class = null)
 		{
-			super(X, Y, null);
+			super(X, Y, SimpleGraphic);
 			
 			scrollFactor = new Point(0, 0);	
 			
@@ -34,7 +34,7 @@
 			additonalTextField = new FlxText(200, 350, 600, "Additional Text.");			
 			additonalTextField.size = 15;										
 			additonalTextField.scrollFactor = new Point(0, 0);
-			additonalTextField.visible = false;	
+			additonalTextField.visible = false;				
 		}
 		
 		virtual public function addMeToState(state:FlxState):void
