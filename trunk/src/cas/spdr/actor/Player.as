@@ -777,8 +777,7 @@ package cas.spdr.actor
 			updateTrails(velocityBeforeUpdate);			
 			
 			// CLEAN UP: 
-			bBoosting = false;	
-			bHitDoor = false;
+			bBoosting = false;				
 			
 			// still neccessary???
 			if ( switchToAirCntDwn > 0 && status != SWINGING)
@@ -1037,7 +1036,21 @@ package cas.spdr.actor
 		private function hitDoor(Contact:Door):Boolean 
 		{
 			switchToLevelId = Contact.levelId;
-			bHitDoor = true;
+			
+			// if the dot product of my distance to the door and my velocity is negative, then I'm moving towards the door
+			// otherwise, I'm moving away from the door
+			
+			// if I'm moving away from the door, un-show the message dialog, 
+			// but only if I'm at the very edge of the door
+			
+			var dist:Point = new Point(x - Contact.x, y - Contact.y );			
+			var dotProduct:Number = (dist.x * velocity.x) + (dist.y * velocity.y);
+			
+			if( dotProduct < 0 )
+				bHitDoor = true;
+			else if ( this.x > Contact.x + Contact.width - 5 
+				|| this.x < Contact.x - this.width + 5 )
+				bHitDoor = false;
 			
 			return false;			
 		}

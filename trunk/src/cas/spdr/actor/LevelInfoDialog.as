@@ -33,6 +33,8 @@
 			optionsTextField.scrollFactor = new Point(0, 0);
 			optionsTextField.visible = false;	
 			
+			this.alpha = 0.5;
+			
 			
 		}
 		
@@ -96,7 +98,7 @@
 					this.velocity.y = 0;
 					
 					bClearing = true;	
-					cntDwn = 2;					
+					cntDwn = 0.5;					
 				}
 			}	
 			
