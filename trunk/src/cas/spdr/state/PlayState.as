@@ -321,7 +321,7 @@
 			else if ( obj is PlayerStart )
 			{
 				playerStartX = obj.x;
-				playerStartY = obj.y;
+				playerStartY = obj.y + 10;	//hack, I know..
 			}
 			
 			else if ( obj is Door )

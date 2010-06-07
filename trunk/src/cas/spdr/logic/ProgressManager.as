@@ -42,8 +42,8 @@
 			unlockedPowers[4] = false;	//TBA	
 						
 			goldTimes[0] = 99.0	//MainMenu
-			goldTimes[1] = 13.0	//Lion
-			goldTimes[2] = 13.0	//Hydra
+			goldTimes[1] = 09.0	//Lion
+			goldTimes[2] = 14.0	//Hydra
 			goldTimes[3] = 13.0	//Hind
 			goldTimes[4] = 20.0	
 			goldTimes[5] = 25.0	
@@ -51,8 +51,8 @@
 			goldTimes[7] = 20.0	
 			
 			silverTimes[0] = 99.0	//MainMenu
-			silverTimes[1] = 16.0	//Lion
-			silverTimes[2] = 16.0	//Hydra
+			silverTimes[1] = 13.0	//Lion
+			silverTimes[2] = 18.0	//Hydra
 			silverTimes[3] = 16.0	//Hind
 			silverTimes[4] = 25.0	
 			silverTimes[5] = 30.0	
