@@ -13,7 +13,9 @@ package cas.spdr.actor
 
 	public class Player extends FlxSprite//Debug
 	{		
-		
+		// yes, more embeds!
+		[Embed(source = "/../data/temp/boost_pickup.mp3")] private var BoostSound:Class;
+		[Embed(source = "/../data/temp/explosion_01.mp3")] private var ExplodeSound:Class;
 		
 		private var size:uint = 50;	
 		
@@ -73,21 +75,21 @@ package cas.spdr.actor
 		public var maxSwingVelocity:uint;// = maxBoostVelocity;
 		public var crawlVelocity:uint;// = 300;		
 		
-		public const pushLevel1:Number = 500;
-		public const pushLevel2:Number = 550;
-		public const pushLevel3:Number = 600;
-		public const pushLevel4:Number = 650;
-		public const pushLevel5:Number = 700;
-		public const pushLevel6:Number = 750;
+		public const pushLevel1:Number = 600;
+		public const pushLevel2:Number = 650;
+		public const pushLevel3:Number = 700;
+		public const pushLevel4:Number = 750;
+		public const pushLevel5:Number = 800;
+		public const pushLevel6:Number = 800;
 		public const pushLevel7:Number = 800;
 		
-		public const runVelocityLevel1:uint = 250;
-		public const runVelocityLevel2:uint = 275;
-		public const runVelocityLevel3:uint = 300;
-		public const runVelocityLevel4:uint = 325;
-		public const runVelocityLevel5:uint = 350;
-		public const runVelocityLevel6:uint = 375;
-		public const runVelocityLevel7:uint = 400;		
+		public const runVelocityLevel1:uint = 300;
+		public const runVelocityLevel2:uint = 325;
+		public const runVelocityLevel3:uint = 350;
+		public const runVelocityLevel4:uint = 375;
+		public const runVelocityLevel5:uint = 400;
+		public const runVelocityLevel6:uint = 425;
+		public const runVelocityLevel7:uint = 450;		
 		
 		public var currentPush:Number; // the force applied by input
 		public var defaultPush:Number = 600;		
@@ -147,7 +149,7 @@ package cas.spdr.actor
 			addAnimation("grappling", [14]);			
 			addAnimation("trygrappling", [15]);			
 			addAnimation("jump_up", [13]);
-			addAnimation("jump_forward", [4,5,10,11],12);
+			addAnimation("jump_forward", [4, 5, 10, 11], 12 );
 			addAnimation("jump_rotate", [18]);
 			addAnimation("jump_down", [12]);						
 			addAnimation("walling", [6]);						
@@ -170,6 +172,8 @@ package cas.spdr.actor
 			bCanSlide = FlxG.progressManager.HasUnlockedSlide();
 			bCanDoubleJump = FlxG.progressManager.HasUnlockedDoubleJump();
 			
+			
+			/*
 			// check my speedLevel:					
 			switch( FlxG.progressManager.getSpeedLevel() )
 			{
@@ -225,7 +229,9 @@ package cas.spdr.actor
 				default:
 					defaultPush = pushLevel1;					
 			}
-			
+			*/
+			defaultRunVelocity = 300;
+			defaultPush = 600;
 			defaultSwingVelocity = 2.00 * defaultRunVelocity;			//2.0
 			maxRunVelocity = 2.0 * defaultRunVelocity;			//1.5
 			maxBoostVelocity = 3.00 * defaultRunVelocity;			//2.0
@@ -358,19 +364,19 @@ package cas.spdr.actor
 			// Determine max Velocity:
 			currentPush = defaultPush;
 			
-			if ( bBoosting )
-				maxVelocity.x = maxBoostVelocity;			
-			else  
-			{
+			//if ( bBoosting )
+			//	maxVelocity.x = maxBoostVelocity;			
+			//else  
+			//{
 				if ( bCrawling )
 				{
 					maxVelocity.x = crawlVelocity;					
 				}
 				else if ( Math.abs(velocity.x) < defaultRunVelocity )
 				{		
-					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, defaultRunVelocity);			
+					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, defaultRunVelocity);						
 				}
-				else // gelijk..
+				else // was boosting..
 				{
 					if (velocity.x < 0 && FlxG.keys.LEFT 
 						|| velocity.x > 0 && FlxG.keys.RIGHT )
@@ -379,7 +385,10 @@ package cas.spdr.actor
 					}
 					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);					
 				}
-			}
+			//}
+			
+			if ( Math.abs(maxVelocity.x) < maxBoostVelocity - 5 )
+				bBoosting = false;
 				
 			maxVelocity.y = 24 * size;
 			drag.x = defaultRunVelocity * 2;				
@@ -777,7 +786,7 @@ package cas.spdr.actor
 			updateTrails(velocityBeforeUpdate);			
 			
 			// CLEAN UP: 
-			bBoosting = false;				
+			//bBoosting = false;				
 			
 			// still neccessary???
 			if ( switchToAirCntDwn > 0 && status != SWINGING)
@@ -877,6 +886,7 @@ package cas.spdr.actor
 			explosionEmitter.restart();
 			
 			play("dead");
+			FlxG.play(ExplodeSound);
 			
 			(FlxG.state as LevelState).endLevel();
 			
@@ -938,7 +948,7 @@ package cas.spdr.actor
 						this.angle = Math.min(0, Math.max(this.angle - FlxG.elapsed*475, -maxRot));	
 					else
 						this.angle = Math.max(0, Math.min(this.angle + FlxG.elapsed*475, maxRot));	
-				}				
+				}
 				
 				
 				// original, this rotates slowly towards straight up:
@@ -1004,7 +1014,7 @@ package cas.spdr.actor
 				trail2.reset(this.x + this.width / 2, this.y + this.height / 2);
 				trail2.setRotation(velToRot, velToRot);
 			}
-			else if ( trail2.active )
+			else if ( trail2.active || dead )
 			{
 				trail2.active = false;
 				trail2.setRotation(0, 0);
@@ -1098,7 +1108,13 @@ package cas.spdr.actor
 		
 		public function hitBoost():Boolean
 		{
-			bBoosting = true;
+			// play sound.. 
+			if ( !bBoosting )
+				FlxG.play(BoostSound);			
+				
+			bBoosting = true;						
+			maxVelocity.x = maxBoostVelocity;
+			
 			return false;
 		}
 		
