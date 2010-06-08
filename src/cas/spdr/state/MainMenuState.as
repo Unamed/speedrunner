@@ -115,5 +115,83 @@
 			}
 			
 		}
+		
+		public function showUseTriggerInfo( triggerEffect:String ):void
+		{			
+			if ( !levelInfoMessage.bPlaying )
+			{
+				switch( triggerEffect )
+				{
+					case "Hook":
+						if ( !FlxG.progressManager.HasUnlockedHook() )
+						{
+							levelInfoMessage.playMessage(
+								"Unlock Grappling Hook",
+								"Costs: " + FlxG.progressManager.GetCost(0));					
+						}
+						else
+						{
+							levelInfoMessage.playMessage("Grappling Hook is Unlocked", "Use X to shoot Hook at white surfaces"); 
+						}	
+						break;
+						
+					case "Wall":
+						if ( !FlxG.progressManager.HasUnlockedWalljump() )
+						{
+							levelInfoMessage.playMessage(
+								"Unlock Walljumping",
+								"Costs: " + FlxG.progressManager.GetCost(1));					
+						}
+						else
+						{
+							levelInfoMessage.playMessage("Walljumping Unlocked", "Jump at white surface to stick"); 
+						}	
+						break;
+						
+					case "Slide":
+						if ( !FlxG.progressManager.HasUnlockedSlide() )
+						{
+							levelInfoMessage.playMessage(
+								"Unlock Sliding",
+								"Costs: " + FlxG.progressManager.GetCost(2));					
+						}
+						else
+						{
+							levelInfoMessage.playMessage("Sliding is Unlocked", "Press DOWN to Slide"); 
+						}	
+						break;
+						
+					case "DoubleJump":
+						if ( !FlxG.progressManager.HasUnlockedDoubleJump() )
+						{
+							levelInfoMessage.playMessage(
+								"Unlock Doublejump",
+								"Costs: " + FlxG.progressManager.GetCost(3));					
+						}
+						else
+						{
+							levelInfoMessage.playMessage("Doublejump is Unlocked", "Press Z in the air to Doublejump"); 
+						}	
+						break;
+						
+					case "Reverse":				
+						//if ( !FlxG.progressManager.HasUnlockedHook() )
+						//{
+						//	levelInfoMessage.playMessage(
+						//		"Unlock Grappling Hook",
+						//		"Costs: " + FlxG.progressManager.getCost(0));					
+						//}
+						//else
+						//{
+							levelInfoMessage.playMessage("Bonus: Reverse Mode", "Play all levels in reverse"); 
+						//}	
+						break;
+						
+					
+					
+				}
+				
+			}			
+		}
 	}
 }

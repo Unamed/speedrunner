@@ -61,7 +61,7 @@ package cas.spdr.map {
 			boundsMaxX = 5600;
 			boundsMaxY = 1600;
 		}
-		
+
 		override public function addSpritesToLayerMain(onAddCallback:Function = null):void {
 			var obj:FlxSprite;
 			
@@ -120,23 +120,44 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new UseTrigger(472, 1464);;
+			obj = new PlayerStart(2008, 1304);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
-			obj["effect"] = "speed";
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new UseTrigger(952, 1464);;
+			obj = new UseTrigger(1144, 1464);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
-			obj["effect"] = "accel";
+			obj["effect"] = "Hook";
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new PlayerStart(2200, 1304);;
+			obj = new UseTrigger(984, 1464);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
+			obj["effect"] = "Wall";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new UseTrigger(824, 1464);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["effect"] = "Slide";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new UseTrigger(664, 1464);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["effect"] = "DoubleJump";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new UseTrigger(440, 1464);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["effect"] = "Reverse";
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
