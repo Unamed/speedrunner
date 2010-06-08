@@ -340,6 +340,11 @@ package cas.spdr.actor
 				(FlxG.state as MainMenuState).showLevelInfo(switchToLevelId);
 			}
 			
+			if ( bHitUseTrigger && FlxG.state is MainMenuState )
+			{
+				(FlxG.state as MainMenuState).showUseTriggerInfo(useTriggerEffect);
+			}
+			
 			if ( FlxG.keys.justPressed("UP") )
 			{
 				if( bHitDoor )
@@ -364,10 +369,12 @@ package cas.spdr.actor
 			// Determine max Velocity:
 			currentPush = defaultPush;
 			
-			//if ( bBoosting )
-			//	maxVelocity.x = maxBoostVelocity;			
-			//else  
-			//{
+			if ( bBoosting )
+			{
+				maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);		
+			}
+			else  
+			{
 				if ( bCrawling )
 				{
 					maxVelocity.x = crawlVelocity;					
@@ -376,7 +383,7 @@ package cas.spdr.actor
 				{		
 					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, defaultRunVelocity);						
 				}
-				else // was boosting..
+				else // harder dan default run..
 				{
 					if (velocity.x < 0 && FlxG.keys.LEFT 
 						|| velocity.x > 0 && FlxG.keys.RIGHT )
@@ -385,7 +392,7 @@ package cas.spdr.actor
 					}
 					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);					
 				}
-			//}
+			}
 			
 			if ( Math.abs(maxVelocity.x) < maxBoostVelocity - 5 )
 				bBoosting = false;
@@ -883,12 +890,14 @@ package cas.spdr.actor
 			explosionEmitter.setXVelocity(this.velocity.x -100, this.velocity.x + 100);
 			//explosionEmitter.setXVelocity(this.velocity.x -100, this.velocity.x + 100);
 			explosionEmitter.reset(x + this.width/2, y + height/2);
-			explosionEmitter.restart();
+			explosionEmitter.restart();			
 			
+			this.dead = true;
+			updateTrails(new Point(0, 0));
 			play("dead");
 			FlxG.play(ExplodeSound);
 			
-			(FlxG.state as LevelState).endLevel();
+			(FlxG.state as LevelState).endLevel(false);
 			
 			FlxG.quake(0.01, 0.25);
 			
@@ -1009,12 +1018,17 @@ package cas.spdr.actor
 			else
 				velToRot = 0;	
 				
-			if ( oldVelocity.y )
+			if ( dead ) 
 			{
+				trail2.active = false;
+				trail2.setRotation(0, 0);
+			}
+			else if ( oldVelocity.y )
+			{				
 				trail2.reset(this.x + this.width / 2, this.y + this.height / 2);
 				trail2.setRotation(velToRot, velToRot);
 			}
-			else if ( trail2.active || dead )
+			else if ( trail2.active )
 			{
 				trail2.active = false;
 				trail2.setRotation(0, 0);
@@ -1074,8 +1088,17 @@ package cas.spdr.actor
 			}
 			else if ( Contact is UseTrigger )
 			{
-				bHitUseTrigger = true;
+				//bHitUseTrigger = true;
 				useTriggerEffect = (Contact as UseTrigger).effect;
+				
+				var dist:Point = new Point(x - Contact.x, y - Contact.y );			
+				var dotProduct:Number = (dist.x * velocity.x) + (dist.y * velocity.y);
+				
+				if( dotProduct < 0 )
+					bHitUseTrigger = true;
+				else if ( this.x > Contact.x + Contact.width - 5 
+					|| this.x < Contact.x - this.width + 5 )
+					bHitUseTrigger = false;
 			}
 			
 			return false;			

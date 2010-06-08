@@ -247,11 +247,12 @@
 			{
 				bIsTiming = false;
 				
-				var bNeedsAddMsg:Boolean = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
-				var msg:String = FlxG.progressManager.getFinishedMessage(FlxG.level, playTime, bNeedsAddMsg);
-				if ( bNeedsAddMsg )
+				//var bNeedsAddMsg:Boolean = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
+				var recCredits:int = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
+				var msg:String = FlxG.progressManager.getFinishedMessage(FlxG.level, playTime);
+				if ( recCredits > 0 )
 				{
-					var addMsg:String = FlxG.progressManager.getUnlockedPowerMessageForLevel(FlxG.level);
+					var addMsg:String = "+"+recCredits+ " Credits!";// FlxG.progressManager.getUnlockedPowerMessageForLevel(FlxG.level);
 					finishDialog.playMessage(msg, addMsg);
 				}
 				else
@@ -274,14 +275,17 @@
 					
 		}	
 		
-		public function endLevel():void
+		public function endLevel(bSaveData:Boolean = true):void
 		{
 			//bIsPaused = true;
 			player.active = false;
 			
-			FlxG.log("Saving..");
-			FlxG.progressManager.executeSaves();
-			FlxG.log("Done.");
+			if ( bSaveData )
+			{
+				FlxG.log("Saving..");
+				FlxG.progressManager.executeSaves();
+				FlxG.log("Done.");
+			}
 			
 			if( bShouldLog && !bDisableLogging)			
 				sendLogToServer("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");

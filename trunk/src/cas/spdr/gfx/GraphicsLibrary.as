@@ -29,6 +29,7 @@
 		[Embed(source = "/../data/temp/startDialog.png")] private var MessageDialogStart:Class;
 		[Embed(source = "/../data/temp/levelPopupDialog.png")] private var MessageDialogLevelInfo:Class;
 		[Embed(source = "/../data/temp/finish.png")] private var Finish:Class;
+		[Embed(source = "/../data/temp/useTrigger.png")] private var UseTrigger:Class;
 		
 		public static const TILES_BACKGROUND:uint = 0;
 		public static const TILES_FOREGROUND:uint = 1;
@@ -51,6 +52,7 @@
 		public static const SPRITE_MESSAGE_DIALOG_START:uint = 11;
 		public static const SPRITE_MESSAGE_DIALOG_LEVELINFO:uint = 12;		
 		public static const SPRITE_FINISH:uint = 13;
+		public static const SPRITE_USETRIGGER:uint = 14;
 		
 		private var tiles:Array = new Array();
 		private var sprites:Array = new Array();
@@ -81,6 +83,7 @@
 			sprites[SPRITE_MESSAGE_DIALOG_START] = MessageDialogStart;
 			sprites[SPRITE_MESSAGE_DIALOG_LEVELINFO] = MessageDialogLevelInfo;
 			sprites[SPRITE_FINISH] = Finish;
+			sprites[SPRITE_USETRIGGER] = UseTrigger;
 		}
 		
 		public static function get Instance():GraphicsLibrary

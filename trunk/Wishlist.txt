@@ -1,0 +1,7 @@
+Things that I'd maybe some day like to see in speedRunner, perhaps:
+
+- multiplayer (XNA)
+- level editor w/ sharing function (XNA)
+- bone support for animations (export bone data from max, import in game)
+- dynamic objects (e.g. moving platforms)
+- Leaderboards (distributed, XNA)

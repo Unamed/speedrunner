@@ -10,6 +10,11 @@
 	public class ProgressManager
 	{
 		private var unlockedPowers:Array; 	//Booleans
+		private var unlockCosts:Array; 		//Ints
+		
+		private var goldRewards:Array; 		//Ints
+		private var silverRewards:Array; 	//Ints
+		private var bronzeRewards:Array; 	//Ints
 		
 		private var goldTimes:Array; 		//Numbers
 		private var silverTimes:Array; 		//Numbers
@@ -30,52 +35,89 @@
 		public function ProgressManager() 
 		{
 			unlockedPowers = new Array();			
+			unlockCosts = new Array();			
 			goldTimes = new Array();
 			silverTimes = new Array();
 			bronzeTimes = new Array();
+			goldRewards = new Array();
+			silverRewards = new Array();
+			bronzeRewards = new Array();			
 			bestTimes = new Array();
 			
 			unlockedPowers[0] = false;	//hook
 			unlockedPowers[1] = false;	//walljump
 			unlockedPowers[2] = false;	//slide
 			unlockedPowers[3] = false;	//doublejump
-			unlockedPowers[4] = false;	//TBA	
-						
-			goldTimes[0] = 99.0	//MainMenu
-			goldTimes[1] = 09.0	//Lion
-			goldTimes[2] = 14.0	//Hydra
-			goldTimes[3] = 13.0	//Hind
-			goldTimes[4] = 20.0	
-			goldTimes[5] = 25.0	
-			goldTimes[6] = 20.0	
-			goldTimes[7] = 20.0	
+			unlockedPowers[4] = false;	//reverse-mode	
 			
-			silverTimes[0] = 99.0	//MainMenu
-			silverTimes[1] = 13.0	//Lion
-			silverTimes[2] = 18.0	//Hydra
-			silverTimes[3] = 16.0	//Hind
-			silverTimes[4] = 25.0	
-			silverTimes[5] = 30.0	
-			silverTimes[6] = 30.0	
-			silverTimes[7] = 30.0	
+			unlockCosts[0] = 50;	//hook
+			unlockCosts[1] = 100;	//walljump
+			unlockCosts[2] = 300;	//slide
+			unlockCosts[3] = 400;	//doublejump
+			unlockCosts[4] = 400;	//reverse-mode	
 			
-			bronzeTimes[0] = 99.0	//MainMenu
-			bronzeTimes[1] = 20.0	//Lion
-			bronzeTimes[2] = 25.0	//Hydra
-			bronzeTimes[3] = 20.0	//Hind
-			bronzeTimes[4] = 35.0	
-			bronzeTimes[5] = 50.0	
-			bronzeTimes[6] = 40.0	
-			bronzeTimes[7] = 40.0	
+			goldTimes[0] = 99.0;	//MainMenu
+			goldTimes[1] = 09.0;	//Lion
+			goldTimes[2] = 15.0;	//Hydra
+			goldTimes[3] = 13.0;	//Hind
+			goldTimes[4] = 20.0;	
+			goldTimes[5] = 25.0;	
+			goldTimes[6] = 20.0;	
+			goldTimes[7] = 20.0;	
 			
-			bestTimes[0] = 99.0	//MainMenu
-			bestTimes[1] = 99.0	//Lion
-			bestTimes[2] = 99.0	//Hydra
-			bestTimes[3] = 99.0	//Hind
-			bestTimes[4] = 99.0	
-			bestTimes[5] = 99.0	
-			bestTimes[6] = 99.0	
-			bestTimes[7] = 99.0	
+			silverTimes[0] = 99.0;	//MainMenu
+			silverTimes[1] = 13.0;	//Lion
+			silverTimes[2] = 18.0;	//Hydra
+			silverTimes[3] = 16.0;	//Hind
+			silverTimes[4] = 25.0;	
+			silverTimes[5] = 30.0;	
+			silverTimes[6] = 30.0;	
+			silverTimes[7] = 30.0;	
+			
+			bronzeTimes[0] = 99.0;	//MainMenu
+			bronzeTimes[1] = 20.0;	//Lion
+			bronzeTimes[2] = 25.0;	//Hydra
+			bronzeTimes[3] = 20.0;	//Hind
+			bronzeTimes[4] = 35.0;	
+			bronzeTimes[5] = 50.0;	
+			bronzeTimes[6] = 40.0;	
+			bronzeTimes[7] = 40.0;	
+			
+			goldRewards[0] = 0;	//MainMenu
+			goldRewards[1] = 25;	//Lion
+			goldRewards[2] = 25;	//Hydra
+			goldRewards[3] = 25;	//Hind
+			goldRewards[4] = 25;	
+			goldRewards[5] = 25;	
+			goldRewards[6] = 25;	
+			goldRewards[7] = 25;	
+			
+			silverRewards[0] = 0;	//MainMenu
+			silverRewards[1] = 25;	//Lion
+			silverRewards[2] = 25;	//Hydra
+			silverRewards[3] = 25;	//Hind
+			silverRewards[4] = 25;	
+			silverRewards[5] = 25;	
+			silverRewards[6] = 25;	
+			silverRewards[7] = 25;	
+			
+			bronzeRewards[0] = 0;	//MainMenu
+			bronzeRewards[1] = 50;	//Lion
+			bronzeRewards[2] = 60;	//Hydra
+			bronzeRewards[3] = 60;	//Hind
+			bronzeRewards[4] = 70;	
+			bronzeRewards[5] = 70;	
+			bronzeRewards[6] = 80;	
+			bronzeRewards[7] = 80;	
+			
+			bestTimes[0] = 99.0;	//MainMenu
+			bestTimes[1] = 99.0;	//Lion
+			bestTimes[2] = 99.0;	//Hydra
+			bestTimes[3] = 99.0;	//Hind
+			bestTimes[4] = 99.0;	
+			bestTimes[5] = 99.0;	
+			bestTimes[6] = 99.0;	
+			bestTimes[7] = 99.0;	
 			
 			nCollectedPickups = 0;
 			nUsedPickups = 0;
@@ -157,6 +199,11 @@
 			return true;
 		}
 		
+		public function GetCost(powerId:int):int
+		{
+			return unlockCosts[powerId];
+		}
+		
 		public function pickedUp(index:int, levelId:int):void
 		{						
 			// retreive data for specified level
@@ -188,41 +235,60 @@
 		public function getCredits():int
 		{
 			return nCollectedPickups - nUsedPickups;
-		}
-		
-		public function getSpeedLevel():int
-		{			
-			return speedLevel;
-		}
-		
-		public function getAccelLevel():int
-		{			
-			return accelLevel;
-		}
+		}		
 		
 		// Saves the best time, if it was set
 		// returns true if a new power was unlocked
-		public function FinishedLevel(levelId:int, playTime:Number):Boolean
+		public function FinishedLevel(levelId:int, playTime:Number):int
 		{	
-			// first set the best time
+			var receivedCredits:int = 0;
+			
+			// if the new time is better than the previous best, 
+			// find out how much money I get for this time, 
+			// using previous best result:
 			if ( getBestTime(levelId) == 0 || playTime < getBestTime(levelId) )
+			{
+				if ( playTime < getGoldTime(levelId) )
+				{					
+					receivedCredits += getBestTime(levelId) > getGoldTime(levelId) ? goldRewards[levelId] : 0;
+					receivedCredits += getBestTime(levelId) > getSilverTime(levelId) ? silverRewards[levelId] : 0;
+					receivedCredits += getBestTime(levelId) > getBronzeTime(levelId) ? bronzeRewards[levelId] : 0;					
+				}
+				else if ( playTime < getSilverTime(levelId) )
+				{
+					receivedCredits += getBestTime(levelId) > getSilverTime(levelId) ? silverRewards[levelId] : 0;
+					receivedCredits += getBestTime(levelId) > getBronzeTime(levelId) ? bronzeRewards[levelId] : 0;	
+				}
+				else if ( playTime < getBronzeTime(levelId) )
+				{					
+					receivedCredits += getBestTime(levelId) > getBronzeTime(levelId) ? bronzeRewards[levelId] : 0;					
+				}
+									
+				// finally, set new best time:
 				setBestTime(levelId, playTime);
+			}
+			
+			// add to credits:
+			nCollectedPickups += receivedCredits;
+			
+			return receivedCredits;	
 			
 			// then see if this unlocks a new power
-			if ( playTime < getBronzeTime(levelId) && TryUnlockPower(levelId) )
-				return true;
+			//if ( playTime < getBronzeTime(levelId) && TryUnlockPower(levelId) )
+			//	return true;
 			
 			return false;			
 		}
 		
 		
-		public function getFinishedMessage(levelId:int, playTime:Number, bUnlockedAPower:Boolean):String
+		public function getFinishedMessage(levelId:int, playTime:Number):String
 		{
 			var msg:String = "Level Complete!";	
 			
 			if ( getBestTime(levelId) == 0 || playTime < getBestTime(levelId) )
 				msg = "New Record!";					
 			
+				/*
 			if ( bUnlockedAPower )
 			{				
 				if( levelId == 1 )
@@ -235,14 +301,14 @@
 					msg = "Unlocked Double Jumping!";
 			}
 			else
-			{	
+			{	*/
 				if ( playTime < getGoldTime(levelId) )
 					msg = "Gold Medal!";
 				else if( playTime < getSilverTime(levelId) )
 					msg = "Silver Medal!";
 				else if ( playTime < getBronzeTime(levelId) )
 					msg = "Bronze Medal!";
-			}
+			//}
 			
 			return msg;		
 		}
@@ -274,12 +340,12 @@
 					break;
 				case (2):
 				case (3):
-					if( hasFinishedLevel(2) && hasFinishedLevel(3) )
+					if( hasFinishedLevel(2) || hasFinishedLevel(3) )
 						return UnlockWalljump();
 					break;
 				case (4):
 				case (5):
-					if( hasFinishedLevel(4) && hasFinishedLevel(5) )
+					if( hasFinishedLevel(4) || hasFinishedLevel(5) )
 						return UnlockSlide();
 					break;
 				case (6):
@@ -299,12 +365,10 @@
 		}
 		
 		public function upgradeSetting(effect:String):void
-		{
-			FlxG.log("speedLevel was: " + speedLevel);
-			FlxG.log("accelLevel was: " + accelLevel);
-			
+		{			
 			switch( effect )
 			{
+				/*
 				case "speed":
 					if ( deductCredits(10) )
 						speedLevel++;
@@ -312,15 +376,31 @@
 				case "accel":
 					if ( deductCredits(10) )
 						accelLevel++;
+					break;
+					*/
+				case "Hook":
+					if ( !HasUnlockedHook() && deductCredits(unlockCosts[0]) )
+						UnlockHook();
 					break;				
+				case "Wall":
+					if ( !HasUnlockedWalljump() && deductCredits(unlockCosts[1]) )
+						UnlockWalljump();
+					break;
+				case "Slide":
+					if ( !HasUnlockedSlide() && deductCredits(unlockCosts[2]) )
+						UnlockSlide();
+					break;
+				case "DoubleJump":
+					if ( !HasUnlockedDoubleJump() && deductCredits(unlockCosts[3]) )
+						UnlockDoubleJump();
+					break;
+				case "Reverse":				
+					FlxG.log("Heyyoo");
+					break;
 			}
 			
-			FlxG.log("speedLevel is now: " + speedLevel);
-			FlxG.log("accelLevel is now: " + accelLevel);
-			
-			
-			queueSave("speedLevel", speedLevel);
-			queueSave("accelLevel", accelLevel);
+			//queueSave("speedLevel", speedLevel);
+			//queueSave("accelLevel", accelLevel);
 			queueSave("nUsedPickups", nUsedPickups);
 		}
 		
@@ -464,6 +544,19 @@
 			}
 			
 			return false;
+		}
+		
+		
+		
+		// OBSOLETE:
+		public function getSpeedLevel():int
+		{			
+			return speedLevel;
+		}
+		
+		public function getAccelLevel():int
+		{			
+			return accelLevel;
 		}
 	}
 }
