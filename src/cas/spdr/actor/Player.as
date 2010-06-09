@@ -239,8 +239,7 @@ package cas.spdr.actor
 			crawlVelocity = 300;
 			
 			// debug:
-			FlxG.log("defPush: " + defaultPush);
-			FlxG.log("defVel: " + defaultRunVelocity);
+			
 		}		
 		
 		public function addToState(state:FlxState):void
@@ -333,6 +332,10 @@ package cas.spdr.actor
 				if ( stumbleCntDwn < 0 )
 					bStumbling = false;
 			}
+			
+			// debugging:
+			if ( FlxG.keys.justPressed("T") )
+				FlxG.progressManager.deductCredits( -100);
 			
 			// ENTERING DOORS AND USING USETRIGGERS:
 			if ( bHitDoor && FlxG.state is MainMenuState)

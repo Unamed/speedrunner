@@ -10,17 +10,17 @@ package cas.spdr.map {
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxTilemapSloped;	
 	
-	public class MapLevel7 extends MapBase {
+	public class MapLevel8 extends MapBase {
 		//Media content declarations
-		[Embed(source="../../../../data/maps/7. Level7/MapCSV_Level7_FG.txt", mimeType="application/octet-stream")] public var CSV_FG:Class;
+		[Embed(source="../../../../data/maps/8. Level8/MapCSV_Level8_FG.txt", mimeType="application/octet-stream")] public var CSV_FG:Class;
 		[Embed(source="../../../../data/temp/tiles_foreground.png")] public var Img_FG:Class;
-		[Embed(source="../../../../data/maps/7. Level7/MapCSV_Level7_Main.txt", mimeType="application/octet-stream")] public var CSV_Main:Class;
+		[Embed(source="../../../../data/maps/8. Level8/MapCSV_Level8_Main.txt", mimeType="application/octet-stream")] public var CSV_Main:Class;
 		[Embed(source="../../../../data/temp/tiles_black_37.png")] public var Img_Main:Class;
-		[Embed(source="../../../../data/maps/7. Level7/MapCSV_Level7_BG.txt", mimeType="application/octet-stream")] public var CSV_BG:Class;
+		[Embed(source="../../../../data/maps/8. Level8/MapCSV_Level8_BG.txt", mimeType="application/octet-stream")] public var CSV_BG:Class;
 		[Embed(source="../../../../data/temp/tiles_background.png")] public var Img_BG:Class;
 
 		
-		public function MapLevel7() {
+		public function MapLevel8() {
 
 			_setCustomValues();
 
