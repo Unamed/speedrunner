@@ -1217,7 +1217,7 @@ package cas.spdr.actor
 				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex + 3
 					&& tileIndexBelow >= playState.flanmap.mainLayer.collideIndex + 3
 					&& bCanWalljump )
-				{		
+				{						
 					//if ( velocity.x > 0 && FlxG.keys.RIGHT 
 					//	|| velocity.x < 0 && FlxG.keys.LEFT )						
 					if ( FlxG.keys.RIGHT || FlxG.keys.LEFT )
@@ -1231,7 +1231,7 @@ package cas.spdr.actor
 							facing = LEFT;
 					}
 					else
-						FlxG.log("huh..");
+						FlxG.log("Not walling b/c no input");
 					
 						
 					velocity.x = 0;						
