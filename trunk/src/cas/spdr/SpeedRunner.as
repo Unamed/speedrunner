@@ -25,6 +25,7 @@
 			FlxG.levels.push(MapLevel5);			
 			FlxG.levels.push(MapLevel6);
 			FlxG.levels.push(MapLevel7);									
+			FlxG.levels.push(MapLevel8);
 			
 			FlxG.level = 0;
 			

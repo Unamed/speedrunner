@@ -65,12 +65,6 @@ package cas.spdr.map {
 		override public function addSpritesToLayerMain(onAddCallback:Function = null):void {
 			var obj:FlxSprite;
 			
-			obj = new BoostSection(3464, 1183);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new Door(2280, 1288+8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -113,14 +107,27 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
+			obj = new PlayerStart(2008, 1304);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
 			obj = new Door(4728, 1032+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 8;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(3432, 1160+8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["levelId"] = 7;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new PlayerStart(2008, 1304);;
+			obj = new BoostSection(3528, 1183);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);

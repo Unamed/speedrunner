@@ -1,6 +1,7 @@
 ﻿package  cas.spdr.logic
 {
 	import cas.spdr.map.*;
+	import cas.spdr.state.PlayState;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSave;
 	/**
@@ -61,27 +62,30 @@
 			goldTimes[2] = 15.0;	//Hydra
 			goldTimes[3] = 13.0;	//Hind
 			goldTimes[4] = 20.0;	
-			goldTimes[5] = 25.0;	
+			goldTimes[5] = 20.0;	
 			goldTimes[6] = 20.0;	
-			goldTimes[7] = 20.0;	
+			goldTimes[7] = 25.0;	
+			goldTimes[8] = 25.0;	
 			
 			silverTimes[0] = 99.0;	//MainMenu
 			silverTimes[1] = 13.0;	//Lion
 			silverTimes[2] = 18.0;	//Hydra
 			silverTimes[3] = 16.0;	//Hind
 			silverTimes[4] = 25.0;	
-			silverTimes[5] = 30.0;	
-			silverTimes[6] = 30.0;	
+			silverTimes[5] = 25.0;	
+			silverTimes[6] = 25.0;	
 			silverTimes[7] = 30.0;	
+			silverTimes[8] = 30.0;	
 			
 			bronzeTimes[0] = 99.0;	//MainMenu
 			bronzeTimes[1] = 20.0;	//Lion
 			bronzeTimes[2] = 25.0;	//Hydra
 			bronzeTimes[3] = 20.0;	//Hind
 			bronzeTimes[4] = 35.0;	
-			bronzeTimes[5] = 50.0;	
+			bronzeTimes[5] = 40.0;	
 			bronzeTimes[6] = 40.0;	
-			bronzeTimes[7] = 40.0;	
+			bronzeTimes[7] = 50.0;	
+			bronzeTimes[8] = 50.0;	
 			
 			goldRewards[0] = 0;	//MainMenu
 			goldRewards[1] = 25;	//Lion
@@ -91,6 +95,7 @@
 			goldRewards[5] = 25;	
 			goldRewards[6] = 25;	
 			goldRewards[7] = 25;	
+			goldRewards[8] = 25;	
 			
 			silverRewards[0] = 0;	//MainMenu
 			silverRewards[1] = 25;	//Lion
@@ -100,6 +105,7 @@
 			silverRewards[5] = 25;	
 			silverRewards[6] = 25;	
 			silverRewards[7] = 25;	
+			silverRewards[8] = 25;	
 			
 			bronzeRewards[0] = 0;	//MainMenu
 			bronzeRewards[1] = 50;	//Lion
@@ -109,6 +115,7 @@
 			bronzeRewards[5] = 70;	
 			bronzeRewards[6] = 80;	
 			bronzeRewards[7] = 80;	
+			bronzeRewards[8] = 80;	
 			
 			bestTimes[0] = 99.0;	//MainMenu
 			bestTimes[1] = 99.0;	//Lion
@@ -118,6 +125,7 @@
 			bestTimes[5] = 99.0;	
 			bestTimes[6] = 99.0;	
 			bestTimes[7] = 99.0;	
+			bestTimes[8] = 99.0;	
 			
 			nCollectedPickups = 0;
 			nUsedPickups = 0;
@@ -130,6 +138,7 @@
 			collectedPickups[5] = "00000000000000000000000000000000000000000000000000";
 			collectedPickups[6] = "00000000000000000000000000000000000000000000000000";
 			collectedPickups[7] = "00000000000000000000000000000000000000000000000000";
+			collectedPickups[8] = "00000000000000000000000000000000000000000000000000";
 			
 			saveQueueItems = new Array();
 			saveQueueObjects = new Array();
@@ -402,6 +411,7 @@
 			//queueSave("speedLevel", speedLevel);
 			//queueSave("accelLevel", accelLevel);
 			queueSave("nUsedPickups", nUsedPickups);
+			(FlxG.state as PlayState).switchToMainMenu();
 		}
 		
 		public function deductCredits( amount:int = 0 ):Boolean
