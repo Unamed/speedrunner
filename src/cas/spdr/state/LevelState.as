@@ -52,7 +52,7 @@
 		private var allPositions:Array;
 		private var bShouldLog:Boolean;		
 		private var colorArray:Array = new Array(0xFFFF33, 0xFFFFFF, 0x79DCF4, 0xFF3333, 0xFFCC33, 0x99CC33);
-		private var bDrawMyOwn:Boolean = false; // decided whether or not I also want to see the commits from my own IP		
+		private var bDrawMyOwn:Boolean = true; // decided whether or not I also want to see the commits from my own IP		
 		private var logDrawIndex:int = 0;
 		private var logDrawCnt:int = 1;
 		
@@ -306,7 +306,7 @@
 			sendLoader.addEventListener(IOErrorEvent.IO_ERROR, sendError);			
 			
 			var track:String = FlxG.level.toString();
-			var version:String = FlxG.LIBRARY_MAJOR_VERSION.toString() + ":"+ FlxG.LIBRARY_MINOR_VERSION.toString();
+			var version:String = FlxG.LIBRARY_MAJOR_VERSION.toString() + FlxG.LIBRARY_MINOR_VERSION.toString();
 			var time:String = Math.round(playTime).toString();
 			var data:String = positions;
 			var hash:String = HighScores.MD5("slowcrawler" + time + data);							
@@ -319,7 +319,8 @@
 			
 			function sendComplete(evt:Event):void
 			{
-				trace("Message sent. Loading data..");				
+				trace("Message sent:");				
+				//trace(url + "?action=submit"+"&track="+track+"&version="+version+"&time="+time+"&hash="+hash+"&data="+data);
 			}
 			function sendError(evt:IOErrorEvent):void
 			{
@@ -333,7 +334,7 @@
 			var variables:URLVariables = new URLVariables();
 			variables.action = "show";
 			variables.track = FlxG.level.toString();			
-			variables.version = FlxG.LIBRARY_MAJOR_VERSION.toString() + ":"+ FlxG.LIBRARY_MINOR_VERSION.toString();
+			variables.version = FlxG.LIBRARY_MAJOR_VERSION.toString() + FlxG.LIBRARY_MINOR_VERSION.toString();
 			request.data = variables;				
 
 			var loadLoader:URLLoader = new URLLoader();

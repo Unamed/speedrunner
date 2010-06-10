@@ -315,7 +315,8 @@
 			
 			else if ( obj is Pickup )
 			{
-				pickups.push(obj);				
+				pickups.push(obj);
+				(obj as Pickup).SetColorAndValue();
 			}
 			
 			else if ( obj is PlayerStart )

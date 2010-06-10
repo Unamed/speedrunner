@@ -63,7 +63,6 @@ package cas.spdr.map {
 			boundsMaxY = 1600;
 		}
 
-
 		override public function addSpritesToLayerMain(onAddCallback:Function = null):void {
 			var obj:FlxSprite;
 			
@@ -74,12 +73,6 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new FinishTrigger(6136, 1016 -4);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(432, 992);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
@@ -127,145 +120,7 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Pickup(1760, 992);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(1712, 992);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(1808, 992);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(2512, 912);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(144, 592);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(144, 576);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(192, 576);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(192, 592);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(176, 592);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(160, 592);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(160, 576);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(176, 576);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(4912, 880);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(4960, 880);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(4416, 960);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(4464, 960);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(4368, 960);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new BoostSection(3176, 1023-1);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(2560, 912);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(2608, 912);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(5008, 880);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(544, 960);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(608, 976);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(480, 960);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
@@ -283,21 +138,199 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Pickup(1056, 816);;
+			obj = new Pickup(208, 592);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
+			obj["colorVal"] = "gold";
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Pickup(1120, 816);;
+			obj = new Pickup(176, 592);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
+			obj["colorVal"] = "gold";
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Pickup(1184, 816);;
+			obj = new Pickup(144, 592);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
+			obj["colorVal"] = "gold";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(144, 560);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "gold";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(176, 560);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "gold";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(208, 560);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "gold";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(416, 976);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(480, 960);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(560, 960);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(624, 976);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(1344, 992);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(1424, 960);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(1504, 960);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(2000, 960);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(2064, 928);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(2128, 928);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(3984, 1008);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(4032, 976);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(4096, 960);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "bronze";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(5040, 848);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(5088, 880);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(5136, 912);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(2496, 848);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(2560, 864);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(2624, 896);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(848, 896);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(880, 864);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Pickup(912, 832);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["colorVal"] = "silver";
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
