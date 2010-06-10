@@ -63,7 +63,7 @@
 			lTxt.scrollFactor = new Point(1, 1);				
 			this.add(lTxt);	
 			
-			var oTxt:FlxText = new FlxText(1822, 1220, 500, "<- Options");			
+			var oTxt:FlxText = new FlxText(1818, 1220, 500, "<- Upgrades");			
 			oTxt.size = 12;							
 			oTxt.scrollFactor = new Point(1, 1);							
 			this.add(oTxt);	

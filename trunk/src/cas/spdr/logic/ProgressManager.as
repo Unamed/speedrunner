@@ -54,8 +54,8 @@
 			unlockCosts[0] = 50;	//hook
 			unlockCosts[1] = 100;	//walljump
 			unlockCosts[2] = 300;	//slide
-			unlockCosts[3] = 400;	//doublejump
-			unlockCosts[4] = 400;	//reverse-mode	
+			unlockCosts[3] = 300;	//doublejump
+			unlockCosts[4] = 1000;	//reverse-mode	
 			
 			goldTimes[0] = 99.0;	//MainMenu
 			goldTimes[1] = 09.0;	//Lion
@@ -213,7 +213,7 @@
 			return unlockCosts[powerId];
 		}
 		
-		public function pickedUp(index:int, levelId:int):void
+		public function pickedUp(index:int, levelId:int, value:int):void
 		{						
 			// retreive data for specified level
 			var oldStr:String = (collectedPickups[levelId] as String);
@@ -229,7 +229,7 @@
 			
 			// store
 			collectedPickups[levelId] = newStr;	
-			nCollectedPickups++;
+			nCollectedPickups+=value;
 			
 			// save to file:
 			queueSave("pickups" + levelId, collectedPickups[levelId] );
