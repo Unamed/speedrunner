@@ -58,7 +58,7 @@
 			unlockCosts[4] = 1000;	//reverse-mode	
 			
 			goldTimes[0] = 99.0;	//MainMenu
-			goldTimes[1] = 09.0;	//Lion
+			goldTimes[1] = 10.0;	//Lion
 			goldTimes[2] = 15.0;	//Hydra
 			goldTimes[3] = 13.0;	//Hind
 			goldTimes[4] = 20.0;	
@@ -68,7 +68,7 @@
 			goldTimes[8] = 25.0;	
 			
 			silverTimes[0] = 99.0;	//MainMenu
-			silverTimes[1] = 13.0;	//Lion
+			silverTimes[1] = 15.0;	//Lion
 			silverTimes[2] = 18.0;	//Hydra
 			silverTimes[3] = 16.0;	//Hind
 			silverTimes[4] = 25.0;	
