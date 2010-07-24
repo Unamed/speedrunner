@@ -15,6 +15,7 @@
 		[Embed(source = "/../data/temp/bgIm.png")] private var bgIm:Class;
 		
 		[Embed(source = "/../data/temp/obstacle.png")] private var ObstacleIcon:Class;
+		[Embed(source = "/../data/temp/lethal_obstacle.png")] private var LethalObstacleIcon:Class;
 		[Embed(source = "/../data/temp/pickup_anim.png")] private var PickupIcon:Class;
 		[Embed(source = "/../data/temp/pickup_Alt.png")] private var PickupAltIcon:Class;
 		[Embed(source = "/../data/temp/BoostSection.png")] private var BoostImg:Class;
@@ -53,6 +54,7 @@
 		public static const SPRITE_MESSAGE_DIALOG_LEVELINFO:uint = 12;		
 		public static const SPRITE_FINISH:uint = 13;
 		public static const SPRITE_USETRIGGER:uint = 14;
+		public static const SPRITE_OBSTACLE_LETHAL:uint = 15;
 		
 		private var tiles:Array = new Array();
 		private var sprites:Array = new Array();
@@ -84,6 +86,7 @@
 			sprites[SPRITE_MESSAGE_DIALOG_LEVELINFO] = MessageDialogLevelInfo;
 			sprites[SPRITE_FINISH] = Finish;
 			sprites[SPRITE_USETRIGGER] = UseTrigger;
+			sprites[SPRITE_OBSTACLE_LETHAL] = LethalObstacleIcon;
 		}
 		
 		public static function get Instance():GraphicsLibrary
