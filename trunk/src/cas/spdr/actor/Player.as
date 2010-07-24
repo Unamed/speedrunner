@@ -1153,7 +1153,12 @@ package cas.spdr.actor
 			stumbleCntDwn = 0.5;
 			//this.flicker(2);
 			
-			explode();
+			if( Contact is LethalObstacle )
+				explode();
+			else
+			{
+				(Contact as Obstacle).onHit(this.velocity);				
+			}
 			
 			if ( bIsSwinging )
 				hooks[prevHook].breakRelease();
