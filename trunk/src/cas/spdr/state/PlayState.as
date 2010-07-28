@@ -180,7 +180,7 @@
 			FlxG.level = levelId;
 			if ( levelId == 1 )
 			{
-				FlxG.switchState(Boss2LevelState);
+				FlxG.switchState(Boss1LevelState);
 			}
 			else			
 				FlxG.switchState(LevelState);

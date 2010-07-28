@@ -19,7 +19,7 @@
 			
 			FlxG.levels.push(MapMainMenu);
 			//FlxG.levels.push(MapTheLion);
-			FlxG.levels.push(MapBoss2);
+			FlxG.levels.push(MapBoss1);
 			FlxG.levels.push(MapTheHydra);
 			FlxG.levels.push(MapTheHind);
 			FlxG.levels.push(MapLevel4);

@@ -887,7 +887,7 @@ package cas.spdr.actor
 		
 		private function explode():void
 		{
-			if ( ! FlxG.state is LevelState )
+			if ( ! FlxG.state is LevelState || this.dead)
 				return;
 			
 			explosionEmitter.setXVelocity(this.velocity.x -100, this.velocity.x + 100);
@@ -1203,6 +1203,9 @@ package cas.spdr.actor
 			if ( Contact is Trigger )
 				return hitTrigger((Contact as Trigger));
 				
+			if (Contact is Deathwall )
+				return hitDeathwall((Contact as Deathwall));
+				
 			if ( bIsSwinging )
 			{
 				FlxG.log("HitWall while swinging");
@@ -1377,6 +1380,9 @@ package cas.spdr.actor
 				
 			if ( Contact is Trigger )
 				return hitTrigger((Contact as Trigger));
+				
+			if (Contact is Deathwall )
+				return hitDeathwall((Contact as Deathwall));
 				
 			FlxG.log("hitCeiling");
 			
