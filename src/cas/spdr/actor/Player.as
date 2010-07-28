@@ -1166,6 +1166,17 @@ package cas.spdr.actor
 			return false;			
 		}
 		
+		public function hitDeathwall(Contact:Deathwall):Boolean
+		{			
+			explode();
+		
+			Contact.active = false;
+			Contact.dead = true;			
+			Contact.velocity.y = 0;
+			
+			return false;
+		}
+		
 		public function hitPickup(Contact:Pickup):Boolean
 		{
 			Contact.PickedUp(FlxG.state as PlayState);			
@@ -1318,6 +1329,9 @@ package cas.spdr.actor
 			
 			if (Contact is Obstacle )
 				return hitObstacle((Contact as Obstacle));
+				
+			if (Contact is Deathwall )
+				return hitDeathwall((Contact as Deathwall));
 			
 			var contactXtile:uint = Contact.x / 16;
 			var contactYtile:uint = Contact.y / 16;			

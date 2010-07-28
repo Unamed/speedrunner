@@ -178,7 +178,12 @@
 		public function switchToLevel(levelId:uint):void
 		{			
 			FlxG.level = levelId;
-			FlxG.switchState(LevelState);
+			if ( levelId == 1 )
+			{
+				FlxG.switchState(Boss2LevelState);
+			}
+			else			
+				FlxG.switchState(LevelState);
 		}
 
 		// MAIN UPDATE FUNCTION:

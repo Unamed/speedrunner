@@ -33,6 +33,8 @@
 		private var saveQueueItems:Array;	//Used to store the first part of save orders until the level is finished
 		private var saveQueueObjects:Array;	//Used to store the second part of save orders until the level is finished		
 		
+		private static var defaultPickupString:String = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+		
 		public function ProgressManager() 
 		{
 			unlockedPowers = new Array();			
@@ -131,14 +133,14 @@
 			nUsedPickups = 0;
 			collectedPickups = new Array();
 			collectedPickups[0] = "0";
-			collectedPickups[1] = "00000000000000000000000000000000000000000000000000";
-			collectedPickups[2] = "00000000000000000000000000000000000000000000000000";
-			collectedPickups[3] = "00000000000000000000000000000000000000000000000000";
-			collectedPickups[4] = "00000000000000000000000000000000000000000000000000";
-			collectedPickups[5] = "00000000000000000000000000000000000000000000000000";
-			collectedPickups[6] = "00000000000000000000000000000000000000000000000000";
-			collectedPickups[7] = "00000000000000000000000000000000000000000000000000";
-			collectedPickups[8] = "00000000000000000000000000000000000000000000000000";
+			collectedPickups[1] = defaultPickupString;
+			collectedPickups[2] = defaultPickupString;
+			collectedPickups[3] = defaultPickupString;
+			collectedPickups[4] = defaultPickupString;
+			collectedPickups[5] = defaultPickupString;
+			collectedPickups[6] = defaultPickupString;
+			collectedPickups[7] = defaultPickupString;
+			collectedPickups[8] = defaultPickupString;
 			
 			saveQueueItems = new Array();
 			saveQueueObjects = new Array();
@@ -474,6 +476,20 @@
 				return " - ";
 		}
 		
+		public function getPickedUp(levelId:int):int
+		{
+			var pickupStr:String = collectedPickups[levelId];
+			
+			var cnt:int = 0;
+			for ( var i:int = 0; i < pickupStr.length; i++ )
+			{
+				if ( pickupStr.charAt(i) == "1" )
+					cnt++;				
+			}
+			
+			return cnt;
+		}
+		
 		public function setBestTime(levelId:int, playTime:Number):void
 		{			
 			bestTimes[levelId] = playTime;			
@@ -540,7 +556,7 @@
 			
 			for ( var k:int = 0; k < collectedPickups.length; k++ )
 			{
-				collectedPickups[k] = "00000000000000000000000000000000000000000000000000";
+				collectedPickups[k] = defaultPickupString;
 			}
 			
 			nCollectedPickups = 0;
