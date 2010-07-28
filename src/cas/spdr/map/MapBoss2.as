@@ -92,7 +92,7 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new FinishTrigger(2184, 1256 -4);;
+			obj = new FinishTrigger(2008, 1256 -4);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);

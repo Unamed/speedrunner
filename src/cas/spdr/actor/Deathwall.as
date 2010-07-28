@@ -11,13 +11,13 @@
 	public class Deathwall extends FlxSprite//Debug
 	{
 		
-		public function Deathwall(X:int = 0, Y:int = 0, SimpleGraphic:Class = null) 
+		public function Deathwall(X:int, Y:int, W:int, H:int, SimpleGraphic:Class) 
 		{
 			super(X, Y, SimpleGraphic);
-			loadGraphic( GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL), false, false, 2400, 600, false);
+			loadGraphic( SimpleGraphic, false, false, W, H, false);
 			
-			width = 2400;
-			height = 600;
+			width = W;
+			height = H;
 		}
 		
 	}

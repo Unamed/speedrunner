@@ -25,7 +25,7 @@
 			
 			super.initLevel();		
 			
-			FlxG.quake(0.01, 3);
+			FlxG.quake(0.0075, 3);
 			startTimer();
 		}
 
@@ -33,7 +33,7 @@
 		{
 			super.addGameElements();
 			
-			deathWall = new Deathwall(0, player.y + 325);
+			deathWall = new Deathwall(0, player.y + 325, 2400, 600, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));
 			
 			deathWall.velocity.y = -100;
 			this.add(deathWall);
