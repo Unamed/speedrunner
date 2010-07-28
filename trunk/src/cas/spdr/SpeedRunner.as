@@ -18,7 +18,8 @@
 			super(800, 600, MainMenuState, 1);// , 0xff131c1b, false, 0xff729954);
 			
 			FlxG.levels.push(MapMainMenu);
-			FlxG.levels.push(MapTheLion);
+			//FlxG.levels.push(MapTheLion);
+			FlxG.levels.push(MapBoss2);
 			FlxG.levels.push(MapTheHydra);
 			FlxG.levels.push(MapTheHind);
 			FlxG.levels.push(MapLevel4);

@@ -35,8 +35,10 @@
 		private var bTxt:FlxText;			
 		private var bestTxt:FlxText;
 		
-		private var finishDialog:MessageDialog;
-		private var startDialog:MessageDialog;
+		protected var finishDialog:MessageDialog;
+		protected var startDialog:MessageDialog;
+		
+		protected var bShowHUD:Boolean = true;
 		
 		public var playTime:Number;		
 		private var bIsTiming:Boolean;
@@ -58,7 +60,7 @@
 		
 		private var logTxt1:FlxText;
 		private var logTxt2:FlxText;		
-				
+		
 		public function LevelState() 
 		{	
 			playTime = 0;
@@ -78,15 +80,23 @@
 			
 			setPickupsFromSaveData(FlxG.progressManager.getCollectedPickups(FlxG.level));
 			
-			startDialog.playMessage("Go!");			
-			player.active = false;
+			if ( startDialog != null )
+			{
+				startDialog.playMessage("Go!");					
+				player.active = false;			
+			}
+			
+			/*
+			FlxG.log(FlxG.progressManager.getPickedUp(FlxG.level));
+			FlxG.log(pickups.length);
+			var perc:Number = FlxG.progressManager.getPickedUp(FlxG.level) / pickups.length;
+			FlxG.log(perc);
+			*/
 		}
 		
-		
-		
-		public function restartLevel():void
-		{			
-			FlxG.switchState(LevelState);			
+		virtual public function restartLevel():void
+		{				
+			FlxG.switchState(LevelState);						
 		}		
 		
 		override public function addHUDElements():void
@@ -97,52 +107,55 @@
 			finishDialog.setOnFinishCallback( this.endLevel );
 			finishDialog.addMeToState(this);
 			
-			startDialog = new StartMessageDialog();			
-			startDialog.setOnFinishCallback( this.startTimer );					
-			startDialog.addMeToState(this);
-			
-			// TEXTS:
-			timerTxt = new FlxText(500, 10, 200, "Timer");
-			timerTxt.size = 15;							
-			timerTxt.scrollFactor = new Point(0, 0);				
-			this.add(timerTxt);	
-			
-			// goals:
-			//gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(flanmap).toFixed(2));			
-			gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(FlxG.level).toFixed(2));			
-			gTxt.size = 15;							
-			gTxt.scrollFactor = new Point(0, 0);				
-			this.add(gTxt);	
-			
-			//sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(flanmap).toFixed(2));			
-			sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(FlxG.level).toFixed(2));			
-			sTxt.size = 15;							
-			sTxt.scrollFactor = new Point(0, 0);				
-			this.add(sTxt);	
-			
-			//bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(flanmap).toFixed(2));			
-			bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(FlxG.level).toFixed(2));			
-			bTxt.size = 15;							
-			bTxt.scrollFactor = new Point(0, 0);				
-			this.add(bTxt);	
-			
-			//bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(flanmap).toFixed(2));			
-			bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(FlxG.level).toFixed(2));			
-			bestTxt.size = 15;							
-			bestTxt.scrollFactor = new Point(0, 0);				
-			this.add(bestTxt);	
-			
-			
-			
-			logTxt1 = new FlxText(10, 200, 400, "");			
-			logTxt1.size = 12;							
-			logTxt1.scrollFactor = new Point(0, 0);				
-			this.add(logTxt1);	
-			
-			logTxt2 = new FlxText(10, 250, 400, "");			
-			logTxt2.size = 12;							
-			logTxt2.scrollFactor = new Point(0, 0);				
-			this.add(logTxt2);
+			if ( bShowHUD )
+			{	
+				startDialog = new StartMessageDialog();			
+				startDialog.setOnFinishCallback( this.startTimer );					
+				startDialog.addMeToState(this);
+				
+				// TEXTS:
+				timerTxt = new FlxText(500, 10, 200, "Timer");
+				timerTxt.size = 15;							
+				timerTxt.scrollFactor = new Point(0, 0);				
+				this.add(timerTxt);	
+				
+				// goals:
+				//gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(flanmap).toFixed(2));			
+				gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(FlxG.level).toFixed(2));			
+				gTxt.size = 15;							
+				gTxt.scrollFactor = new Point(0, 0);				
+				this.add(gTxt);	
+				
+				//sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(flanmap).toFixed(2));			
+				sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(FlxG.level).toFixed(2));			
+				sTxt.size = 15;							
+				sTxt.scrollFactor = new Point(0, 0);				
+				this.add(sTxt);	
+				
+				//bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(flanmap).toFixed(2));			
+				bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(FlxG.level).toFixed(2));			
+				bTxt.size = 15;							
+				bTxt.scrollFactor = new Point(0, 0);				
+				this.add(bTxt);	
+				
+				//bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(flanmap).toFixed(2));			
+				bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(FlxG.level).toFixed(2));			
+				bestTxt.size = 15;							
+				bestTxt.scrollFactor = new Point(0, 0);				
+				this.add(bestTxt);	
+				
+				
+				
+				logTxt1 = new FlxText(10, 200, 400, "");			
+				logTxt1.size = 12;							
+				logTxt1.scrollFactor = new Point(0, 0);				
+				this.add(logTxt1);	
+				
+				logTxt2 = new FlxText(10, 250, 400, "");			
+				logTxt2.size = 12;							
+				logTxt2.scrollFactor = new Point(0, 0);				
+				this.add(logTxt2);
+			}
 			
 			
 		}	
@@ -178,7 +191,8 @@
 			if( bIsTiming )
 				playTime += FlxG.elapsed;		
 			
-			timerTxt.text = "Timer: " + playTime.toFixed(2);	
+			if( timerTxt != null )
+				timerTxt.text = "Timer: " + playTime.toFixed(2);	
 			
 			// Various Input				
 			if ( FlxG.keys.justPressed("SPACE") )
@@ -212,17 +226,19 @@
 				logDrawCnt = Math.max( logDrawCnt-1, 0);				
 			}
 			
-			if ( allPositions.length > 0 )
+			if ( logTxt1 != null )
 			{
-				if ( logDrawCnt > 1 )
-					logTxt1.text = "DrawingIndices: " + logDrawIndex + " to " + (logDrawIndex + logDrawCnt - 1) + " (of " + (allPositions.length - 1) + ")";
+				if ( allPositions.length > 0 )
+				{
+					if ( logDrawCnt > 1 )
+						logTxt1.text = "DrawingIndices: " + logDrawIndex + " to " + (logDrawIndex + logDrawCnt - 1) + " (of " + (allPositions.length - 1) + ")";
+					else
+						logTxt1.text = "DrawingIndex: " + logDrawIndex + " (of " + (allPositions.length - 1) + ")";					
+					
+				}
 				else
-					logTxt1.text = "DrawingIndex: " + logDrawIndex + " (of " + (allPositions.length - 1) + ")";					
-				
+					logTxt1.text = "";
 			}
-			else
-				logTxt1.text = "";
-			
 			
 		}
 		
@@ -239,9 +255,11 @@
 			
 			
 			
+			
+			
 		}
 		
-		public function stopTimer():void
+		virtual public function stopTimer():void
 		{
 			if ( bIsTiming )
 			{
@@ -267,15 +285,10 @@
 			//finTxt.text = FlxG.progressManager.FinishedLevel(flanmap, playTime);
 			
 			//finTxt.text = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
-			//finTxt.visible = true;
-			
-			
-			
-			
-					
+			//finTxt.visible = true;					
 		}	
 		
-		public function endLevel(bSaveData:Boolean = true):void
+		virtual public function endLevel(bSaveData:Boolean = true):void
 		{
 			//bIsPaused = true;
 			player.active = false;
