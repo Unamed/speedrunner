@@ -6,3 +6,5 @@ TODO:
 - level 6 needs to better show how to use slide at high speed, in the beginning
 - level 8 needs to show the use of horizontal doubje jump
 - level 8: remove the first walling section
+
+make boss levels easier!
