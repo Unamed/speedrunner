@@ -116,7 +116,7 @@
 		
 		public function addBGLayer():void
 		{			
-			//this.add(flanmap.layerBG);	
+			this.add(flanmap.layerBG);	
 			flanmap.addSpritesToLayerMain(onAddSpriteCallback);
 		}
 		
