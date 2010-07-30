@@ -302,7 +302,7 @@ package cas.spdr.actor
 				arr3.push( FlxG.state.add( ( new PlayerTrailParticle(1.0,0,0,null,true).createGraphic(10, 10, 0xFF000000) ) ) );	
 			}			
 			
-			state.add(trail2.loadSprites(arr2));
+			//state.add(trail2.loadSprites(arr2));
 			state.add(trail.loadSprites(arr));
 			state.add(explosionEmitter.loadSprites(arr3));
 			
