@@ -31,7 +31,7 @@
 			
 			super.initLevel();		
 			
-			FlxG.quake(0.0075, 3);
+			//FlxG.quake(0.0075, 3);
 			startTimer();
 		}
 
@@ -67,10 +67,26 @@
 		{			
 			super.update();
 			
-			if( deathWall.active )
-				deathWall.collide(player);
-			
 			FlxG.collideArray(deathFloors, player);
+			
+			if ( deathWall.active )
+			{
+				deathWall.collide(player);
+
+				var wallDist:int = player.x - deathWall.x -800; 
+				
+				if ( wallDist > 800 )
+					FlxG.quake(0.00, 1);				
+				else if ( wallDist > 500 )
+					FlxG.quake(0.001, 1);				
+				else if ( wallDist > 300 )
+					FlxG.quake(0.004, 1);				
+				else
+					FlxG.quake(0.008, 1);
+			}
+			else 
+				FlxG.quake(0.0, 1);
+			
 		}
 		
 		override public function restartLevel():void
