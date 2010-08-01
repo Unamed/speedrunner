@@ -4,8 +4,10 @@ package cas.spdr.map {
 	import cas.spdr.gfx.sprite.BoostSection;
 	import cas.spdr.gfx.sprite.FinishTrigger;
 	import cas.spdr.gfx.sprite.Obstacle;
+	import cas.spdr.gfx.sprite.LethalObstacle;
 	import cas.spdr.gfx.sprite.Pickup;
 	import cas.spdr.gfx.sprite.PlayerStart;
+	import cas.spdr.actor.FallTile;
 	
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxTilemapSloped;
@@ -73,24 +75,6 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new FinishTrigger(6136, 1016 -4);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(604, 1052);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(636, 1052);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(668, 1052);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
@@ -490,6 +474,24 @@ package cas.spdr.map {
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["colorVal"] = "gold";
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(604, 1036);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(636, 1036);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(668, 1036);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
