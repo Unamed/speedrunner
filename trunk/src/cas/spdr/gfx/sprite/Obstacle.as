@@ -16,7 +16,7 @@
 
 		public function Obstacle(X:int = 0, Y:int = 0, SimpleGraphic:Class = null) 
 		{
-			super(X, Y-8, SimpleGraphic);			
+			super(X, Y, SimpleGraphic);			
 			this.loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_OBSTACLE), false, false, 24, 24);
 			
 			this.offset.x = 3;

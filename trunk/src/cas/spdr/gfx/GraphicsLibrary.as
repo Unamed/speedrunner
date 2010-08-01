@@ -33,6 +33,7 @@
 		[Embed(source = "/../data/temp/useTrigger.png")] private var UseTrigger:Class;
 		[Embed(source = "/../data/temp/deathWall.png")] private var deathWallIm:Class;
 		[Embed(source = "/../data/temp/deathWallSide.png")] private var deathWallSideIm:Class;
+		[Embed(source = "/../data/temp/fallTile.png")] private var fallTileIm:Class;
 		
 		public static const TILES_BACKGROUND:uint = 0;
 		public static const TILES_FOREGROUND:uint = 1;
@@ -59,6 +60,7 @@
 		public static const SPRITE_OBSTACLE_LETHAL:uint = 15;
 		public static const SPRITE_DEATHWALL:uint = 16;
 		public static const SPRITE_DEATHWALL_SIDE:uint = 17;
+		public static const SPRITE_FALLTILE:uint = 18;
 		
 		private var tiles:Array = new Array();
 		private var sprites:Array = new Array();
@@ -93,6 +95,7 @@
 			sprites[SPRITE_OBSTACLE_LETHAL] = LethalObstacleIcon;
 			sprites[SPRITE_DEATHWALL] = deathWallIm;
 			sprites[SPRITE_DEATHWALL_SIDE] = deathWallSideIm;
+			sprites[SPRITE_FALLTILE] = fallTileIm;
 		}
 		
 		public static function get Instance():GraphicsLibrary
