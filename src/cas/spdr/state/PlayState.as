@@ -33,6 +33,7 @@
 		private var boosts:Array;
 		protected var pickups:Array;
 		private var triggers:Array;
+		private var fallTiles:Array;
 		private var slopeDowns:Array;
 		private var slopeUps:Array;
 		private var movingBlocks:Array;
@@ -81,6 +82,7 @@
 			obstacles = new Array();	
 			boosts = new Array();
 			triggers = new Array();
+			fallTiles = new Array();
 			doors = new Array();
 			movingBlocks = new Array();
 			
@@ -179,9 +181,13 @@
 		{			
 			FlxG.level = levelId;
 			if ( levelId == 1 )
-			{
 				FlxG.switchState(Boss1LevelState);
-			}
+			else if ( levelId == 2 )
+				FlxG.switchState(Boss2LevelState);
+			else if ( levelId == 3 )
+				FlxG.switchState(Boss1LevelState);
+			else if ( levelId == 4 )
+				FlxG.switchState(Boss1LevelState);
 			else			
 				FlxG.switchState(LevelState);
 		}
@@ -243,6 +249,7 @@
 			FlxG.collideArray(pickups, player);
 			FlxG.collideArray(doors, player);
 			FlxG.collideArray(triggers, player);
+			FlxG.collideArray(fallTiles, player);
 			FlxG.collideArray(boosts, player);
 			FlxG.collideArray(movingBlocks, player);
 			//start.collide(player);
@@ -354,6 +361,11 @@
 			else if (obj is MovingBlock )
 			{				
 				movingBlocks.push(obj);								
+			}
+			
+			else if ( obj is FallTile )
+			{
+				fallTiles.push(obj);
 			}
 		}	
 		

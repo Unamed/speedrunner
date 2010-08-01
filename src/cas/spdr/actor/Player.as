@@ -1,6 +1,7 @@
 package cas.spdr.actor
 {
 	import cas.spdr.gfx.sprite.*;
+	import cas.spdr.state.Boss1LevelState;
 	import cas.spdr.state.LevelState;
 	import cas.spdr.state.MainMenuState;
 	import cas.spdr.state.PlayState;
@@ -51,9 +52,6 @@ package cas.spdr.actor
 		private var bBoosting:Boolean;
 		
 		private var playState:PlayState;
-		
-		
-		
 		
 		public var bOnDownSlope:Boolean;
 		
@@ -239,6 +237,7 @@ package cas.spdr.actor
 			crawlVelocity = 300;
 			
 			// debug:
+			
 			
 		}		
 		
@@ -1144,6 +1143,22 @@ package cas.spdr.actor
 			return false;
 		}
 		
+		// same behaviour as hitting the floor, but also send a message to the contact that it should fall.
+		public function hitFalltile(Contact:FallTile, bHitFloor:Boolean):Boolean
+		{
+			Contact.onHit(this.velocity);
+			
+			if ( bHitFloor )
+			{
+				status = ONGROUND;			
+				jumpTime = 0;
+				bDidDoubleJump = false;
+				return super.hitFloor(Contact);
+			}
+			else
+				return false;
+		}
+		
 		public function hitObstacle(Contact:Obstacle):Boolean
 		{
 			this.velocity.x *= 0.5;				
@@ -1157,7 +1172,7 @@ package cas.spdr.actor
 				explode();
 			else
 			{
-				(Contact as Obstacle).onHit(this.velocity);				
+				Contact.onHit(this.velocity);				
 			}
 			
 			if ( bIsSwinging )
@@ -1205,6 +1220,9 @@ package cas.spdr.actor
 				
 			if (Contact is Deathwall )
 				return hitDeathwall((Contact as Deathwall));
+				
+			if (Contact is FallTile )
+				return hitFalltile((Contact as FallTile), false);
 				
 			if ( bIsSwinging )
 			{
@@ -1335,6 +1353,9 @@ package cas.spdr.actor
 				
 			if (Contact is Deathwall )
 				return hitDeathwall((Contact as Deathwall));
+				
+			if (Contact is FallTile )
+				return hitFalltile((Contact as FallTile), true);
 			
 			var contactXtile:uint = Contact.x / 16;
 			var contactYtile:uint = Contact.y / 16;			
@@ -1383,6 +1404,9 @@ package cas.spdr.actor
 				
 			if (Contact is Deathwall )
 				return hitDeathwall((Contact as Deathwall));
+				
+			if (Contact is FallTile )
+				return hitFalltile((Contact as FallTile), false);
 				
 			FlxG.log("hitCeiling");
 			

@@ -3,6 +3,7 @@
 	import cas.spdr.state.LevelState;
 	import org.flixel.FlxG;
 	import cas.spdr.actor.Deathwall;
+	import cas.spdr.gfx.GraphicsLibrary;
 	
 	/**
 	 * ...
