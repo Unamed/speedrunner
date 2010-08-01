@@ -4,8 +4,10 @@ package cas.spdr.map {
 	import cas.spdr.gfx.sprite.BoostSection;
 	import cas.spdr.gfx.sprite.FinishTrigger;
 	import cas.spdr.gfx.sprite.Obstacle;
+	import cas.spdr.gfx.sprite.LethalObstacle;
 	import cas.spdr.gfx.sprite.Pickup;
 	import cas.spdr.gfx.sprite.PlayerStart;
+	import cas.spdr.actor.FallTile;
 	
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxTilemapSloped;
@@ -18,6 +20,7 @@ package cas.spdr.map {
 		[Embed(source="../../../../data/temp/tiles_black_37.png")] public var Img_Main:Class;
 		[Embed(source="../../../../data/maps/6. Level6/MapCSV_Level6_BG.txt", mimeType="application/octet-stream")] public var CSV_BG:Class;
 		[Embed(source="../../../../data/temp/tiles_background.png")] public var Img_BG:Class;
+
 		
 		public function MapLevel6() {
 
@@ -77,12 +80,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Obstacle(5356, 812);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new Obstacle(5116, 604);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -107,36 +104,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Obstacle(7788, 364);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7820, 364);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7852, 364);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7964, 460);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8028, 492);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new BoostSection(6296, 1327-1);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -156,108 +123,6 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new Obstacle(6764, 1356);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8684, 460);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8652, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8620, 492);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8588, 508);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8556, 524);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8524, 540);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8492, 556);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8460, 572);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8428, 588);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8396, 604);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8364, 620);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7996, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8060, 508);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8092, 524);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8124, 540);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8156, 556);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8188, 572);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
@@ -329,102 +194,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Obstacle(7180, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7212, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7244, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7276, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7308, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7340, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7372, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7404, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7436, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7468, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7500, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7532, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7564, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7596, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7628, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7660, 476);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new Obstacle(2684, 844);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -432,12 +201,6 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new Obstacle(3036, 844);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(2572, 1212);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
@@ -708,6 +471,246 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new Pickup(3696, 864);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(2572, 1212);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7180, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7212, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7244, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7276, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7308, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7340, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7372, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7404, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7436, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7468, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7500, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7532, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7564, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7596, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7628, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7660, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7788, 364);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7820, 364);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7852, 364);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7964, 460);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(7996, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8028, 492);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8060, 508);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8092, 524);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8124, 540);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8156, 556);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8188, 572);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8364, 620);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8396, 604);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8428, 588);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8460, 572);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8492, 556);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8524, 540);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8556, 524);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8588, 508);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8620, 492);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8684, 460);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(8652, 476);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new LethalObstacle(5356, 812);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);

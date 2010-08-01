@@ -4,8 +4,10 @@ package cas.spdr.map {
 	import cas.spdr.gfx.sprite.BoostSection;
 	import cas.spdr.gfx.sprite.FinishTrigger;
 	import cas.spdr.gfx.sprite.Obstacle;
+	import cas.spdr.gfx.sprite.LethalObstacle;
 	import cas.spdr.gfx.sprite.Pickup;
 	import cas.spdr.gfx.sprite.PlayerStart;
+	import cas.spdr.actor.FallTile;
 	
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxTilemapSloped;
@@ -62,6 +64,7 @@ package cas.spdr.map {
 			boundsMaxX = 9600;
 			boundsMaxY = 1600;
 		}
+
 		override public function addSpritesToLayerMain(onAddCallback:Function = null):void {
 			var obj:FlxSprite;
 			
@@ -114,18 +117,6 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new Obstacle(6428, 1436);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(1228, 1036);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(1724, 1036);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
@@ -239,12 +230,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Obstacle(5932, 812);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new FinishTrigger(9432, 1160 -4);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -335,18 +320,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Obstacle(6476, 1436);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(6716, 1436);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new Obstacle(6764, 1436);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -354,6 +327,96 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new PlayerStart(40, 1000);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(6796, 1436);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(6460, 1436);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(5784 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(5816 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(5848 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(5880 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(5912 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(5944 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(5976 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(6008 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(6040 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallTile(6072 +8, 648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(1724, 1036);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(1228, 1036);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(5932, 812);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);

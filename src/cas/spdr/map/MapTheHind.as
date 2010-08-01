@@ -4,8 +4,10 @@ package cas.spdr.map {
 	import cas.spdr.gfx.sprite.BoostSection;
 	import cas.spdr.gfx.sprite.FinishTrigger;
 	import cas.spdr.gfx.sprite.Obstacle;
+	import cas.spdr.gfx.sprite.LethalObstacle;
 	import cas.spdr.gfx.sprite.Pickup;
 	import cas.spdr.gfx.sprite.PlayerStart;
+	import cas.spdr.actor.FallTile;
 	
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxTilemapSloped;
