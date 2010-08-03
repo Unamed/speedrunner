@@ -36,7 +36,7 @@
 			
 			deathWall = new Deathwall(0, player.y + 325, 2400, 600, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));
 			
-			deathWall.velocity.y = -100;
+			deathWall.velocity.y = -80;
 			this.add(deathWall);
 		}
 		
