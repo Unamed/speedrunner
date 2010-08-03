@@ -39,8 +39,13 @@
 		{
 			super.addGameElements();
 			
-			deathWall = new Deathwall(player.x - 1300, player.y -900, 800, 1800, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE));			
-			deathWall.velocity.x = 400;
+			deathWall = new Deathwall(player.x - 1300, player.y -900, 800, 1800, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE));
+			
+			//@TODO: maak een boss4level state, waarin deze value goed staat:
+			if (FlxG.level == 4 )
+				deathWall.velocity.x = 300;
+			else
+				deathWall.velocity.x = 350;
 			this.add(deathWall);
 			
 			// death floor:
