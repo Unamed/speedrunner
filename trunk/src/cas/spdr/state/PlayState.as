@@ -34,6 +34,7 @@
 		protected var pickups:Array;
 		private var triggers:Array;
 		private var fallTiles:Array;
+		public var fallBlocks:Array;
 		private var slopeDowns:Array;
 		private var slopeUps:Array;
 		private var movingBlocks:Array;
@@ -41,7 +42,7 @@
 		private var start:StartTrigger;
 		private var finish:FinishTrigger;
 		
-		private var debugTxt:FlxText;
+		protected var debugTxt:FlxText;
 
 		// Google Analytics:
 		private var tracker:GATracker;
@@ -83,6 +84,7 @@
 			boosts = new Array();
 			triggers = new Array();
 			fallTiles = new Array();
+			fallBlocks = new Array();
 			doors = new Array();
 			movingBlocks = new Array();
 			
@@ -366,6 +368,12 @@
 			else if ( obj is FallTile )
 			{
 				fallTiles.push(obj);
+			}
+			
+			else if ( obj is FallingBlock )
+			{
+				fallBlocks.push(obj);
+				
 			}
 		}	
 		

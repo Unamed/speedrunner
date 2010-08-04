@@ -46,6 +46,10 @@ package org.flixel.data
 		 */
 		public function reset(Intensity:Number,Duration:Number=0.5):void
 		{
+			// If I'm busy with a more powerful quake, don't reset me:
+			if ( _timer > 0 && Intensity < _intensity )
+				return;
+			
 			x = 0;
 			y = 0;
 			_intensity = Intensity;

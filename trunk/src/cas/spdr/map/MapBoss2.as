@@ -6,6 +6,8 @@ package cas.spdr.map {
 	import cas.spdr.gfx.sprite.Obstacle;
 	import cas.spdr.gfx.sprite.Pickup;
 	import cas.spdr.gfx.sprite.PlayerStart;
+	import cas.spdr.gfx.sprite.Trigger;
+	import cas.spdr.actor.FallingBlock;
 	
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxTilemapSloped;
@@ -92,7 +94,287 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new FinishTrigger(2008, 1256 -4);;
+			obj = new Trigger(888, 3336);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 1;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(472 +8, 3016 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 2;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(1256 +8, 2936 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 2;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(760, 3000);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 2;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(1320, 2680);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 3;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(1320, 2504);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 4;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(984 +8, 2424 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 4;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(1432 +8, 2424 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 3;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(1064 +8, 1976 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 5;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(792, 2072);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 5;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(552, 1832);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 6;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(632, 1832);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 6;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(456, 1832);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 6;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(392, 2104);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 6;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(296 +8, 1912 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 6;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(1112 +8, 1272 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 9;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(824, 1192);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 9;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(824, 1112);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 9;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(824, 1032);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 9;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(408, 1272);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 7;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(408, 1352);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 7;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(408, 1432);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 7;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(520, 1208);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 8;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(520, 1128);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 8;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(632, 3528);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 10;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(856 +8, 3592 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 10;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(680 +8, 2232 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 11;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(936, 2152);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 11;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(536 +8, 2472 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 10;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(840 +8, 2600 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 2;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(936 +8, 1640 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 4;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(280 +8, 3016 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 2;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(1240 +8, 3400 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 1;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(1368 +8, 3400 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 1;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(1128 +8, 2648 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 2;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(856 +8, 1272 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 7;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(984 +8, 1272 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 7;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(728 +8, 1272 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 8;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(600 +8, 1272 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 8;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(1240 +8, 1272 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 8;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FinishTrigger(1880, 1224 -4);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);

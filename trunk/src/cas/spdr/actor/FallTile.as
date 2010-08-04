@@ -15,6 +15,7 @@ package cas.spdr.actor
 	public class FallTile extends FlxSprite
 	{
 		private var bHit:Boolean;
+		private var rotDir:Number;
 		
 		public function FallTile(X:int = 0, Y:int = 0, SimpleGraphic:Class = null) 
 		{
@@ -41,20 +42,14 @@ package cas.spdr.actor
 			tim.addEventListener(TimerEvent.TIMER, onTimerComplete);
 			tim.start();
 			
-			//this.flicker(0.250);
-			
 			play("fall");
-			
-			
 			
 		}
 		
 		public function onTimerComplete(evt:Event):void
 		{
-			velocity.y = 0;
-			velocity.x = 0;// playerVelocity.x;
-			acceleration.y = 700;
-			angle = Math.random() * -60 + 30;
+			acceleration.y = 700;			
+			rotDir = (Math.random() * 60) - 30;
 			
 			bHit = true;
 			dead = true;
@@ -66,10 +61,16 @@ package cas.spdr.actor
 			
 			if ( bHit )
 			{
-				this.alpha = Math.max(0, alpha - FlxG.elapsed * 0.5);
+				angle += rotDir * FlxG.elapsed;		
+				alpha -= 0.25 * FlxG.elapsed; 
 				
-				//if ( alpha < 0.5 )
-					//this.dead = true;
+				if ( alpha <= 0 )
+				{
+					this.visible = false;
+					this.active = false;
+					this.dead = true;
+					
+				}
 				
 			}
 		

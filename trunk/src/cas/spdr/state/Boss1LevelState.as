@@ -43,9 +43,9 @@
 			
 			//@TODO: maak een boss4level state, waarin deze value goed staat:
 			if (FlxG.level == 4 )
-				deathWall.velocity.x = 300;
-			else
 				deathWall.velocity.x = 350;
+			else
+				deathWall.velocity.x = 375;
 			this.add(deathWall);
 			
 			// death floor:
@@ -71,6 +71,12 @@
 		override public function update():void
 		{			
 			super.update();
+			
+			//@TODO: visually display the progress of the player through the level,
+			// calculated like this: 
+			//var progress:int = (player.x / flanmap.layerMain.width)
+			//this.debugTxt.text = "" + progress;
+			
 			
 			FlxG.collideArray(deathFloors, player);
 			
