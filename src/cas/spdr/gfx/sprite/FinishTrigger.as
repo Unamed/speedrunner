@@ -13,6 +13,7 @@
 		{
 			super(X, Y, SimpleGraphic);
 			loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_FINISH), false, false, 32, 64);
+			this.visible = true;
 		}	
 	}
 }

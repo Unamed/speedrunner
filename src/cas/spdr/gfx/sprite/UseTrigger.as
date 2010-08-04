@@ -16,6 +16,7 @@
 			super(X, Y, SimpleGraphic);
 			loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_USETRIGGER), false, false, 32, 64);
 			effect = "";
+			this.visible = true;
 		}		
 	}
 

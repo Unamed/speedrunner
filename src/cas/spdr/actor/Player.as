@@ -1102,6 +1102,11 @@ package cas.spdr.actor
 					|| this.x < Contact.x - this.width + 5 )
 					bHitUseTrigger = false;
 			}
+			else
+			{
+				Contact.Triggered(playState);
+				
+			}
 			
 			return false;			
 		}
