@@ -33,7 +33,7 @@
 			
 			FlxG.levels.push(MapLevel7);									
 			FlxG.levels.push(MapLevel8);
-			FlxG.levels.push(MapLevel8);
+			FlxG.levels.push(MapLevel9);
 			FlxG.levels.push(MapBoss3);
 			
 			FlxG.levels.push(MapBoss4);
