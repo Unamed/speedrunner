@@ -35,6 +35,7 @@
 		private var triggers:Array;
 		private var fallTiles:Array;
 		public var fallBlocks:Array;
+		protected var gates:Array;
 		private var slopeDowns:Array;
 		private var slopeUps:Array;
 		private var movingBlocks:Array;
@@ -85,6 +86,7 @@
 			triggers = new Array();
 			fallTiles = new Array();
 			fallBlocks = new Array();
+			gates = new Array();
 			doors = new Array();
 			movingBlocks = new Array();
 			
@@ -182,14 +184,16 @@
 		public function switchToLevel(levelId:uint):void
 		{			
 			FlxG.level = levelId;
-			if ( levelId == 1 )
+			
+			// hardcoded hook for starting boss levels:
+			if ( levelId == 4 )
 				FlxG.switchState(Boss1LevelState);
-			else if ( levelId == 2 )
+			else if ( levelId == 8 )
 				FlxG.switchState(Boss2LevelState);
-			else if ( levelId == 3 )
+			else if ( levelId == 12 )
 				FlxG.switchState(Boss1LevelState);
-			else if ( levelId == 4 )
-				FlxG.switchState(Boss1LevelState);
+			else if ( levelId == 13 )
+				FlxG.switchState(FinalBossLevelState);
 			else			
 				FlxG.switchState(LevelState);
 		}
@@ -252,6 +256,7 @@
 			FlxG.collideArray(doors, player);
 			FlxG.collideArray(triggers, player);
 			FlxG.collideArray(fallTiles, player);
+			FlxG.collideArray(gates, player);
 			FlxG.collideArray(boosts, player);
 			FlxG.collideArray(movingBlocks, player);
 			//start.collide(player);
@@ -374,6 +379,11 @@
 			{
 				fallBlocks.push(obj);
 				
+			}
+			
+			else if ( obj is Gate )
+			{
+				gates.push(obj);
 			}
 		}	
 		

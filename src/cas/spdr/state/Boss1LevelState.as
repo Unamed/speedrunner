@@ -9,9 +9,8 @@
 	 * ...
 	 * @author Casper van Est
 	 */
-	public class Boss1LevelState extends LevelState
-	{
-		private var deathWall:Deathwall;
+	public class Boss1LevelState extends BossLevelState
+	{		
 		private var deathFloor1:Deathwall;
 		private var deathFloor2:Deathwall;
 		private var deathFloor3:Deathwall;
@@ -21,31 +20,16 @@
 		
 		public function Boss1LevelState() 
 		{
-			super();
-			
-		}
-		
-		override public function initLevel():void
-		{	
-			bShowHUD = false;		
-			
-			super.initLevel();		
-			
-			//FlxG.quake(0.0075, 3);
-			startTimer();
-		}
+			super();			
+		}		
 
+		// add deathwall and deathfloors
 		override public function addGameElements():void
 		{
 			super.addGameElements();
 			
 			deathWall = new Deathwall(player.x - 1300, player.y -900, 800, 1800, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE));
-			
-			//@TODO: maak een boss4level state, waarin deze value goed staat:
-			if (FlxG.level == 4 )
-				deathWall.velocity.x = 350;
-			else
-				deathWall.velocity.x = 375;
+			deathWall.velocity.x = 375;
 			this.add(deathWall);
 			
 			// death floor:
@@ -68,22 +52,16 @@
 			deathFloors.push(deathFloor4);
 		}
 		
+		// collide with deathFloor
+		// and perform quake
 		override public function update():void
 		{			
 			super.update();
-			
-			//@TODO: visually display the progress of the player through the level,
-			// calculated like this: 
-			//var progress:int = (player.x / flanmap.layerMain.width)
-			//this.debugTxt.text = "" + progress;
-			
 			
 			FlxG.collideArray(deathFloors, player);
 			
 			if ( deathWall.active )
 			{
-				deathWall.collide(player);
-
 				var wallDist:int = player.x - deathWall.x -800; 
 				
 				if ( wallDist > 800 )
@@ -96,23 +74,7 @@
 					FlxG.quake(0.008, 1);
 			}
 			else 
-				FlxG.quake(0.0, 1);
-			
-		}
-		
-		override public function restartLevel():void
-		{				
-			FlxG.switchState(Boss1LevelState);						
-		}	
-		
-		override public function stopTimer():void
-		{
-			deathWall.active = false;
-			deathWall.velocity.x = 0;
-			
-			super.stopTimer();
-		}
-		
+				FlxG.quake(0.0, 1);			
+		}		
 	}
-
 }

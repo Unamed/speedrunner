@@ -8,6 +8,7 @@ package cas.spdr.map {
 	import cas.spdr.gfx.sprite.Trigger;
 	import cas.spdr.gfx.sprite.UseTrigger;
 	import cas.spdr.actor.FallingBlock;
+	import cas.spdr.gfx.sprite.Gate;
 	
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxTilemapSloped;
@@ -75,62 +76,7 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Door(2840, 1272+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 2;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Door(3000, 1272+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Door(3048, 952+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 4;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Door(3288, 904+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 5;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Door(3304, 1400+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 6;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new PlayerStart(2008, 1304);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Door(4728, 1032+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 8;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Door(3432, 1160+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 7;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new BoostSection(3528, 1183);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
@@ -171,6 +117,135 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
+			obj = new Door(2712, 1144+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 2;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(2856, 1144+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 3;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(3016, 1144+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 4;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(3288, 904+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 5;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(3400, 904+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 6;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(3512, 904+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 7;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(3416, 1096+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 8;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(4680, 904+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 9;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(4792, 904+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 10;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(4904, 904+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 11;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(5096, 904+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 12;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(1688, 1288+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 13;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+				
+			obj = new Gate(2960, 1112);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["gateId"] = 1;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+				
+			obj = new Gate(3504, 1064);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["gateId"] = 2;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Gate(5024, 872);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["gateId"] = 3;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Gate(1888, 1256);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["gateId"] = 4;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Gate(1856, 1256);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["gateId"] = 5;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Gate(1824, 1256);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["gateId"] = 6;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+				
 		}
 
 		override public function customFunction(param:* = null):* {

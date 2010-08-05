@@ -35,6 +35,7 @@
 		[Embed(source = "/../data/temp/deathWallSide.png")] private var deathWallSideIm:Class;
 		[Embed(source = "/../data/temp/fallTile.png")] private var fallTileIm:Class;
 		[Embed(source = "/../data/temp/fallingBlock.png")] private var fallBlockIm:Class;
+		[Embed(source = "/../data/temp/gate.png")] private var gateIm:Class;
 		
 		public static const TILES_BACKGROUND:uint = 0;
 		public static const TILES_FOREGROUND:uint = 1;
@@ -63,6 +64,7 @@
 		public static const SPRITE_DEATHWALL_SIDE:uint = 17;
 		public static const SPRITE_FALLTILE:uint = 18;
 		public static const SPRITE_FALLBLOCK:uint = 19;
+		public static const SPRITE_GATE:uint = 20;
 		
 		private var tiles:Array = new Array();
 		private var sprites:Array = new Array();
@@ -99,6 +101,7 @@
 			sprites[SPRITE_DEATHWALL_SIDE] = deathWallSideIm;
 			sprites[SPRITE_FALLTILE] = fallTileIm;
 			sprites[SPRITE_FALLBLOCK] = fallBlockIm;
+			sprites[SPRITE_GATE] = gateIm;
 		}
 		
 		public static function get Instance():GraphicsLibrary
