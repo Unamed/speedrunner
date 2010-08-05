@@ -167,7 +167,7 @@ package cas.spdr.actor
 			// check my unlocked powers:
 			bCanHook = FlxG.progressManager.HasUnlockedHook();
 			bCanWalljump = FlxG.progressManager.HasUnlockedWalljump();
-			bCanSlide = FlxG.progressManager.HasUnlockedSlide();
+			bCanSlide = true;// FlxG.progressManager.HasUnlockedSlide();
 			bCanDoubleJump = FlxG.progressManager.HasUnlockedDoubleJump();
 			
 			

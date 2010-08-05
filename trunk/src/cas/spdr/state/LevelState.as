@@ -265,12 +265,13 @@
 			{
 				bIsTiming = false;
 				
-				//var bNeedsAddMsg:Boolean = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
-				var recCredits:int = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
-				var msg:String = FlxG.progressManager.getFinishedMessage(FlxG.level, playTime);
-				if ( recCredits > 0 )
+				var bNeedsAddMsg:Boolean = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
+				//var recCredits:int = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
+				var msg:String = FlxG.progressManager.getFinishedMessage(FlxG.level, playTime, bNeedsAddMsg);
+				if ( bNeedsAddMsg )//recCredits > 0 )
 				{
-					var addMsg:String = "+"+recCredits+ " Credits!";// FlxG.progressManager.getUnlockedPowerMessageForLevel(FlxG.level);
+					//var addMsg:String = "+"+recCredits+ " Credits!";
+					var addMsg:String = FlxG.progressManager.getUnlockedPowerMessageForLevel(FlxG.level);
 					finishDialog.playMessage(msg, addMsg);
 				}
 				else

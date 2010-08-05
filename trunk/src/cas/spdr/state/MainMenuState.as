@@ -3,6 +3,7 @@
 	import cas.spdr.actor.LevelInfoDialog;
 	import cas.spdr.actor.MessageDialog;
 	import cas.spdr.gfx.sprite.Door;
+	import cas.spdr.gfx.sprite.Gate;
 	import cas.spdr.map.MapMainMenu;
 	import org.flixel.*;
 	import flash.geom.Point;
@@ -36,6 +37,41 @@
 					this.add(tTxt);						
 				}
 			}
+			
+			
+			// open any gates that should be opened:
+			for ( var j:int = 0; j < this.gates.length; j++)
+			{
+				var g:Gate = (this.gates[j] as Gate);				
+				switch( g.gateId )
+				{
+					case (1):
+						if ( FlxG.progressManager.hasFinishedLevel(2) && FlxG.progressManager.hasFinishedLevel(3) )
+							g.openGate();					
+						break;					
+					case (2):
+						if ( FlxG.progressManager.hasFinishedLevel(5) && FlxG.progressManager.hasFinishedLevel(6) && FlxG.progressManager.hasFinishedLevel(7) )
+							g.openGate();					
+						break;
+					case (3):
+						if ( FlxG.progressManager.hasFinishedLevel(9) && FlxG.progressManager.hasFinishedLevel(10) && FlxG.progressManager.hasFinishedLevel(11) )
+							g.openGate();					
+						break;			
+					case (4):
+						if ( FlxG.progressManager.hasFinishedLevel(4) )
+							g.openGate();					
+						break;			
+					case (5):
+						if ( FlxG.progressManager.hasFinishedLevel(8) )
+							g.openGate();					
+						break;			
+					case (6):
+						if ( FlxG.progressManager.hasFinishedLevel(12) )
+							g.openGate();					
+						break;				
+				}
+			}
+			
 		}
 		
 		override public function addHUDElements():void
@@ -71,11 +107,9 @@
 			var cTxt:FlxText = new FlxText(30, 170, 500, "Currency: " + FlxG.progressManager.getCredits());				
 			cTxt.size = 12;							
 			cTxt.scrollFactor = new Point(0, 0);				
-			this.add(cTxt);	
+			this.add(cTxt);				
 			
-			
-			levelInfoMessage = new LevelInfoDialog();// 0, 0, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_MESSAGE_DIALOG_START));			
-			//levelInfoMessage.setOnFinishCallback( this.startTimer );					
+			levelInfoMessage = new LevelInfoDialog();
 			levelInfoMessage.addMeToState(this);
 			levelInfoMessage.visible = true;
 		}

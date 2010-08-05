@@ -68,6 +68,13 @@
 			goldTimes[6] = 20.0;	
 			goldTimes[7] = 25.0;	
 			goldTimes[8] = 25.0;	
+			goldTimes[9] = 25.0;	
+			goldTimes[10] = 25.0;	
+			goldTimes[11] = 25.0;	
+			goldTimes[12] = 25.0;	
+			goldTimes[13] = 25.0;	
+			goldTimes[14] = 25.0;	
+			goldTimes[15] = 25.0;	
 			
 			silverTimes[0] = 99.0;	//MainMenu
 			silverTimes[1] = 15.0;	//Lion
@@ -78,6 +85,13 @@
 			silverTimes[6] = 25.0;	
 			silverTimes[7] = 30.0;	
 			silverTimes[8] = 30.0;	
+			silverTimes[9] = 30.0;	
+			silverTimes[10] = 30.0;	
+			silverTimes[11] = 30.0;	
+			silverTimes[12] = 30.0;	
+			silverTimes[13] = 30.0;	
+			silverTimes[14] = 30.0;	
+			silverTimes[15] = 30.0;	
 			
 			bronzeTimes[0] = 99.0;	//MainMenu
 			bronzeTimes[1] = 20.0;	//Lion
@@ -88,6 +102,13 @@
 			bronzeTimes[6] = 40.0;	
 			bronzeTimes[7] = 50.0;	
 			bronzeTimes[8] = 50.0;	
+			bronzeTimes[9] = 50.0;	
+			bronzeTimes[10] = 50.0;	
+			bronzeTimes[11] = 50.0;	
+			bronzeTimes[12] = 50.0;	
+			bronzeTimes[13] = 50.0;	
+			bronzeTimes[14] = 50.0;	
+			bronzeTimes[15] = 50.0;	
 			
 			goldRewards[0] = 0;	//MainMenu
 			goldRewards[1] = 25;	//Lion
@@ -98,6 +119,13 @@
 			goldRewards[6] = 25;	
 			goldRewards[7] = 25;	
 			goldRewards[8] = 25;	
+			goldRewards[9] = 25;	
+			goldRewards[10] = 25;	
+			goldRewards[11] = 25;	
+			goldRewards[12] = 25;	
+			goldRewards[13] = 25;	
+			goldRewards[14] = 25;	
+			goldRewards[15] = 25;	
 			
 			silverRewards[0] = 0;	//MainMenu
 			silverRewards[1] = 25;	//Lion
@@ -108,6 +136,13 @@
 			silverRewards[6] = 25;	
 			silverRewards[7] = 25;	
 			silverRewards[8] = 25;	
+			silverRewards[9] = 25;	
+			silverRewards[10] = 25;	
+			silverRewards[11] = 25;	
+			silverRewards[12] = 25;	
+			silverRewards[13] = 25;	
+			silverRewards[14] = 25;	
+			silverRewards[15] = 25;	
 			
 			bronzeRewards[0] = 0;	//MainMenu
 			bronzeRewards[1] = 50;	//Lion
@@ -118,6 +153,13 @@
 			bronzeRewards[6] = 80;	
 			bronzeRewards[7] = 80;	
 			bronzeRewards[8] = 80;	
+			bronzeRewards[9] = 80;	
+			bronzeRewards[10] = 80;	
+			bronzeRewards[11] = 80;	
+			bronzeRewards[12] = 80;	
+			bronzeRewards[13] = 80;	
+			bronzeRewards[14] = 80;	
+			bronzeRewards[15] = 80;	
 			
 			bestTimes[0] = 99.0;	//MainMenu
 			bestTimes[1] = 99.0;	//Lion
@@ -128,6 +170,13 @@
 			bestTimes[6] = 99.0;	
 			bestTimes[7] = 99.0;	
 			bestTimes[8] = 99.0;	
+			bestTimes[9] = 99.0;	
+			bestTimes[10] = 99.0;	
+			bestTimes[11] = 99.0;	
+			bestTimes[12] = 99.0;	
+			bestTimes[13] = 99.0;	
+			bestTimes[14] = 99.0;	
+			bestTimes[15] = 99.0;	
 			
 			nCollectedPickups = 0;
 			nUsedPickups = 0;
@@ -141,6 +190,13 @@
 			collectedPickups[6] = defaultPickupString;
 			collectedPickups[7] = defaultPickupString;
 			collectedPickups[8] = defaultPickupString;
+			collectedPickups[9] = defaultPickupString;
+			collectedPickups[10] = defaultPickupString;
+			collectedPickups[11] = defaultPickupString;
+			collectedPickups[12] = defaultPickupString;
+			collectedPickups[13] = defaultPickupString;
+			collectedPickups[14] = defaultPickupString;
+			collectedPickups[15] = defaultPickupString;
 			
 			saveQueueItems = new Array();
 			saveQueueObjects = new Array();
@@ -250,15 +306,16 @@
 		
 		// Saves the best time, if it was set
 		// returns true if a new power was unlocked
-		public function FinishedLevel(levelId:int, playTime:Number):int
+		public function FinishedLevel(levelId:int, playTime:Number):Boolean
 		{	
-			var receivedCredits:int = 0;
+			//var receivedCredits:int = 0;
 			
 			// if the new time is better than the previous best, 
 			// find out how much money I get for this time, 
 			// using previous best result:
 			if ( getBestTime(levelId) == 0 || playTime < getBestTime(levelId) )
 			{
+				/*
 				if ( playTime < getGoldTime(levelId) )
 				{					
 					receivedCredits += getBestTime(levelId) > getGoldTime(levelId) ? goldRewards[levelId] : 0;
@@ -273,53 +330,49 @@
 				else if ( playTime < getBronzeTime(levelId) )
 				{					
 					receivedCredits += getBestTime(levelId) > getBronzeTime(levelId) ? bronzeRewards[levelId] : 0;					
-				}
+				}*/
 									
 				// finally, set new best time:
 				setBestTime(levelId, playTime);
 			}
 			
 			// add to credits:
-			nCollectedPickups += receivedCredits;
-			
-			return receivedCredits;	
+			//nCollectedPickups += receivedCredits;
+			//return receivedCredits;	
 			
 			// then see if this unlocks a new power
-			//if ( playTime < getBronzeTime(levelId) && TryUnlockPower(levelId) )
-			//	return true;
+			if ( playTime < getBronzeTime(levelId) && TryUnlockPower(levelId) )
+				return true;
 			
 			return false;			
 		}
 		
 		
-		public function getFinishedMessage(levelId:int, playTime:Number):String
+		public function getFinishedMessage(levelId:int, playTime:Number, bUnlockedAPower:Boolean):String
 		{
 			var msg:String = "Level Complete!";	
 			
 			if ( getBestTime(levelId) == 0 || playTime < getBestTime(levelId) )
-				msg = "New Record!";					
+				msg = "New Record!";
 			
-				/*
 			if ( bUnlockedAPower )
 			{				
 				if( levelId == 1 )
-					msg = "Unlocked Magnet Swing!";
-				else if ( levelId == 2 || levelId == 3 )
-					msg = "Unlocked Magnet Gloves!";
-				else if ( levelId == 4 || levelId == 5 )
-					msg = "Unlocked Sliding!";					
-				else if ( levelId == 6 )
-					msg = "Unlocked Double Jumping!";
+					msg = "Unlocked Grappling Hook!";
+				else if ( levelId == 4 )
+					msg = "Unlocked WallJump!";								
+				else if ( levelId == 8 )
+					msg = "Unlocked DoubleJump!";
 			}
 			else
-			{	*/
+			{	
 				if ( playTime < getGoldTime(levelId) )
 					msg = "Gold Medal!";
 				else if( playTime < getSilverTime(levelId) )
 					msg = "Silver Medal!";
 				else if ( playTime < getBronzeTime(levelId) )
 					msg = "Bronze Medal!";
-			//}
+			}
 			
 			return msg;		
 		}
@@ -330,11 +383,11 @@
 						
 			if( levelId == 1 )
 				msg = "Shoot the magnet at white surfaces by holding X and swing!";
-			else if ( levelId == 2 || levelId == 3 )
+			else if ( levelId == 4 )
 				msg = "Jump onto white walls to hold on, and jump away again with Z";
-			else if ( levelId == 4 || levelId == 5 )
-				msg = "Slide under obstacles by holding DOWN";					
-			else if ( levelId == 6 )
+			//else if ( levelId == 4 || levelId == 5 )
+			//	msg = "Slide under obstacles by holding DOWN";					
+			else if ( levelId == 8 )
 				msg = "Cross large gaps by double jumping, press Z while in the air";
 			
 			return msg;		
@@ -349,17 +402,10 @@
 				case (1):
 					return UnlockHook();				
 					break;
-				case (2):
-				case (3):
-					if( hasFinishedLevel(2) || hasFinishedLevel(3) )
-						return UnlockWalljump();
-					break;
 				case (4):
-				case (5):
-					if( hasFinishedLevel(4) || hasFinishedLevel(5) )
-						return UnlockSlide();
+					return UnlockWalljump();
 					break;
-				case (6):
+				case (8):
 					return UnlockDoubleJump();
 					break;
 				default:
