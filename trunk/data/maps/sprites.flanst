@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="5">
+<FlanSpriteTypes class_id="0" tracking_level="0" version="0">
+	<types class_id="1" tracking_level="0" version="0">
+		<count>18</count>
+		<item_version>0</item_version>
+		<item class_id="2" tracking_level="1" version="0" object_id="_0">
+			<name>SlopeDown</name>
+			<createCode>%OBJ% = new SlopeDown(%X%, %Y%);</createCode>
+			<imgPath class_id="3" tracking_level="0" version="0">
+				<path>../../temp/tile_slope_down.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_1">
+			<name>SlopeUp</name>
+			<createCode>%OBJ% = new SlopeUp(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/tile_slope_up.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_2">
+			<name>Obstacle</name>
+			<createCode>%OBJ% = new Obstacle(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/obstacle.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_3">
+			<name>Pickup</name>
+			<createCode>%OBJ% = new Pickup(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/pickup.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_4">
+			<name>PlayerStart</name>
+			<createCode>%OBJ% = new PlayerStart(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/playerStartIcon.png</path>
+			</imgPath>
+			<tileIndex>-1</tileIndex>
+		</item>
+		<item object_id="_5">
+			<name>FinishTrigger</name>
+			<createCode>%OBJ% = new FinishTrigger(%X%, %Y% -4);</createCode>
+			<imgPath>
+				<path>../../temp/finish.png</path>
+			</imgPath>
+			<tileIndex>-1</tileIndex>
+		</item>
+		<item object_id="_6">
+			<name>BoostSection</name>
+			<createCode>%OBJ% = new BoostSection(%X%, %Y%-1);</createCode>
+			<imgPath>
+				<path>../../temp/BoostSection.png</path>
+			</imgPath>
+			<tileIndex>-1</tileIndex>
+		</item>
+		<item object_id="_7">
+			<name>StartTrigger</name>
+			<createCode>%OBJ% = new StartTrigger(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/door.png</path>
+			</imgPath>
+			<tileIndex>-1</tileIndex>
+		</item>
+		<item object_id="_8">
+			<name>SuperBoostTrigger</name>
+			<createCode>%OBJ% = new SuperBoostTrigger(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTrigger.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_9">
+			<name>SuperBoostTriggerEnd</name>
+			<createCode>%OBJ% = new SuperBoostTriggerEnd(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerEnd.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_10">
+			<name>SuperBoostTriggerU</name>
+			<createCode>%OBJ% = new SuperBoostTriggerU(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerU.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_11">
+			<name>SuperBoostTriggerUR</name>
+			<createCode>%OBJ% = new SuperBoostTriggerUR(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerUR.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_12">
+			<name>SuperBoostTriggerR</name>
+			<createCode>%OBJ% = new SuperBoostTriggerR(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerR.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_13">
+			<name>SuperBoostTriggerDR</name>
+			<createCode>%OBJ% = new SuperBoostTriggerDR(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerDR.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_14">
+			<name>SuperBoostTriggerD</name>
+			<createCode>%OBJ% = new SuperBoostTriggerD(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerD.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_15">
+			<name>SuperBoostTriggerDL</name>
+			<createCode>%OBJ% = new SuperBoostTriggerDL(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerDL.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_16">
+			<name>SuperBoostTriggerL</name>
+			<createCode>%OBJ% = new SuperBoostTriggerL(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerL.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_17">
+			<name>SuperBoostTriggerUL</name>
+			<createCode>%OBJ% = new SuperBoostTriggerUL(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/SuperBoostTriggerLU.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+	</types>
+</FlanSpriteTypes>
+</boost_serialization>
+
