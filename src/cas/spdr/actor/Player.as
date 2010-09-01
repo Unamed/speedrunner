@@ -104,6 +104,9 @@ package cas.spdr.actor
 		private var bStumbling:Boolean;
 		private var stumbleCntDwn:Number;
 		
+		private var bSuperBoosting:Boolean;
+		private var superBoostDir:int;
+		
 		public var status:uint = INAIR;
 		
 		private var switchToAirCntDwn:Number = 0;
@@ -170,64 +173,6 @@ package cas.spdr.actor
 			bCanSlide = true;// FlxG.progressManager.HasUnlockedSlide();
 			bCanDoubleJump = FlxG.progressManager.HasUnlockedDoubleJump();
 			
-			
-			/*
-			// check my speedLevel:					
-			switch( FlxG.progressManager.getSpeedLevel() )
-			{
-				case(1):					
-					defaultRunVelocity = runVelocityLevel1;
-					break;
-				case(2):					
-					defaultRunVelocity = runVelocityLevel2;
-					break;
-				case(3):					
-					defaultRunVelocity = runVelocityLevel3;
-					break;
-				case(4):					
-					defaultRunVelocity = runVelocityLevel4;
-					break;
-				case(5):					
-					defaultRunVelocity = runVelocityLevel5;
-					break;
-				case(6):					
-					defaultRunVelocity = runVelocityLevel6;
-					break;
-				case(7):					
-					defaultRunVelocity = runVelocityLevel7;
-					break;				
-				default:					
-					defaultRunVelocity = runVelocityLevel1;
-			}
-			
-			// check my Accelerarion level:					
-			switch( FlxG.progressManager.getAccelLevel() )
-			{
-				case(1):
-					defaultPush = pushLevel1;					
-					break;
-				case(2):
-					defaultPush = pushLevel2;					
-					break;
-				case(3):
-					defaultPush = pushLevel3;					
-					break;
-				case(4):
-					defaultPush = pushLevel4;
-					break;
-				case(5):
-					defaultPush = pushLevel5;
-					break;
-				case(6):
-					defaultPush = pushLevel6;
-					break;
-				case(7):
-					defaultPush = pushLevel7;
-					break;
-				default:
-					defaultPush = pushLevel1;					
-			}
-			*/
 			defaultRunVelocity = 300;
 			defaultPush = 600;
 			defaultSwingVelocity = 2.00 * defaultRunVelocity;			//2.0
@@ -371,9 +316,17 @@ package cas.spdr.actor
 			// Determine max Velocity:
 			currentPush = defaultPush;
 			
-			if ( bBoosting )
+			if ( bSuperBoosting )
 			{
-				maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);		
+				maxVelocity.x = maxRunVelocity * 2;
+				maxVelocity.y = maxRunVelocity * 2;				
+			}
+			else if ( bBoosting )
+			{
+				maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);	
+				
+				if ( maxVelocity.x <= maxRunVelocity )
+					bBoosting = false;
 			}
 			else  
 			{
@@ -384,6 +337,11 @@ package cas.spdr.actor
 				else if ( Math.abs(velocity.x) < defaultRunVelocity )
 				{		
 					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, defaultRunVelocity);						
+				}
+				else if ( Math.abs( velocity.x ) > maxRunVelocity )	// when coming back from a superboost, quickly lose excess speed:
+				{
+					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 600, maxRunVelocity );
+					
 				}
 				else // harder dan default run..
 				{
@@ -396,11 +354,13 @@ package cas.spdr.actor
 				}
 			}
 			
-			if ( Math.abs(maxVelocity.x) < maxBoostVelocity - 5 )
-				bBoosting = false;
+			
 				
-			maxVelocity.y = 24 * size;
-			drag.x = defaultRunVelocity * 2;				
+			if ( !bSuperBoosting )
+			{
+				maxVelocity.y = 24 * size;
+				drag.x = defaultRunVelocity * 2;				
+			}
 			
 					
 			
@@ -408,7 +368,54 @@ package cas.spdr.actor
 			// MOVEMENT CODE: 			
 			
 			// IF SWINGING:
-			if ( hooks[prevHook].exists && hooks[prevHook].bCollided )
+			if ( bSuperBoosting )
+			{
+				switch( superBoostDir )
+				{
+					case 0:
+					default:
+						facing = RIGHT;
+						velocity.x = maxRunVelocity * 2;
+						velocity.y = 0;
+						break;
+					case 1:
+						facing = RIGHT;
+						velocity.x = maxRunVelocity * 2;
+						velocity.y = maxRunVelocity * 2;
+						break;
+					case 2:
+						facing = RIGHT;
+						velocity.x = 0;
+						velocity.y = maxRunVelocity * 2;
+						break;					
+					case 3:
+						facing = LEFT;
+						velocity.x = -maxRunVelocity * 2;
+						velocity.y = maxRunVelocity * 2;
+						break;
+					case 4:
+						facing = LEFT;
+						velocity.x = -maxRunVelocity * 2;
+						velocity.y = 0;
+						break;
+					case 5:
+						facing = LEFT;
+						velocity.x = -maxRunVelocity * 2;
+						velocity.y = -maxRunVelocity * 2;
+						break;
+					case 6:
+						facing = RIGHT;
+						velocity.x = 0;
+						velocity.y = -maxRunVelocity * 2;
+						break;
+					case 7:
+						facing = RIGHT;
+						velocity.x = maxRunVelocity * 2;
+						velocity.y = -maxRunVelocity * 2;
+						break;
+				}				
+			}
+			else if ( hooks[prevHook].exists && hooks[prevHook].bCollided )
 			{
 				var hook:Hook = hooks[prevHook];
 				
@@ -1081,9 +1088,48 @@ package cas.spdr.actor
 			return false;			
 		}
 		
+		private function hitSuperBoost(Contact:SuperBoostTrigger):Boolean
+		{
+			if ( Contact is SuperBoostTriggerEnd )
+			{
+				if ( bSuperBoosting )
+				{
+					this.y -= 26;
+					this.height = 46;
+					this.offset.y = 4;
+					
+					/*
+					if( velocity.x > 0 )
+						this.velocity.x = maxRunVelocity;
+					else
+						this.velocity.x = -maxRunVelocity;					
+						*/
+				}
+				
+				bSuperBoosting = false;				
+			}
+			else
+			{
+				if ( !bSuperBoosting )
+					this.y += 26;
+					
+				bSuperBoosting = true;	
+				superBoostDir = Contact.boostDir;
+				
+				this.offset.y = 26;
+				this.height = 20;
+				
+			}
+			
+			
+		
+			return false;
+		}
+		
 		
 		private function hitTrigger(Contact:Trigger):Boolean 
 		{
+			trace("hitTrigger");
 			if ( Contact is FinishTrigger && playState is LevelState )
 			{		
 				(playState as LevelState).stopTimer();											
@@ -1101,6 +1147,13 @@ package cas.spdr.actor
 				else if ( this.x > Contact.x + Contact.width - 5 
 					|| this.x < Contact.x - this.width + 5 )
 					bHitUseTrigger = false;
+			}
+			else if ( Contact is SuperBoostTrigger )
+			{
+				// superboost!!
+				trace("SuperBoost!");
+				return hitSuperBoost(Contact as SuperBoostTrigger);
+				
 			}
 			else
 			{
