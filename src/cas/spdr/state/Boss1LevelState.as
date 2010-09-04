@@ -75,6 +75,11 @@
 			}
 			else 
 				FlxG.quake(0.0, 1);			
-		}		
+		}	
+		
+		override public function restartLevel():void
+		{				
+			FlxG.switchState(Boss1LevelState);						
+		}	
 	}
 }
