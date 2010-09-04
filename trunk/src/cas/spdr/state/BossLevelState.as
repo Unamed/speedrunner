@@ -28,7 +28,7 @@ package cas.spdr.state
 		{			
 			super.update();
 			
-			if( deathWall.active )
+			if( deathWall && deathWall.active )
 				deathWall.collide(player);
 				
 			//@TODO: maybe visually display the progress of the player through the level,
@@ -44,9 +44,12 @@ package cas.spdr.state
 		
 		override public function stopTimer():void
 		{
-			deathWall.active = false;
-			deathWall.velocity.x = 0;
-			deathWall.velocity.y = 0;
+			if ( deathWall )
+			{
+				deathWall.active = false;
+				deathWall.velocity.x = 0;
+				deathWall.velocity.y = 0;
+			}
 			
 			super.stopTimer();
 		}		

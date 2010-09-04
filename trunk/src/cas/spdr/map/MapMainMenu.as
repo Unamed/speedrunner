@@ -69,54 +69,6 @@ package cas.spdr.map {
 		override public function addSpritesToLayerMain(onAddCallback:Function = null):void {
 			var obj:FlxSprite;
 			
-			obj = new Door(2280, 1288+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 1;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new PlayerStart(2008, 1304);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new UseTrigger(1144, 1464);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["effect"] = "Hook";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new UseTrigger(984, 1464);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["effect"] = "Wall";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new UseTrigger(824, 1464);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["effect"] = "Slide";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new UseTrigger(664, 1464);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["effect"] = "DoubleJump";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new UseTrigger(440, 1464);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["effect"] = "Reverse";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new Door(2712, 1144+8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -194,14 +146,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Door(1688, 1288+8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["levelId"] = 13;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-				
 			obj = new Gate(2960, 1112);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -209,7 +153,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-				
 			obj = new Gate(3504, 1064);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -224,28 +167,47 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Gate(1888, 1256);;
+			obj = new Door(664, 1160+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 13;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Gate(944, 1128);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["gateId"] = 4;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Gate(1856, 1256);;
+			obj = new Gate(912, 1128);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["gateId"] = 5;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Gate(1824, 1256);;
+			obj = new Gate(880, 1128);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["gateId"] = 6;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-				
+			obj = new PlayerStart(1288, 1176);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Door(1752, 1160+8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["levelId"] = 1;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
 		}
 
 		override public function customFunction(param:* = null):* {
