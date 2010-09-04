@@ -15,16 +15,21 @@ package cas.spdr.gfx.sprite
 		{
 			super(X, Y + 8, SimpleGraphic);
 			
-			loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_GATE), false, false, 16, 96);
+			loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_GATE), true, false, 16, 96);
 			this.fixed = true;
+			
+			this.addAnimation("open", [0, 0, 0, 0, 0, 1, 2, 3, 4, 5], 24, false);
 			
 		}
 		
 		public function openGate():void
 		{
-			this.visible = false;
-			this.active = false; 
+			//this.visible = false;
+			//this.active = false; 
 			this.dead = true;
+			
+			
+			play("open");
 			
 		}
 		
