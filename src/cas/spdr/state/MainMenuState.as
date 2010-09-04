@@ -78,13 +78,13 @@
 		{		
 			super.addHUDElements();
 			
-			var gTxt:FlxText = new FlxText(1822, 1370, 500, 
-				"Welcome to SpeedRunner Prototype v0.5" + "\n \n" + 
+			var gTxt:FlxText = new FlxText(910, 940, 500, 
+				"Welcome to SpeedRunner Prototype v0.6" + "\n \n" + 
 				"Controls: " + "\n" +
 				"LEFT, RIGHT to move" + "\n" +
 				"Z - (Double) Jump (when unlocked)" + "\n" +
 				"X - Shoot Grappling Hook (when unlocked)" + "\n" +
-				"DOWN - Slide (when unlocked)" + "\n" +				
+				"DOWN - Slide" + "\n" +				
 				"UP to enter door" + "\n" +
 				"ESC to main menu" + "\n" +
 				"SPACE to restart level" + "\n \n" +
@@ -94,6 +94,7 @@
 			gTxt.scrollFactor = new Point(1, 1);				
 			this.add(gTxt);	
 			
+			/*
 			var lTxt:FlxText = new FlxText(1966, 1220, 500, "Level Select ->");			
 			lTxt.size = 12;							
 			lTxt.scrollFactor = new Point(1, 1);				
@@ -107,7 +108,8 @@
 			var cTxt:FlxText = new FlxText(30, 170, 500, "Currency: " + FlxG.progressManager.getCredits());				
 			cTxt.size = 12;							
 			cTxt.scrollFactor = new Point(0, 0);				
-			this.add(cTxt);				
+			this.add(cTxt);	
+			*/
 			
 			levelInfoMessage = new LevelInfoDialog();
 			levelInfoMessage.addMeToState(this);
