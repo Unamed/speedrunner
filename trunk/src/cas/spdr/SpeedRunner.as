@@ -41,7 +41,7 @@
 			FlxG.level = 0;
 			
 			var save:FlxSave = new FlxSave();
-			save.bind("SpeedRunner04");
+			save.bind("SpeedRunner06");
 			FlxG.progressManager.readSaveData(save);						
 			FlxG.saves = new Array();
 			FlxG.saves.push( save );		
