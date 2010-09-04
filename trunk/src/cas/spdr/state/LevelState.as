@@ -320,7 +320,7 @@
 			sendLoader.addEventListener(IOErrorEvent.IO_ERROR, sendError);			
 			
 			var track:String = FlxG.level.toString();
-			var version:String = FlxG.LIBRARY_MAJOR_VERSION.toString() + FlxG.LIBRARY_MINOR_VERSION.toString();
+			var version:String = FlxG.LIBRARY_MAJOR_VERSION.toString() + FlxG.LIBRARY_MINOR_VERSION.toString() + "07";
 			var time:String = Math.round(playTime).toString();
 			var data:String = positions;
 			var hash:String = HighScores.MD5("slowcrawler" + time + data);							
@@ -348,7 +348,7 @@
 			var variables:URLVariables = new URLVariables();
 			variables.action = "show";
 			variables.track = FlxG.level.toString();			
-			variables.version = FlxG.LIBRARY_MAJOR_VERSION.toString() + FlxG.LIBRARY_MINOR_VERSION.toString();
+			variables.version = FlxG.LIBRARY_MAJOR_VERSION.toString() + FlxG.LIBRARY_MINOR_VERSION.toString() + "07";
 			request.data = variables;				
 
 			var loadLoader:URLLoader = new URLLoader();
