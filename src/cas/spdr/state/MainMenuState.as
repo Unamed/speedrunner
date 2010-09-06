@@ -30,8 +30,32 @@
 				{
 					var door:Door = ( this._layer.children()[i] as Door );	
 					var bestResult:String = FlxG.progressManager.getBestResult(door.levelId);					
+					var bestTime:int = FlxG.progressManager.getBestTime(door.levelId);					
+					var tTxt:FlxText;
 					
-					var tTxt:FlxText = new FlxText(door.x - 10, door.y - 20, 100, "Lvl"+door.levelId+": " + bestResult);
+					if ( door.levelId == 4 || door.levelId == 8 || door.levelId == 12 || door.levelId == 13 )
+					{
+						if( FlxG.progressManager.hasFinishedLevel(door.levelId) )
+							tTxt = new FlxText(door.x - 20, door.y - 20, 100, "Completed");
+						else
+							tTxt = new FlxText(door.x - 20, door.y - 20, 100, "Challenge");
+					}
+					else
+					{
+						tTxt = new FlxText(door.x - 20, door.y - 20, 100, "Lvl" + door.levelId + ": " + bestResult);	
+						
+						if ( bestTime < FlxG.progressManager.getGoldTime(door.levelId) )
+							tTxt.color = 0xFDD017;
+						else if( bestTime < FlxG.progressManager.getSilverTime(door.levelId) )
+							tTxt.color = 0xC0C0C0;
+						else if( bestTime < FlxG.progressManager.getBronzeTime(door.levelId) )
+							tTxt.color = 0xA67D3D;
+						else 
+							tTxt.color = 0x000000;
+						
+						
+					}
+					
 					tTxt.size = 12;							
 					tTxt.scrollFactor = new Point(1, 1);				
 					this.add(tTxt);						
