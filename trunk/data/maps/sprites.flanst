@@ -3,7 +3,7 @@
 <boost_serialization signature="serialization::archive" version="5">
 <FlanSpriteTypes class_id="0" tracking_level="0" version="0">
 	<types class_id="1" tracking_level="0" version="0">
-		<count>18</count>
+		<count>20</count>
 		<item_version>0</item_version>
 		<item class_id="2" tracking_level="1" version="0" object_id="_0">
 			<name>SlopeDown</name>
@@ -146,6 +146,22 @@
 			<createCode>%OBJ% = new SuperBoostTriggerUL(%X%, %Y%);</createCode>
 			<imgPath>
 				<path>../../temp/SuperBoostTriggerLU.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_18">
+			<name>FallTile</name>
+			<createCode>%OBJ% = new FallTile(%X%+8, %Y%+8);</createCode>
+			<imgPath>
+				<path>../../temp/fallTile.png</path>
+			</imgPath>
+			<tileIndex>0</tileIndex>
+		</item>
+		<item object_id="_19">
+			<name>LethalObstacle</name>
+			<createCode>%OBJ% = new LethalObstacle(%X%, %Y%);</createCode>
+			<imgPath>
+				<path>../../temp/lethal_obstacle.png</path>
 			</imgPath>
 			<tileIndex>0</tileIndex>
 		</item>

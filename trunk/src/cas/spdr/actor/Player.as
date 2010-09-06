@@ -319,11 +319,12 @@ package cas.spdr.actor
 			if ( bSuperBoosting )
 			{
 				maxVelocity.x = maxRunVelocity * 2;
-				maxVelocity.y = maxRunVelocity * 2;				
+				maxVelocity.y = maxRunVelocity * 2;	
 			}
 			else if ( bBoosting )
 			{
-				maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);	
+				maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);					
+				currentPush = slowPush;
 				
 				if ( maxVelocity.x <= maxRunVelocity )
 					bBoosting = false;
@@ -334,14 +335,13 @@ package cas.spdr.actor
 				{
 					maxVelocity.x = crawlVelocity;					
 				}
-				else if ( Math.abs(velocity.x) < defaultRunVelocity )
+				else if ( Math.abs(velocity.x) < defaultRunVelocity )	// if current velocity is slower then default
 				{		
-					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, defaultRunVelocity);						
+					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, defaultRunVelocity);		
 				}
 				else if ( Math.abs( velocity.x ) > maxRunVelocity )	// when coming back from a superboost, quickly lose excess speed:
 				{
-					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 600, maxRunVelocity );
-					
+					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 600, maxRunVelocity );					
 				}
 				else // harder dan default run..
 				{
@@ -350,7 +350,8 @@ package cas.spdr.actor
 					{
 						currentPush = slowPush;
 					}
-					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);					
+					
+					maxVelocity.x = Math.max( maxVelocity.x - FlxG.elapsed * 100, maxRunVelocity);										
 				}
 			}
 			
@@ -1121,8 +1122,8 @@ package cas.spdr.actor
 				
 			}
 			
-			
-		
+			// override regular boosting:
+			bBoosting = false;
 			return false;
 		}
 		
@@ -1195,8 +1196,10 @@ package cas.spdr.actor
 			if ( !bBoosting )
 				FlxG.play(BoostSound);			
 				
-			bBoosting = true;						
+			bBoosting = true;
+			
 			maxVelocity.x = maxBoostVelocity;
+			velocity.x = maxVelocity.x;
 			
 			return false;
 		}
