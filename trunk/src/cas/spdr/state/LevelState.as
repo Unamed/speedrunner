@@ -47,14 +47,14 @@
 		private var currentMapIndex:uint;	
 		
 		// LOGGING:
-		private var bDisableLogging:Boolean = true;
+		private var bDisableLogging:Boolean = false;
 		private var logCntDwn:Number;
 		private var logInterval:Number = 0.1;
 		private var positions:String;		
 		private var allPositions:Array;
 		private var bShouldLog:Boolean;		
 		private var colorArray:Array = new Array(0xFFFF33, 0xFFFFFF, 0x79DCF4, 0xFF3333, 0xFFCC33, 0x99CC33);
-		private var bDrawMyOwn:Boolean = true; // decided whether or not I also want to see the commits from my own IP		
+		private var bDrawMyOwn:Boolean = false; // decided whether or not I also want to see the commits from my own IP		
 		private var logDrawIndex:int = 0;
 		private var logDrawCnt:int = 1;
 		
