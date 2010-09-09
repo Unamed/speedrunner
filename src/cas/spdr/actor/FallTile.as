@@ -38,7 +38,7 @@ package cas.spdr.actor
 		
 		public function onHit( playerVelocity:Point ):void
 		{
-			var tim:Timer = new Timer(75 + Math.random()*50, 1);	//0.1s
+			var tim:Timer = new Timer(60 + Math.random()*50, 1);	//0.1s
 			tim.addEventListener(TimerEvent.TIMER, onTimerComplete);
 			tim.start();
 			

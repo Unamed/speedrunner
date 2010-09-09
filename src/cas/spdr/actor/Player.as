@@ -1107,11 +1107,18 @@ package cas.spdr.actor
 						*/
 				}
 				
-				bSuperBoosting = false;				
+				bSuperBoosting = false;	
+				bCanSlide = true;
 			}
 			else
 			{
-				if ( !bSuperBoosting )
+				if ( bSliding || bCrawling )
+				{
+					bSliding = false;
+					bCrawling = false;
+					
+				}
+				else if ( !bSuperBoosting )
 					this.y += 26;
 					
 				bSuperBoosting = true;	
@@ -1120,10 +1127,11 @@ package cas.spdr.actor
 				this.offset.y = 26;
 				this.height = 20;
 				
+				bCanSlide = false;				
 			}
 			
 			// override regular boosting:
-			bBoosting = false;
+			bBoosting = false;			
 			return false;
 		}
 		

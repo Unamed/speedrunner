@@ -163,9 +163,9 @@
 			this.add(debugTxt);
 			
 			// SPEEDOMETER:			
-			/*
+			
 			speedometerBG = new FlxSprite(100, 550, null);
-			speedometerBG.createGraphic(200, 25, 0xFF000000, false);
+			speedometerBG.createGraphic(200, 25, 0xFFFFFFFF, false);
 			speedometerBG.scrollFactor = new Point(0, 0);			
 			this.add(speedometerBG);
 			
@@ -178,7 +178,7 @@
 			speedometer.createGraphic(200, 25, 0xFFFF0000, false);
 			speedometer.scrollFactor = new Point(0, 0);			
 			this.add(speedometer);
-			*/
+			
 		}
 		
 		public function switchToLevel(levelId:uint):void
@@ -384,6 +384,12 @@
 			else if ( obj is Gate )
 			{
 				gates.push(obj);
+			}
+			
+			else
+			{
+				trace("Callback, trying to add object that isn't recognized.");
+				
 			}
 		}	
 		
