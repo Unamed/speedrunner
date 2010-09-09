@@ -12,7 +12,8 @@
 		[Embed(source="/../data/temp/tiles_foreground.png")] private var FgTiles:Class;
 		[Embed(source = "/../data/temp/tiles_black_37.png")] public var Black37Tiles:Class;//Img_Main:Class;
 
-		[Embed(source = "/../data/temp/bgIm.png")] private var bgIm:Class;
+		[Embed(source = "/../data/temp/bgIm_2.png")] private var bgIm:Class;
+		[Embed(source = "/../data/temp/bgIm_3.png")] private var bgIm2:Class;
 		
 		[Embed(source = "/../data/temp/obstacle.png")] private var ObstacleIcon:Class;
 		[Embed(source = "/../data/temp/lethal_obstacle.png")] private var LethalObstacleIcon:Class;
@@ -43,6 +44,7 @@
 		public static const TILES_BLACK_37:uint = 3;
 		
 		public static const IMAGE_BACKGROUND:uint = 0;
+		public static const IMAGE_BACKGROUND_2:uint = 1;
 		
 		public static const SPRITE_OBSTACLE:uint = 0;
 		public static const SPRITE_COIN_PICKUP:uint = 1;
@@ -80,6 +82,7 @@
 			tiles[TILES_BLACK_37] = Black37Tiles;
 			
 			images[IMAGE_BACKGROUND] = bgIm;
+			images[IMAGE_BACKGROUND_2] = bgIm2;
 			
 			sprites[SPRITE_OBSTACLE] = ObstacleIcon;
 			sprites[SPRITE_COIN_PICKUP] = PickupIcon;			

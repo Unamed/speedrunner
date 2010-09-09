@@ -42,7 +42,7 @@
 					}
 					else
 					{
-						tTxt = new FlxText(door.x - 20, door.y - 20, 100, "Lvl" + door.levelId + ": " + bestResult);	
+						tTxt = new FlxText(door.x - 25, door.y - 20, 100, "Race " + door.levelId + ": " + bestResult);	
 						
 						if ( bestTime < FlxG.progressManager.getGoldTime(door.levelId) )
 							tTxt.color = 0xFDD017;

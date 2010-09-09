@@ -50,6 +50,7 @@
 		
 		private var bgSpr:FlxGradientBackground;
 		private var bgSpr2:FlxSprite;
+		private var bgSpr3:FlxSprite;
 		
 		protected var playerStartX:Number = 100;
 		protected var playerStartY:Number = 100;		
@@ -71,7 +72,7 @@
 			initLevel();
 						
 			//fade in
-			FlxG.flash(0xff131c1b);			
+			FlxG.flash(0xff000000);			
 		}	
 		
 		virtual public function initLevel():void
@@ -111,18 +112,25 @@
 				bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFFA75452, 0xFF661111);		// reddish..	
 			
 			bgSpr2 = new FlxSprite(0, 0, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND));
-			bgSpr2.scrollFactor = new Point(0, 0);
-			bgSpr2.width = 800;
-			bgSpr2.height = 600;
-			bgSpr2.alpha = 0.2;
+			bgSpr2.scrollFactor = new Point(0.25, 0.1);
+			bgSpr2.width = 4000;
+			bgSpr2.height = 1000;
+			
+			bgSpr3 = new FlxSprite(0, 0, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND_2));
+			bgSpr3.scrollFactor = new Point(0.5, 0.2);
+			bgSpr3.width = 4000;
+			bgSpr3.height = 1000;
+			
+			//bgSpr2.alpha = 0.2;
 			
 			this.add(bgSpr);			
 			this.add(bgSpr2);
+			this.add(bgSpr3);
 		}
 		
 		public function addBGLayer():void
 		{			
-			this.add(flanmap.layerBG);	
+			//this.add(flanmap.layerBG);	
 			flanmap.addSpritesToLayerMain(onAddSpriteCallback);
 		}
 		
@@ -163,7 +171,7 @@
 			this.add(debugTxt);
 			
 			// SPEEDOMETER:			
-			
+			/*
 			speedometerBG = new FlxSprite(100, 550, null);
 			speedometerBG.createGraphic(200, 25, 0xFFFFFFFF, false);
 			speedometerBG.scrollFactor = new Point(0, 0);			
@@ -178,12 +186,16 @@
 			speedometer.createGraphic(200, 25, 0xFFFF0000, false);
 			speedometer.scrollFactor = new Point(0, 0);			
 			this.add(speedometer);
-			
+			*/
 		}
 		
 		public function switchToLevel(levelId:uint):void
 		{			
-			FlxG.level = levelId;
+			FlxG.level = levelId;		
+			
+			FlxG.fade(0xFF000000, 1, startLoad);
+			/*
+			
 			
 			// hardcoded hook for starting boss levels:
 			if ( levelId == 4 )
@@ -196,6 +208,13 @@
 				FlxG.switchState(FinalBossLevelState);
 			else			
 				FlxG.switchState(LevelState);
+				*/
+		}
+		
+		public function startLoad():void
+		{
+			FlxG.switchState(LoadingState );
+			
 		}
 
 		// MAIN UPDATE FUNCTION:
