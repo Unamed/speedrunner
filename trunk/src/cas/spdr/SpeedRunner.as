@@ -3,9 +3,11 @@
 	import cas.spdr.map.*;
 	import cas.spdr.state.MainMenuState;
 	import org.flixel.*;
-	import SWFStats.Log;
+	import SWFStats.Log;	
+	import cas.spdr.Preloader;
 		
-	[SWF(width="800", height="600", backgroundColor="#000000")]	
+	[SWF(width = "800", height = "600", backgroundColor = "#000000")]	
+	[Frame(factoryClass="cas.spdr.Preloader")]
 		
 	/**
 	 * ...

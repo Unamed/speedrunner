@@ -22,10 +22,10 @@
 			moveSpeed = -1500;				
 			loadGraphic( GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_MESSAGE_DIALOG_LEVELINFO), false, false, 800, 600, false);
 			
-			this.textField.x = 70;
+			this.textField.x = 25;
 			this.textField.y = 420;			
 			
-			this.additonalTextField.x = 100;
+			this.additonalTextField.x = 50;
 			this.additonalTextField.y = 500;
 			
 			optionsTextField = new FlxText(100, 570, 500, "Press 'UP' to select");				

@@ -26,15 +26,16 @@ package cas.spdr.state
 			FlxG.flash(0xff000000);
 			
 			var gTxt:FlxText = new FlxText(200, 200, 500, 
-				"Loading Race.. " + "\n" + "\n" //+
+				"Loading Race.. " + "\n" + "\n" +
+				"Try to find the fastest route to the finish!" );
 				/*"Controls: " + "\n" +
 				"LEFT, RIGHT to move" + "\n" +
 				"Z - (Double) Jump (when unlocked)" + "\n" +
 				"X - Shoot Grappling Hook (when unlocked)" + "\n" +
 				"DOWN - Slide" + "\n" +								
 				"ESC to main menu" + "\n" +
-				"SPACE to restart level" + "\n \n"				*/
-				);			
+				"SPACE to restart level" + "\n \n"				
+				);			*/
 			gTxt.size = 16;							
 			gTxt.scrollFactor = new Point(1, 1);				
 			this.add(gTxt);	

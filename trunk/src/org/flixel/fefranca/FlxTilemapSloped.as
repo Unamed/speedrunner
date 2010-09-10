@@ -34,6 +34,9 @@
 			
 			floorRightSlopes.push(33);
 			floorLeftSlopes.push(32);			
+			floorLeftSlopes.push(37);
+			floorLeftSlopes.push(38);
+			
 			
 			super();			
 		}
