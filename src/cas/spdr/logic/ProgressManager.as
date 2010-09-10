@@ -59,56 +59,56 @@
 			unlockCosts[3] = 300;	//doublejump
 			unlockCosts[4] = 1000;	//reverse-mode	
 			
-			goldTimes[0] = 99.0;	//MainMenu
-			goldTimes[1] = 10.0;	//Lion
-			goldTimes[2] = 15.0;	//Hydra
-			goldTimes[3] = 13.0;	//Hind
-			goldTimes[4] = 20.0;	
+			goldTimes[0] = 1.0;	//MainMenu
+			goldTimes[1] = 15.0;	//Lion
+			goldTimes[2] = 13.0;	//Hydra
+			goldTimes[3] = 15.0;	//Hind
+			goldTimes[4] = 1.0;	
 			goldTimes[5] = 20.0;	
-			goldTimes[6] = 20.0;	
-			goldTimes[7] = 25.0;	
-			goldTimes[8] = 25.0;	
+			goldTimes[6] = 16.0;	
+			goldTimes[7] = 16.0;	
+			goldTimes[8] = 1.0;	
 			goldTimes[9] = 25.0;	
-			goldTimes[10] = 25.0;	
-			goldTimes[11] = 25.0;	
-			goldTimes[12] = 25.0;	
-			goldTimes[13] = 25.0;	
-			goldTimes[14] = 25.0;	
-			goldTimes[15] = 25.0;	
+			goldTimes[10] = 18.0;	
+			goldTimes[11] = 34.0;	
+			goldTimes[12] = 1.0;	
+			goldTimes[13] = 1.0;	
+			goldTimes[14] = 1.0;	
+			goldTimes[15] = 1.0;	
 			
-			silverTimes[0] = 99.0;	//MainMenu
-			silverTimes[1] = 15.0;	//Lion
-			silverTimes[2] = 18.0;	//Hydra
-			silverTimes[3] = 16.0;	//Hind
-			silverTimes[4] = 25.0;	
-			silverTimes[5] = 25.0;	
-			silverTimes[6] = 25.0;	
-			silverTimes[7] = 30.0;	
-			silverTimes[8] = 30.0;	
+			silverTimes[0] = 1.0;	//MainMenu
+			silverTimes[1] = 17.0;	//Lion
+			silverTimes[2] = 15.0;	//Hydra
+			silverTimes[3] = 17.0;	//Hind
+			silverTimes[4] = 1.0;	
+			silverTimes[5] = 23.0;	
+			silverTimes[6] = 19.0;	
+			silverTimes[7] = 19.0;	
+			silverTimes[8] = 1.0;	
 			silverTimes[9] = 30.0;	
-			silverTimes[10] = 30.0;	
-			silverTimes[11] = 30.0;	
-			silverTimes[12] = 30.0;	
-			silverTimes[13] = 30.0;	
-			silverTimes[14] = 30.0;	
-			silverTimes[15] = 30.0;	
+			silverTimes[10] = 21.0;	
+			silverTimes[11] = 42.0;	
+			silverTimes[12] = 1.0;	
+			silverTimes[13] = 1.0;	
+			silverTimes[14] = 1.0;	
+			silverTimes[15] = 1.0;	
 			
-			bronzeTimes[0] = 99.0;	//MainMenu
+			bronzeTimes[0] = 1.0;	//MainMenu
 			bronzeTimes[1] = 20.0;	//Lion
-			bronzeTimes[2] = 25.0;	//Hydra
+			bronzeTimes[2] = 18.0;	//Hydra
 			bronzeTimes[3] = 20.0;	//Hind
-			bronzeTimes[4] = 35.0;	
-			bronzeTimes[5] = 40.0;	
-			bronzeTimes[6] = 40.0;	
-			bronzeTimes[7] = 50.0;	
-			bronzeTimes[8] = 50.0;	
-			bronzeTimes[9] = 50.0;	
-			bronzeTimes[10] = 50.0;	
+			bronzeTimes[4] = 1.0;	
+			bronzeTimes[5] = 28.0;	
+			bronzeTimes[6] = 24.0;	
+			bronzeTimes[7] = 24.0;	
+			bronzeTimes[8] = 1.0;	
+			bronzeTimes[9] = 40.0;	
+			bronzeTimes[10] = 26.0;	
 			bronzeTimes[11] = 50.0;	
-			bronzeTimes[12] = 50.0;	
-			bronzeTimes[13] = 50.0;	
-			bronzeTimes[14] = 50.0;	
-			bronzeTimes[15] = 50.0;	
+			bronzeTimes[12] = 1.0;	
+			bronzeTimes[13] = 1.0;	
+			bronzeTimes[14] = 1.0;	
+			bronzeTimes[15] = 1.0;	
 			
 			goldRewards[0] = 0;	//MainMenu
 			goldRewards[1] = 25;	//Lion
@@ -419,6 +419,12 @@
 		public function hasFinishedLevel(levelId:int):Boolean
 		{
 			return ( getBestTime(levelId) < getBronzeTime(levelId) );
+		}
+		
+		// returns whether or not the level<levelId>, which should be a challenge level, was completed at least once
+		public function hasFinishedChallenge(levelId:int):Boolean
+		{
+			return ( getBestTime(levelId) < 99 );
 		}
 		
 		public function upgradeSetting(effect:String):void

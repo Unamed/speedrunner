@@ -35,7 +35,7 @@
 					
 					if ( door.levelId == 4 || door.levelId == 8 || door.levelId == 12 || door.levelId == 13 )
 					{
-						if( FlxG.progressManager.hasFinishedLevel(door.levelId) )
+						if( FlxG.progressManager.hasFinishedChallenge(door.levelId) )
 							tTxt = new FlxText(door.x - 20, door.y - 20, 100, "Completed");
 						else
 							tTxt = new FlxText(door.x - 20, door.y - 20, 100, "Challenge");
@@ -82,15 +82,15 @@
 							g.openGate();					
 						break;			
 					case (4):
-						if ( FlxG.progressManager.hasFinishedLevel(4) )
+						if ( FlxG.progressManager.hasFinishedChallenge(4) )
 							g.openGate();					
 						break;			
 					case (5):
-						if ( FlxG.progressManager.hasFinishedLevel(8) )
+						if ( FlxG.progressManager.hasFinishedChallenge(8) )
 							g.openGate();					
 						break;			
 					case (6):
-						if ( FlxG.progressManager.hasFinishedLevel(12) )
+						if ( FlxG.progressManager.hasFinishedChallenge(12) )
 							g.openGate();					
 						break;				
 				}
@@ -165,15 +165,36 @@
 		}
 		
 		public function showLevelInfo( levelId:int):void
-		{			
-			if ( !levelInfoMessage.bPlaying )
-			{
-				levelInfoMessage.playMessage(
-					"Level " + levelId, 
-					"Best time: " + FlxG.progressManager.getBestTime(levelId).toFixed(2) + "\n" +
-					"Needed for gold: " + FlxG.progressManager.getGoldTime(levelId).toFixed(2));
-			}
+		{	
+			// dont show popup if already showing
+			if ( levelInfoMessage.bPlaying )
+				return;
 			
+			switch( levelId )
+			{
+				case 4:
+					levelInfoMessage.playMessage( " Challenge", 
+						"Use your grappling hook \nto stay ahead of the Wall of Doom" );
+					break;
+				case 8:
+					levelInfoMessage.playMessage( " Challenge", 
+						"Use your walljumping abilities \nto stay ahead of the Floor of Doom" );
+					break;
+				case 12:
+					levelInfoMessage.playMessage( " Challenge", 
+						"Use your doublejumping skills \nto stay ahead of the Wall of Doom" );
+					break;
+				case 13:
+					levelInfoMessage.playMessage( "Final Challenge", 
+						"Use all your skills \nin an ultimate test" );
+					break;
+				default:
+					levelInfoMessage.playMessage(
+						"    Race " + levelId, 
+						" Best time: " + FlxG.progressManager.getBestTime(levelId).toFixed(2) + "\n" +
+						" Needed for gold: " + FlxG.progressManager.getGoldTime(levelId).toFixed(2));
+					break;				
+			}			
 		}
 		
 		public function showUseTriggerInfo( triggerEffect:String ):void
