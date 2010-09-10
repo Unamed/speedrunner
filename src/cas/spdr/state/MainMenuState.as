@@ -111,24 +111,29 @@
 				"DOWN - Slide" + "\n" +				
 				"UP to enter door" + "\n" +
 				"ESC to main menu" + "\n" +
-				"SPACE to restart level" + "\n \n" +
-				"caspervanest [at] gmail [dot] com"
+				"SPACE to restart level" + "\n\n\n\n\n\n\n\n\n\n\n\n" +
+				"Comments? Send them to: \ncaspervanest [at] gmail [dot] com"
 				);			
 			gTxt.size = 12;							
 			gTxt.scrollFactor = new Point(1, 1);				
 			this.add(gTxt);	
 			
-			/*
-			var lTxt:FlxText = new FlxText(1966, 1220, 500, "Level Select ->");			
+			
+			var lTxt:FlxText = new FlxText(1480, 1250, 1000, 
+				"The goal is to complete each race as quickly as possible \n"
+				+ "Complete challenge levels to unlock new abilities!"								
+				);			
 			lTxt.size = 12;							
 			lTxt.scrollFactor = new Point(1, 1);				
 			this.add(lTxt);	
 			
-			var oTxt:FlxText = new FlxText(1818, 1220, 500, "<- Upgrades");			
+			
+			var oTxt:FlxText = new FlxText(2700, 1221, 500, "Use the grappling hook to reach these levels!");			
 			oTxt.size = 12;							
 			oTxt.scrollFactor = new Point(1, 1);							
 			this.add(oTxt);	
 			
+			/*
 			var cTxt:FlxText = new FlxText(30, 170, 500, "Currency: " + FlxG.progressManager.getCredits());				
 			cTxt.size = 12;							
 			cTxt.scrollFactor = new Point(0, 0);				
