@@ -27,7 +27,9 @@ package cas.spdr.state
 			
 			var gTxt:FlxText = new FlxText(200, 200, 500, 
 				"Loading Race.. " + "\n" + "\n" +
-				"Try to find the fastest route to the finish!" );
+				"Try to find the fastest route to the finish! \n\n\n\n\n" +
+				"Jump: Z\n" + 
+				"Hook: X");
 				/*"Controls: " + "\n" +
 				"LEFT, RIGHT to move" + "\n" +
 				"Z - (Double) Jump (when unlocked)" + "\n" +
