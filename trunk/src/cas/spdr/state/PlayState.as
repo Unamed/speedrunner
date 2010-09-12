@@ -130,7 +130,7 @@
 		
 		public function addBGLayer():void
 		{			
-			//this.add(flanmap.layerBG);	
+			this.add(flanmap.layerBG);	
 			flanmap.addSpritesToLayerMain(onAddSpriteCallback);
 		}
 		
@@ -223,6 +223,18 @@
 		// 3. Perform collision checks		
 		override public function update():void
 		{
+			if ( root != null )
+			{				
+				if ( root.loaderInfo.url.indexOf("flashgamelicense") < 0 && (root.loaderInfo.url.indexOf("file") < 0) 
+					&& root.loaderInfo.url.indexOf("progamestudios") < 0 )
+				{
+					return;
+					
+				}
+			}
+			
+			
+			
 			// First (and always, irregardless of pause), process input:			
 			if ( FlxG.keys.justPressed("ESC") )
 				switchToMainMenu();	
