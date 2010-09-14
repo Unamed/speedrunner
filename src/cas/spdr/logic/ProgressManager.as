@@ -341,7 +341,7 @@
 			//return receivedCredits;	
 			
 			// then see if this unlocks a new power
-			if ( playTime < getBronzeTime(levelId) && TryUnlockPower(levelId) )
+			if ( /*playTime < getBronzeTime(levelId) &&*/ TryUnlockPower(levelId) )
 				return true;
 			
 			return false;			
