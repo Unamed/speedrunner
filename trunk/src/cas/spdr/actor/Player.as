@@ -1145,7 +1145,6 @@ package cas.spdr.actor
 		
 		private function hitTrigger(Contact:Trigger):Boolean 
 		{
-			trace("hitTrigger");
 			if ( Contact is FinishTrigger && playState is LevelState )
 			{		
 				(playState as LevelState).stopTimer();											
@@ -1166,8 +1165,7 @@ package cas.spdr.actor
 			}
 			else if ( Contact is SuperBoostTrigger )
 			{
-				// superboost!!
-				trace("SuperBoost!");
+				// super boost!!
 				return hitSuperBoost(Contact as SuperBoostTrigger);
 				
 			}
@@ -1314,20 +1312,41 @@ package cas.spdr.actor
 				// top one only used for testing:
 				var tileIndex:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile);
 				var tileIndexAbove:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 1);
+				var tileIndexAbove2:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile - 2);
 				var tileIndexBelow:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile + 1);
 				
 				//FlxG.log("hitWall ("+contactXtile+", "+contactYtile+"), index: "+tileIndex+" iAbove: "+tileIndexAbove+" iBelow:"+tileIndexBelow+" (y = "+y+")");
+				//FlxG.log("hitWall, index: "+tileIndex+" iAbove: "+tileIndexAbove+" iAbove2: "+tileIndexAbove2);
 				
 				// MMMMmmaybe there was this weird case where I'm hitting a wall, but above it is a slope.
 				// In that case, I should prob. be on top of that slope, right? 
-				if ( tileIndexAbove == 32 || tileIndexAbove == 33 )						
+				if ( tileIndexAbove == 32 || tileIndexAbove == 33 || tileIndexAbove == 37 || tileIndexAbove == 38 )						
 				{
 					//playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 34);
 					this.y -= 3 * Contact.height;
 					this.last.y = this.y;	// this line is needed, otherwise a hitCeiling will be detected (which messes up this hack)
-					
+										
 					return false;
-				}					
+				}
+				else if ( tileIndexAbove2 == 32 || tileIndexAbove2 == 33 || tileIndexAbove2 == 37 || tileIndexAbove2 == 38 )						
+				{
+					// okay I've detected that something went terribly wrong, 
+					// I am now TWO tiles below where I should be!
+					//playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 36);
+					this.y -= 3 * Contact.height;
+					this.last.y = this.y;	// this line is needed, otherwise a hitCeiling will be detected (which messes up this hack)
+					return false;
+					
+				}
+				else if ( tileIndexAbove2 == 28 )
+				{
+					// okay this is another wierd situation, 
+					// I see that above me is a superboost section, I should probably be in there..
+					//playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 35);
+					this.y -= 2 * Contact.height;
+					this.last.y = this.y;	// this line is needed, otherwise a hitCeiling will be detected (which messes up this hack)
+					return false;
+				}
 					
 				// Otherwise, start walling when there are tiles both below AND above the collided tile
 				else if ( tileIndexAbove >= playState.flanmap.mainLayer.collideIndex + 3
@@ -1441,7 +1460,7 @@ package cas.spdr.actor
 			{	
 				FlxG.log("hitFloor (" + tileIndex + ")");
 				
-				if ( tileIndex == 32 || tileIndex == 33 )
+				if ( tileIndex == 32 || tileIndex == 33 || tileIndex == 37 || tileIndex == 38 )
 				{
 					FlxG.log("hitFloor on slope..");
 					hooks[prevHook].breakRelease();							
