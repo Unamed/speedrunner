@@ -1,7 +1,11 @@
 package cas.spdr.state 
 {
 	import cas.spdr.actor.Deathwall;
+	import cas.spdr.map.MapPreBoss1;
 	import org.flixel.FlxG;
+	import org.flixel.FlxSprite;
+	import flash.geom.Point;
+	import cas.spdr.map.MapBase;
 	
 	/**
 	 * ...
@@ -11,6 +15,11 @@ package cas.spdr.state
 	{
 		protected var deathWall:Deathwall;
 		
+		protected var introCam:FlxSprite;		
+		protected var introMap:MapBase;
+		protected var bDoingIntro:Boolean;
+		
+		
 		public function BossLevelState() 
 		{
 			super();			
@@ -18,15 +27,37 @@ package cas.spdr.state
 		
 		override public function initLevel():void
 		{	
-			bShowHUD = false;	
+			bShowHUD = false;				
+			
 			super.initLevel();	
 				
-			startTimer();
+			startTimer();			
 		}
 		
 		override public function update():void
 		{			
+			if ( introMap != null && player.x < 0 )
+				introMap.mainLayer.collide(player);			
+			
 			super.update();
+			
+			if ( introCam != null && bDoingIntro )
+			{				
+				if ( player.bCinematicMode && introCam.x > player.x - 600 )
+				{				
+					player.velocity.x = 100;					
+				}
+				
+				if ( bDoingIntro && introCam.x > player.x )
+				{
+					player.velocity.x = 600;
+					player.x = introCam.x;
+						
+					player.bCinematicMode = false;
+					FlxG.followTarget = player;
+					bDoingIntro = false;					
+				}		
+			}
 			
 			if( deathWall && deathWall.active )
 				deathWall.collide(player);
@@ -35,6 +66,7 @@ package cas.spdr.state
 			// calculated like this: 
 			//var progress:int = (player.x / flanmap.layerMain.width)
 			//this.debugTxt.text = "" + progress;
+			
 		}
 		
 		override public function restartLevel():void

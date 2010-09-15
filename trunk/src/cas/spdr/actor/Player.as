@@ -26,6 +26,8 @@ package cas.spdr.actor
 		private var bDown:Boolean;
 		private var restart:Number;
 		
+		public var bCinematicMode:Boolean;
+		
 		private var hooks:Array;
 		private var curHook:uint;
 		public var prevHook:uint;	
@@ -260,13 +262,18 @@ package cas.spdr.actor
 		// UPDATE
 		// (called BEFORE collision checks are done)
 		override public function update():void
-		{				
+		{							
 			//game restart timer
 			if(dead)
 			{
 				restart += FlxG.elapsed;
-				if(restart > 2)
-					FlxG.switchState(PlayState);
+				if (restart > 2)
+				{
+					if ( FlxG.state is LevelState )
+					{
+						(FlxG.state as LevelState).restartLevel();
+					}
+				}
 				return;
 			}
 			
@@ -520,7 +527,7 @@ package cas.spdr.actor
 				acceleration.y = 0;
 								
 				// JUMPING:
-				if( FlxG.keys.justPressed("Z") )
+				if( !bCinematicMode && FlxG.keys.justPressed("Z") )
 				{		
 					if ( facing == RIGHT )
 					{
@@ -682,7 +689,7 @@ package cas.spdr.actor
 				}
 				else // ON GROUND
 				{
-					if ( FlxG.keys.DOWN && bCanSlide )
+					if ( !bCinematicMode && FlxG.keys.DOWN && bCanSlide )
 					{
 						if ( !bCrawling && Math.abs( velocity.x ) > 10 )
 						{
@@ -730,7 +737,7 @@ package cas.spdr.actor
 						}
 					}
 					
-					if(FlxG.keys.LEFT)
+					if( !bCinematicMode && FlxG.keys.LEFT)
 					{
 						facing = LEFT;
 						if( bSliding )
@@ -743,7 +750,7 @@ package cas.spdr.actor
 						else
 							acceleration.x -= currentPush;
 					}
-					else if(FlxG.keys.RIGHT)
+					else if(!bCinematicMode && FlxG.keys.RIGHT)
 					{
 						facing = RIGHT;
 						if( bSliding )
@@ -759,7 +766,7 @@ package cas.spdr.actor
 				}
 				
 				// JUMPING:
-				if( FlxG.keys.pressed("Z") )
+				if( !bCinematicMode && FlxG.keys.pressed("Z") )
 				{
 					status = INAIR;
 					bStumbling = false;
@@ -787,7 +794,7 @@ package cas.spdr.actor
 			playAnimation();			
 			
 			// SHOOT HOOK:
-			if ( FlxG.keys.justPressed("X") && bCanHook )
+			if ( !bCinematicMode && FlxG.keys.justPressed("X") && bCanHook )
 				shootHook();
 			
 			// ROTATING:

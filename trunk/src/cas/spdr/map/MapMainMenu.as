@@ -53,7 +53,7 @@ package cas.spdr.map {
 			layerBG.drawIndex = 1;
 			layerBG.x = 0;
 			layerBG.y = 0;
-			layerBG.scrollFactor.x = 0.500000;
+			layerBG.scrollFactor.x = 1.000000;
 			layerBG.scrollFactor.y = 1.000000;
 
 			allLayers = [ layerFG, layerMain, layerBG ];
