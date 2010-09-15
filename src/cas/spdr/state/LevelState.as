@@ -36,7 +36,7 @@
 		private var bestTxt:FlxText;
 		
 		protected var finishDialog:MessageDialog;
-		protected var startDialog:MessageDialog;
+		protected var startDialog:StartMessageDialog;
 		
 		protected var bShowHUD:Boolean = true;
 		
@@ -82,6 +82,8 @@
 			
 			if ( startDialog != null )
 			{
+				if ( FlxG.level == FlxG.prevLevel )
+					startDialog.duration = 1;
 				startDialog.playMessage("Go!");					
 				player.active = false;			
 			}
@@ -95,7 +97,8 @@
 		}
 		
 		virtual public function restartLevel():void
-		{				
+		{		
+			FlxG.prevLevel = FlxG.level;
 			FlxG.switchState(LevelState);						
 		}		
 		

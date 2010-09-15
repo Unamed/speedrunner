@@ -76,6 +76,7 @@ package org.flixel
 		 */
 		static public var levels:Array;
 		static public var level:int;
+		static public var prevLevel:int;
 		static public var scores:Array;
 		static public var score:int;
 		/**
@@ -1142,7 +1143,7 @@ package org.flixel
 					}
 				}
 				scroll.x += (_scrollTarget.x-scroll.x)*followLerp*FlxG.elapsed;
-				scroll.y += (_scrollTarget.y-scroll.y)*followLerp*FlxG.elapsed;
+				scroll.y += (_scrollTarget.y - scroll.y) * followLerp * FlxG.elapsed;				
 				
 				if(followMin != null)
 				{

@@ -1,9 +1,12 @@
 ﻿package cas.spdr.state 
 {
 	import cas.spdr.actor.Deathwall;
+	import cas.spdr.map.MapPreBoss1;
 	import cas.spdr.state.LevelState;
+	import flash.geom.Point;
 	import org.flixel.FlxG;
-	import cas.spdr.gfx.GraphicsLibrary;
+	import cas.spdr.gfx.GraphicsLibrary;	
+	import org.flixel.FlxSprite;
 	
 	/**
 	 * ...
@@ -22,13 +25,48 @@
 		{
 			super();			
 		}		
+		
+		override public function initLevel():void
+		{				
+			introMap = new MapPreBoss1();
+			
+			super.initLevel();	
+			
+			introCam = new FlxSprite( -2800, playerStartY);
+			introCam.width = 21;
+			introCam.height = 46;
+			introCam.offset.x = 11;	//2
+			introCam.offset.y = 4;
+			
+			introCam.alpha = 0;
+			introCam.velocity.x = 600;
+			introCam.acceleration.x = 0;
+			this.add(introCam);
+			
+			bDoingIntro = true;
+			player.bCinematicMode = true;
+			
+			FlxG.cameraOffset = new Point(0, 75);
+			FlxG.follow(introCam, 1.5);
+			FlxG.followAdjust(1.0, 0.25);	
+			flanmap.layerMain.follow();
+			FlxG.followMin.x = 3000;			
+		}
 
+		override public function addMainLayer():void
+		{		
+			this.add(introMap.layerMain);
+			
+			super.addMainLayer();				
+		}
+		
 		// add deathwall and deathfloors
 		override public function addGameElements():void
 		{
 			super.addGameElements();
 			
-			deathWall = new Deathwall(player.x - 1300, player.y -900, 800, 1800, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE));
+			// -1300..
+			deathWall = new Deathwall(player.x - 2700, player.y -900, 800, 1800, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE));
 			deathWall.velocity.x = 375;
 			this.add(deathWall);
 			
@@ -51,7 +89,7 @@
 			deathFloors.push(deathFloor3);
 			deathFloors.push(deathFloor4);
 		}
-		
+				
 		// collide with deathFloor
 		// and perform quake
 		override public function update():void
@@ -62,16 +100,23 @@
 			
 			if ( deathWall.active )
 			{
-				var wallDist:int = player.x - deathWall.x -800; 
-				
-				if ( wallDist > 800 )
-					FlxG.quake(0.00, 1);				
-				else if ( wallDist > 500 )
-					FlxG.quake(0.001, 1);				
-				else if ( wallDist > 300 )
-					FlxG.quake(0.004, 1);				
+				if ( this.bDoingIntro )
+				{
+					FlxG.quake(0.008, 1);					
+				}
 				else
-					FlxG.quake(0.008, 1);
+				{
+					var wallDist:int = player.x - deathWall.x -800; 
+					
+					if ( wallDist > 800 )
+						FlxG.quake(0.00, 1);				
+					else if ( wallDist > 500 )
+						FlxG.quake(0.001, 1);				
+					else if ( wallDist > 300 )
+						FlxG.quake(0.004, 1);				
+					else
+						FlxG.quake(0.008, 1);
+				}
 			}
 			else 
 				FlxG.quake(0.0, 1);			

@@ -13,7 +13,7 @@
 		
 		private var bClearing:Boolean;
 		private var cntDwn:Number;
-		
+		public var duration:Number = 3;
 		
 		public function StartMessageDialog() 
 		{			
@@ -77,7 +77,7 @@
 					this.velocity.y = 0;
 					
 					bClearing = true;	
-					cntDwn = 3;					
+					cntDwn = duration;					
 				}
 			}	
 			

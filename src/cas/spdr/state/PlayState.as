@@ -98,10 +98,13 @@
 			addFGLayer();
 			addHUDElements();
 			
-			FlxG.cameraOffset = new Point(0, 75);
-			FlxG.follow(player, 1.5);
-			FlxG.followAdjust(1.0, 0.25);	
-			flanmap.layerMain.follow();
+			if ( FlxG.level != 4 )
+			{			
+				FlxG.cameraOffset = new Point(0, 75);
+				FlxG.follow(player, 1.5);
+				FlxG.followAdjust(1.0, 0.25);	
+				flanmap.layerMain.follow();
+			}
 		}
 		
 		public function addBackGround():void
@@ -191,6 +194,7 @@
 		
 		public function switchToLevel(levelId:uint):void
 		{			
+			FlxG.prevLevel = FlxG.level;
 			FlxG.level = levelId;		
 			
 			FlxG.fade(0xFF000000, 1, startLoad);
@@ -333,6 +337,8 @@
 		
 		public function switchToMainMenu():void 
 		{
+			FlxG.prevLevel = FlxG.level;
+			FlxG.level = 0;
 			FlxG.switchState(MainMenuState);				
 		}
 		

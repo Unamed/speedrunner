@@ -94,8 +94,7 @@
 							g.openGate();					
 						break;				
 				}
-			}
-			
+			}			
 		}
 		
 		override public function addHUDElements():void
@@ -128,10 +127,20 @@
 			this.add(lTxt);	
 			
 			
-			var oTxt:FlxText = new FlxText(2700, 1221, 500, "Use the grappling hook to reach these levels!");			
+			var oTxt:FlxText = new FlxText(1960, 900, 500, "Use the grappling hook here, to reach levels 2 and 3    ->");			
 			oTxt.size = 12;							
 			oTxt.scrollFactor = new Point(1, 1);							
 			this.add(oTxt);	
+			
+			var wTxt:FlxText = new FlxText(3300, 1270, 500, "     /\\ \n      |\n\nUnlock \nwalljumping \nto reach \nlevels 5 \nand beyond");			
+			wTxt.size = 12;							
+			wTxt.scrollFactor = new Point(1, 1);							
+			this.add(wTxt);	
+			
+			var dTxt:FlxText = new FlxText(4660, 1010, 500, "Can't get on this platform? \nMake sure to complete the second challenge level!");			
+			dTxt.size = 12;							
+			dTxt.scrollFactor = new Point(1, 1);							
+			this.add(dTxt);	
 			
 			/*
 			var cTxt:FlxText = new FlxText(30, 170, 500, "Currency: " + FlxG.progressManager.getCredits());				
@@ -148,7 +157,7 @@
 		override public function addGameElements():void
 		{	
 			// re-define playerStart, if coming from a level:
-			if ( FlxG.level > 0 )
+			if ( FlxG.prevLevel > 0 )
 			{
 				for ( var i:uint = 0; i < this._layer.children().length; i++ )
 				{
@@ -156,10 +165,10 @@
 					{
 						var door:Door = ( this._layer.children()[i] as Door );	
 						
-						if ( door.levelId == FlxG.level )
+						if ( door.levelId == FlxG.prevLevel )
 						{
 							// this is the door next to which the player should start
-							playerStartX = door.x;
+							playerStartX = door.x - 25;
 							playerStartY = door.y;							
 						}						
 					}
