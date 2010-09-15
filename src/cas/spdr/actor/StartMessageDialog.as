@@ -10,7 +10,7 @@
 	 */
 	public class StartMessageDialog extends MessageDialog
 	{
-		
+		private var bCalledBack:Boolean;
 		private var bClearing:Boolean;
 		private var cntDwn:Number;
 		public var duration:Number = 3;
@@ -30,10 +30,17 @@
 			// performed the update AFTER it is really finished:
 			if ( bFinished )
 			{
+				if ( bCalledBack )
+					return; 
+					
 				if ( onFinishCallback != null )
+				{
+					trace("calling callback");
 					onFinishCallback();
+				}
 				
 				bFinished = false;	
+				bCalledBack = true;
 				
 				return; 
 			}
