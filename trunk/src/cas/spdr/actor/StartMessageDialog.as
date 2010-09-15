@@ -35,7 +35,6 @@
 					
 				if ( onFinishCallback != null )
 				{
-					trace("calling callback");
 					onFinishCallback();
 				}
 				
