@@ -114,21 +114,33 @@
 			else 			
 				bgSpr = new FlxGradientBackground(0, 0, 800, 600, 0xFFA75452, 0xFF661111);		// reddish..	
 			
-			bgSpr2 = new FlxSprite(0, 0, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND));
-			bgSpr2.scrollFactor = new Point(0.25, 0.1);
-			bgSpr2.width = 4000;
+			bgSpr2 = new FlxSprite(-500, 0, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND));
+			bgSpr2.scrollFactor = new Point(0.2, 0.1);
+			bgSpr2.width = 5000;
 			bgSpr2.height = 1000;
 			
-			bgSpr3 = new FlxSprite(0, 0, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND_2));
-			bgSpr3.scrollFactor = new Point(0.5, 0.2);
+			var yval:int;
+			if ( FlxG.level == 8 )
+				yval = 1650;
+			else
+				yval = 0;
+				
+			bgSpr3 = new FlxSprite(0, yval, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND_2));
+			bgSpr3.scrollFactor = new Point(0.5, 0.9);
 			bgSpr3.width = 4000;
-			bgSpr3.height = 1000;
+			bgSpr3.height = 2000;
+			
+			var bgSpr3b:FlxSprite = new FlxSprite(4000*0.5, yval, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND_2));
+			bgSpr3b.scrollFactor = new Point(0.5, 0.9);
+			bgSpr3b.width = 4000;
+			bgSpr3b.height = 2000;
 			
 			//bgSpr2.alpha = 0.2;
 			
 			this.add(bgSpr);			
 			this.add(bgSpr2);
 			this.add(bgSpr3);
+			this.add(bgSpr3b);
 		}
 		
 		public function addBGLayer():void
@@ -174,7 +186,7 @@
 			this.add(debugTxt);
 			
 			// SPEEDOMETER:			
-			/*
+			
 			speedometerBG = new FlxSprite(100, 550, null);
 			speedometerBG.createGraphic(200, 25, 0xFFFFFFFF, false);
 			speedometerBG.scrollFactor = new Point(0, 0);			
@@ -189,7 +201,7 @@
 			speedometer.createGraphic(200, 25, 0xFFFF0000, false);
 			speedometer.scrollFactor = new Point(0, 0);			
 			this.add(speedometer);
-			*/
+			
 		}
 		
 		public function switchToLevel(levelId:uint):void

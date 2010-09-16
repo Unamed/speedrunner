@@ -68,7 +68,8 @@ package cas.spdr.map {
 			var obj:FlxSprite;			
 			
 			//72
-			obj = new PlayerStart(-200, 1032);;
+			//obj = new PlayerStart(-200, 1032);;
+			obj = new PlayerStart(72, 1032);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
