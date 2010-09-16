@@ -7,10 +7,12 @@
 	import org.flixel.FlxG;
 	import flash.geom.Point;
 	import flash.display.Shape;
+	import SWFStats.Encode;
+	import SWFStats.Log;
 	
 	import cas.spdr.gfx.GraphicsLibrary;
 	
-	import SWFStats.*;
+	//import SWFStats.*;
 	
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
@@ -99,7 +101,12 @@
 		virtual public function restartLevel():void
 		{		
 			FlxG.prevLevel = FlxG.level;
-			FlxG.switchState(LevelState);						
+			FlxG.switchState(LevelState);	
+			
+			if ( bPerformSWFLogging )
+			{
+				Log.LevelCounterMetric("Re-started", FlxG.level );
+			}
 		}		
 		
 		override public function addHUDElements():void
@@ -279,6 +286,11 @@
 				}
 				else
 					finishDialog.playMessage(msg);
+					
+				if ( bPerformSWFLogging )
+				{
+					Log.LevelCounterMetric("Finished", FlxG.level );
+				}
 			}
 			
 			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );				
@@ -326,7 +338,7 @@
 			var version:String = FlxG.LIBRARY_MAJOR_VERSION.toString() + FlxG.LIBRARY_MINOR_VERSION.toString() + "07";
 			var time:String = Math.round(playTime).toString();
 			var data:String = positions;
-			var hash:String = HighScores.MD5("slowcrawler" + time + data);							
+			var hash:String = Encode.MD5("slowcrawler" + time + data);							
 			
 			var sendRequest:URLRequest = new URLRequest(url + "?action=submit"+"&track="+track+"&version="+version+"&time="+time+"&hash="+hash+"&data="+data);
 			

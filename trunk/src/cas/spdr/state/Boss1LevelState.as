@@ -7,6 +7,7 @@
 	import org.flixel.FlxG;
 	import cas.spdr.gfx.GraphicsLibrary;	
 	import org.flixel.FlxSprite;
+	import SWFStats.Log;
 	
 	/**
 	 * ...
@@ -130,7 +131,12 @@
 		
 		override public function restartLevel():void
 		{				
-			FlxG.switchState(Boss1LevelState);						
+			FlxG.switchState(Boss1LevelState);	
+			
+			if ( bPerformSWFLogging )
+			{
+				Log.LevelCounterMetric("Re-started", FlxG.level );
+			}
 		}	
 	}
 }

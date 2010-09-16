@@ -3,7 +3,6 @@
 	import cas.spdr.map.*;
 	import cas.spdr.state.MainMenuState;
 	import org.flixel.*;
-	import SWFStats.Log;	
 	import cas.spdr.Preloader;
 		
 	[SWF(width = "800", height = "600", backgroundColor = "#000000")]	
@@ -16,8 +15,8 @@
 	public class SpeedRunner extends FlxGame 
 	{	
 		public function SpeedRunner():void 
-		{			
-			super(800, 600, MainMenuState, 1);// , 0xff131c1b, false, 0xff729954);
+		{	
+			super(800, 600, MainMenuState, 1);// , 0xff131c1b, false, 0xff729954);			
 			
 			// main menu is level 0
 			FlxG.levels.push(MapMainMenu);
@@ -49,17 +48,7 @@
 			FlxG.saves.push( save );		
 			FlxG.save = 0;
 			
-			showLogo = false;
-			
-			// Stats:
-			//SWFStats.Tracker.Initialise(loaderInfo.loaderURL);
-			
-			//SWFStats.Tracker.LogView();
-			//SWFStats.Tracker.LogPlay();
-			
-			// swfstats.. 
-			//Log.View(153, "6635b062-cc5b-4c1b-819c-1f1b48b4ad75", root.loaderInfo.loaderURL);
-			
+			showLogo = false;			
 		}
 	}	
 }

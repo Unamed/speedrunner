@@ -7,6 +7,7 @@
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxGradientBackground;
 	import cas.spdr.gfx.GraphicsLibrary;
+	import SWFStats.Log;
 		
 	
 	import com.google.analytics.AnalyticsTracker;
@@ -60,6 +61,8 @@
 		private var speedometerBG2:FlxSprite;
 		private var speedometer:FlxSprite;
 		
+		// SWFStats logging:
+		public var bPerformSWFLogging:Boolean = false;		// this variable is also present in Preloader.as!!
 		
 		protected var bIsPaused:Boolean;
 		
@@ -186,7 +189,7 @@
 			this.add(debugTxt);
 			
 			// SPEEDOMETER:			
-			
+			/*
 			speedometerBG = new FlxSprite(100, 550, null);
 			speedometerBG.createGraphic(200, 25, 0xFFFFFFFF, false);
 			speedometerBG.scrollFactor = new Point(0, 0);			
@@ -201,30 +204,23 @@
 			speedometer.createGraphic(200, 25, 0xFFFF0000, false);
 			speedometer.scrollFactor = new Point(0, 0);			
 			this.add(speedometer);
-			
+			*/
 		}
 		
 		public function switchToLevel(levelId:uint):void
-		{			
+		{				
 			FlxG.prevLevel = FlxG.level;
 			FlxG.level = levelId;		
 			
 			FlxG.fade(0xFF000000, 1, startLoad);
-			/*
 			
-			
-			// hardcoded hook for starting boss levels:
-			if ( levelId == 4 )
-				FlxG.switchState(Boss1LevelState);
-			else if ( levelId == 8 )
-				FlxG.switchState(Boss2LevelState);
-			else if ( levelId == 12 )
-				FlxG.switchState(Boss1LevelState);
-			else if ( levelId == 13 )
-				FlxG.switchState(FinalBossLevelState);
-			else			
-				FlxG.switchState(LevelState);
-				*/
+			if ( bPerformSWFLogging )
+			{
+				if ( FlxG.prevLevel == FlxG.level )
+					Log.LevelCounterMetric("Re-started", FlxG.level);
+				else
+					Log.LevelCounterMetric("Started", FlxG.level);
+			}
 		}
 		
 		public function startLoad():void
@@ -248,8 +244,6 @@
 					
 				}
 			}
-			
-			
 			
 			// First (and always, irregardless of pause), process input:			
 			if ( FlxG.keys.justPressed("ESC") )
@@ -351,7 +345,12 @@
 		{
 			FlxG.prevLevel = FlxG.level;
 			FlxG.level = 0;
-			FlxG.switchState(MainMenuState);				
+			FlxG.switchState(MainMenuState);	
+			
+			if ( bPerformSWFLogging )
+			{
+				Log.LevelCounterMetric("Exited", FlxG.prevLevel);
+			}
 		}
 		
 		protected function onAddSpriteCallback(obj:FlxCore):void

@@ -6,6 +6,7 @@ package cas.spdr.state
 	import org.flixel.FlxSprite;
 	import flash.geom.Point;
 	import cas.spdr.map.MapBase;
+	import SWFStats.Log;
 	
 	/**
 	 * ...
@@ -71,7 +72,12 @@ package cas.spdr.state
 		
 		override public function restartLevel():void
 		{				
-			FlxG.switchState(BossLevelState);						
+			FlxG.switchState(BossLevelState);	
+			
+			if ( bPerformSWFLogging )
+			{
+				Log.LevelCounterMetric("Re-started", FlxG.level );
+			}
 		}	
 		
 		override public function stopTimer():void

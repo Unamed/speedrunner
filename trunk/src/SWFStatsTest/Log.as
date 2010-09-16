@@ -1,4 +1,4 @@
-﻿package SWFStats
+﻿package SWFStatsTest
 {
 	import flash.events.TimerEvent;
 	import flash.external.ExternalInterface;
@@ -10,7 +10,6 @@
 	{
 		// API settings
 		public static var Enabled:Boolean = false;
-		public static var Queue:Boolean = true;
 		
 		// SWF settings
 		public static var SWFID:int = 0;
@@ -185,11 +184,11 @@
 		// Send
 		// Creates and sends the url requests to the tracking service.
 		// ------------------------------------------------------------------------------
-		private static function Send(s:String, view:Boolean = false):void
+		private static function Send(s:String, view:Boolean = true):void
 		{
 			Request.Queue(s);
 
-			if(Request.Ready || view || !Queue)
+			if(Request.Ready || view)
 			{
 				Request.Send();
 				Request = new LogRequest();
@@ -266,6 +265,15 @@
 			}
 
 			return escape(url);
+		}
+
+		// ------------------------------------------------------------------------------
+		// Output
+		// Provides trace messages if debugging is enabled.
+		// ------------------------------------------------------------------------------
+		public static function Output(message:String):void
+		{
+			trace(message);
 		}
 	}
 }
