@@ -50,7 +50,7 @@ package cas.spdr.state
 				
 				if ( bDoingIntro && introCam.x > player.x )
 				{
-					player.velocity.x = 600;
+					player.velocity.x = 400;
 					player.x = introCam.x;
 						
 					player.bCinematicMode = false;

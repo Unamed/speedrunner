@@ -19,6 +19,8 @@
 		private var deathFloor3:Deathwall;
 		private var deathFloor4:Deathwall;
 		
+		protected var deathWallSpeed:Number;
+		
 		private var deathFloors:Array;
 		
 		public function Boss1LevelState() 
@@ -29,6 +31,8 @@
 		override public function initLevel():void
 		{				
 			introMap = new MapPreBoss1();
+			
+			deathWallSpeed = 375;
 			
 			super.initLevel();	
 			
@@ -50,7 +54,9 @@
 			FlxG.follow(introCam, 1.5);
 			FlxG.followAdjust(1.0, 0.25);	
 			flanmap.layerMain.follow();
-			FlxG.followMin.x = 3000;			
+			FlxG.followMin.x = 3000;	
+			
+			player.x = -200;
 		}
 
 		override public function addMainLayer():void
@@ -65,9 +71,9 @@
 		{
 			super.addGameElements();
 			
-			// -1300..
+			trace("deathWallSpeed:" + deathWallSpeed);
 			deathWall = new Deathwall(player.x - 2700, player.y -900, 800, 1800, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE));
-			deathWall.velocity.x = 375;
+			deathWall.velocity.x = deathWallSpeed;
 			this.add(deathWall);
 			
 			// death floor:

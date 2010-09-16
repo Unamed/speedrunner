@@ -29,11 +29,8 @@
 		{		
 			// performed the update AFTER it is really finished:
 			if ( bFinished )
-			{
-				if ( bCalledBack )
-					return; 
-					
-				if ( onFinishCallback != null )
+			{					
+				if ( !bCalledBack && onFinishCallback != null )
 				{
 					onFinishCallback();
 				}
