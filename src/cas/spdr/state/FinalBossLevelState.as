@@ -6,6 +6,7 @@ package cas.spdr.state
 	import flash.geom.Point;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
+	import SWFStats.Log;
 	
 	/**
 	 * ...
@@ -15,13 +16,8 @@ package cas.spdr.state
 	{		
 		
 		public function FinalBossLevelState() 
-		{					
-			
-			
+		{		
 			super();
-			
-			
-			
 		}
 		
 		// add deathwall and deathfloors
@@ -34,7 +30,11 @@ package cas.spdr.state
 		
 		override public function restartLevel():void
 		{				
-			FlxG.switchState(FinalBossLevelState);						
+			FlxG.switchState(FinalBossLevelState);		
+			if ( bPerformSWFLogging )
+			{
+				Log.LevelCounterMetric("Re-started", FlxG.level );
+			}
 		}	
 		
 	}

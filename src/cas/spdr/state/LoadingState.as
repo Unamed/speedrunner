@@ -25,19 +25,63 @@ package cas.spdr.state
 			//fade in
 			FlxG.flash(0xff000000);
 			
-			var gTxt:FlxText = new FlxText(200, 200, 500, 
-				"Loading Race.. " + "\n" + "\n" +
-				"Try to find the fastest route to the finish! \n\n\n\n\n" +
-				"Jump: Z\n" + 
-				"Hook: X");
-				/*"Controls: " + "\n" +
-				"LEFT, RIGHT to move" + "\n" +
-				"Z - (Double) Jump (when unlocked)" + "\n" +
-				"X - Shoot Grappling Hook (when unlocked)" + "\n" +
-				"DOWN - Slide" + "\n" +								
-				"ESC to main menu" + "\n" +
-				"SPACE to restart level" + "\n \n"				
-				);			*/
+			var text:String;
+			switch( FlxG.level )
+			{
+				case 1:
+					text = "Loading Race.. " + "\n" + "\n" +
+					"\n\n\n\n\n" +
+					"Jump: Z\n" + 
+					"Slide: down";
+					break;
+				case 2:
+				case 3:
+					text = "Loading Race.. " + "\n" + "\n" +
+					"Tip: Use the grappling hook \nto reach higher platforms \nand find quicker routes\n\n\n" +
+					"Jump: Z\n" + 
+					"Hook: X";
+					break;
+				case 4:
+					text = "Warning: Wall of Death approaching!" + "\n" + "\n" +
+					"Use your grappling hook to stay ahead \nof the deadly spikes\n\n\n\n\n";
+					break;
+				case 5:
+				case 6:
+				case 7:
+					text = "Loading Race.. " + "\n" + "\n" +
+					"Tip: Use walljumping \nto find alternate routes \n\n\n\n\n" +
+					"Jump: Z\n" + 
+					"Hook: X";
+					break;				
+				case 8:
+					text = "Warning: Deathfloor is rising! " + "\n" + "\n" +
+					"Use your walljumping ability to stay ahead \nof deadly spikes \n\n\n\n\n";
+					break;
+				case 9:
+				case 10:
+				case 11:
+					text = "Loading Race.. " + "\n" + "\n" +
+					"Tip: Use doublejumping \nto find the quickest routes \n\n\n\n\n" +
+					"Jump: Z\n" + 
+					"Hook: X";
+					break;	
+				case 12:
+					text = "Warning: Wall of Death is back! " + "\n" + "\n" +
+					"Use your doublejumping skills to stay ahead \nof the deadly spikes\n\n\n\n\n";
+					break;
+				case 13:
+					text = "Warning: This challenge is really hard";
+					break;
+				default:
+					text = "Loading Race.. " + "\n" + "\n" +
+					"Try to find the fastest route to the finish! \n\n\n\n\n" +
+					"Jump: Z\n" + 
+					"Hook: X";
+					break;				
+			}
+			
+			
+			var gTxt:FlxText = new FlxText(200, 200, 500, text);				
 			gTxt.size = 16;							
 			gTxt.scrollFactor = new Point(1, 1);				
 			this.add(gTxt);	

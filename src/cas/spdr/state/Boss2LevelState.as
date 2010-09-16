@@ -4,6 +4,7 @@
 	import org.flixel.FlxG;
 	import cas.spdr.actor.Deathwall;
 	import cas.spdr.gfx.GraphicsLibrary;
+	import SWFStats.Log;
 	
 	/**
 	 * ...
@@ -27,7 +28,12 @@
 		
 		override public function restartLevel():void
 		{				
-			FlxG.switchState(Boss2LevelState);						
+			FlxG.switchState(Boss2LevelState);		
+			
+			if ( bPerformSWFLogging )
+			{
+				Log.LevelCounterMetric("Re-started", FlxG.level );
+			}
 		}	
 	}
 

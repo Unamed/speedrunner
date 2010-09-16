@@ -9,6 +9,7 @@ package cas.spdr.actor
 	import flash.geom.Point;
 	import org.flixel.*;	
 	import cas.spdr.gfx.GraphicsLibrary;
+	import SWFStats.Log;
 	
 	import org.flixel.fefranca.debug.FlxSpriteDebug;
 
@@ -486,7 +487,6 @@ package cas.spdr.actor
 			// WALL MOVEMENT:
 			else if ( status == ONWALL )//bWalling )
 			{
-				FlxG.log("walling..");
 				maxVelocity.x = defaultRunVelocity;				
 				
 				// make sure I stick to the wall:
@@ -645,7 +645,6 @@ package cas.spdr.actor
 					// DOUBLE JUMPING:
 					if( FlxG.keys.justPressed("Z") && !bDidDoubleJump && bCanDoubleJump )
 					{	
-						FlxG.log("Double jump!");
 						this.velocity.y = 0;// -= 100;
 						this.jumpTime = 0;
 						bDidDoubleJump = true;
@@ -917,6 +916,11 @@ package cas.spdr.actor
 			(FlxG.state as LevelState).endLevel(false);
 			
 			FlxG.quake(0.01, 0.25);
+			
+			if ( playState.bPerformSWFLogging )
+			{
+				Log.LevelCounterMetric("Killed", FlxG.level);
+			}
 			
 		}
 		
