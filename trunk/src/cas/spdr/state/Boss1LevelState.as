@@ -8,6 +8,7 @@
 	import cas.spdr.gfx.GraphicsLibrary;	
 	import org.flixel.FlxSprite;
 	import SWFStats.Log;
+	//import SWFStatsTest.Log;
 	
 	/**
 	 * ...

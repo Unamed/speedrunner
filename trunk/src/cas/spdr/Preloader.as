@@ -2,6 +2,7 @@ package cas.spdr
 {
 	import org.flixel.data.FlxFactory;
 	import SWFStats.Log;
+	//import SWFStatsTest.Log;		// when using SWFStats-TEST-, comment out line 25: Log.Queue
 	
 	
 	/**
@@ -21,6 +22,7 @@ package cas.spdr
 			{
 				Log.View(153, "6635b062-cc5b-4c1b-819c-1f1b48b4ad75", root.loaderInfo.loaderURL);
 				Log.Play();
+				Log.Queue = false;
 			}
 		}
 

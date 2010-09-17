@@ -10,6 +10,7 @@ package cas.spdr.actor
 	import org.flixel.*;	
 	import cas.spdr.gfx.GraphicsLibrary;
 	import SWFStats.Log;
+	//import SWFStatsTest.Log;
 	
 	import org.flixel.fefranca.debug.FlxSpriteDebug;
 
@@ -57,6 +58,11 @@ package cas.spdr.actor
 		private var playState:PlayState;
 		
 		public var bOnDownSlope:Boolean;
+		
+		// new sloping:
+		private var bOnSlopeUp:Boolean;
+		private var bOnSlopeDown:Boolean;
+		private var slopeCntDwn:Number = 0;
 		
 		private var switchToLevelId:uint;
 		private var bHitDoor:Boolean;
@@ -957,9 +963,9 @@ package cas.spdr.actor
 		{
 			if (hooks[prevHook].exists && !hooks[prevHook].bCollided )
 				this.angle = 0;			
-			else if ( status == ONSLOPEDOWN )			
+			else if ( status == ONGROUND && bOnSlopeDown )			
 				this.angle = 45;
-			else if ( status == ONSLOPEUP )
+			else if ( status == ONGROUND && bOnSlopeUp )
 				this.angle = -45;
 			else if ( status == INAIR && bDidDoubleJump )
 			{					
@@ -1429,6 +1435,7 @@ package cas.spdr.actor
 				}				
 			}	
 			
+			
 			//playState.flanmap.mainLayer.setTile(contactXtile, contactYtile, 35);
 			return super.hitWall(Contact);
 		}
@@ -1457,9 +1464,19 @@ package cas.spdr.actor
 				return hitFalltile((Contact as FallTile), true);
 			
 			var contactXtile:uint = Contact.x / 16;
-			var contactYtile:uint = Contact.y / 16;			
+			var contactYtile:uint = Contact.y / 16;	
+			
+			if ( Contact.x == 0 && Contact.y == 0 )
+			{
+				contactXtile = this.x / 16;
+				contactYtile = (this.y+(0.75*this.height)) / 16;					
+			}
 			var tileIndex:uint = playState.flanmap.mainLayer.getTile(contactXtile, contactYtile);			
-						
+			var tileIndexAbove:uint = playState.flanmap.mainLayer.getTile(contactXtile , contactYtile -1 );			
+			
+			//if ( tileIndexAbove == 33 )
+			//	trace("above was slope!");
+				
 			if ( bIsSwinging )
 			{	
 				FlxG.log("hitFloor (" + tileIndex + ")");
@@ -1474,6 +1491,36 @@ package cas.spdr.actor
 				// bounce:
 				//velocity.x = 0;
 			}		
+			
+			if ( tileIndex == 32 || tileIndex == 37 || tileIndex == 38 
+				|| tileIndexAbove == 32 || tileIndexAbove == 37 || tileIndexAbove == 38 )
+			{				
+				bOnSlopeUp = true;
+			}
+			else if ( tileIndex == 33 || tileIndexAbove == 33 )
+			{
+				bOnSlopeDown = true;
+			}
+			else
+			{
+				
+				if ( (bOnSlopeDown || bOnSlopeUp) && slopeCntDwn <= 0 )
+				{
+					// start timer
+					slopeCntDwn = 0.15;
+				}
+					
+				if ( slopeCntDwn > 0 )
+				{
+					slopeCntDwn -= FlxG.elapsed;
+				}
+					
+				if ( (bOnSlopeDown || bOnSlopeUp) && slopeCntDwn <= 0 )
+				{				
+					bOnSlopeDown = false;
+					bOnSlopeUp = false;
+				}
+			}
 				
 			status = ONGROUND;			
 			jumpTime = 0;
