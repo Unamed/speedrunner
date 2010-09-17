@@ -7,8 +7,8 @@
 	import org.flixel.FlxG;
 	import flash.geom.Point;
 	import flash.display.Shape;
-	import SWFStats.Encode;
-	import SWFStats.Log;
+	import SWFStats.*;
+	//import SWFStatsTest.*;
 	
 	import cas.spdr.gfx.GraphicsLibrary;
 	
@@ -36,6 +36,7 @@
 		private var sTxt:FlxText;	
 		private var bTxt:FlxText;			
 		private var bestTxt:FlxText;
+		private var iBestTxt:FlxText;
 		
 		protected var finishDialog:MessageDialog;
 		protected var startDialog:StartMessageDialog;
@@ -90,6 +91,11 @@
 				player.active = false;			
 			}
 			
+			if ( bPerformSWFLogging )
+			{
+				HighScores.Scores(true, String(FlxG.level), receivedHighscores, "last30days");
+			}
+			
 			/*
 			FlxG.log(FlxG.progressManager.getPickedUp(FlxG.level));
 			FlxG.log(pickups.length);
@@ -107,11 +113,30 @@
 			{
 				Log.LevelCounterMetric("Re-started", FlxG.level );
 			}
-		}		
+		}	
+		
+		private function receivedHighscores(data:Array):void
+		{
+			trace("Received highscores:");
+			for ( var i:int = 0; i < data.length; i++ )
+			{
+				trace(i +": "+ data[i].Rank +", "+ data[i].Name +", "+ data[i].Points +", "+ data[i].Website +", "+ data[i].SDate );
+				
+			}
+			
+			if ( data.length > 0 )
+			{
+				var iBest:Number = ( 10000 - Number(data[0].Points) ) / 100;
+				
+				if( iBestTxt != null )
+					iBestTxt.text = "This month's best: " + iBest.toFixed(2);
+			}
+			
+		}
 		
 		override public function addHUDElements():void
 		{		
-			super.addHUDElements();
+			super.addHUDElements();			
 			
 			finishDialog = new FinishMessageDialog();
 			finishDialog.setOnFinishCallback( this.endLevel );
@@ -124,37 +149,38 @@
 				startDialog.addMeToState(this);
 				
 				// TEXTS:
-				timerTxt = new FlxText(500, 10, 200, "Timer");
-				timerTxt.size = 15;							
+				timerTxt = new FlxText(400, 10, 200, "Timer");
+				timerTxt.size = 18;							
 				timerTxt.scrollFactor = new Point(0, 0);				
 				this.add(timerTxt);	
 				
 				// goals:
-				//gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(flanmap).toFixed(2));			
-				gTxt = new FlxText(10, 10, 400, "Gold: " + FlxG.progressManager.getGoldTime(FlxG.level).toFixed(2));			
-				gTxt.size = 15;							
+				gTxt = new FlxText(475, 10, 400, "(gold: " + FlxG.progressManager.getGoldTime(FlxG.level).toFixed(2)+")");			
+				gTxt.size = 12;							
 				gTxt.scrollFactor = new Point(0, 0);				
 				this.add(gTxt);	
 				
-				//sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(flanmap).toFixed(2));			
+				/*
 				sTxt = new FlxText(10, 35, 400, "Silver: " + FlxG.progressManager.getSilverTime(FlxG.level).toFixed(2));			
 				sTxt.size = 15;							
 				sTxt.scrollFactor = new Point(0, 0);				
 				this.add(sTxt);	
-				
-				//bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(flanmap).toFixed(2));			
+								
 				bTxt = new FlxText(10, 60, 400, "Bronze: " + FlxG.progressManager.getBronzeTime(FlxG.level).toFixed(2));			
 				bTxt.size = 15;							
 				bTxt.scrollFactor = new Point(0, 0);				
 				this.add(bTxt);	
+				*/
 				
-				//bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(flanmap).toFixed(2));			
-				bestTxt = new FlxText(10, 100, 400, "Best: " + FlxG.progressManager.getBestTime(FlxG.level).toFixed(2));			
+				bestTxt = new FlxText(10, 35, 400, "Your best: " + FlxG.progressManager.getBestTime(FlxG.level).toFixed(2));			
 				bestTxt.size = 15;							
 				bestTxt.scrollFactor = new Point(0, 0);				
 				this.add(bestTxt);	
 				
-				
+				iBestTxt = new FlxText(10, 10, 400, "This month's best: -");			
+				iBestTxt.size = 15;							
+				iBestTxt.scrollFactor = new Point(0, 0);				
+				this.add(iBestTxt);					
 				
 				logTxt1 = new FlxText(10, 200, 400, "");			
 				logTxt1.size = 12;							
@@ -186,6 +212,26 @@
 		override public function update():void
 		{			
 			super.update();
+			
+			if( bIsTiming )
+				playTime += FlxG.elapsed;
+			
+			// HUD:
+			if ( timerTxt != null )
+			{
+				timerTxt.text = "" + playTime.toFixed(2);				
+				
+				if( playTime > FlxG.progressManager.getGoldTime(FlxG.level) )
+				{
+					gTxt.text = "(silver: " + FlxG.progressManager.getSilverTime(FlxG.level).toFixed(2)+")";
+					
+					if ( playTime > FlxG.progressManager.getSilverTime(FlxG.level) )
+					{
+						gTxt.text = "(bronze: " + FlxG.progressManager.getBronzeTime(FlxG.level).toFixed(2)+")";
+					}				
+				}					
+			}
+				
 				
 			// logging:
 			if ( bShouldLog )
@@ -198,11 +244,7 @@
 				}
 			}
 			
-			if( bIsTiming )
-				playTime += FlxG.elapsed;		
-			
-			if( timerTxt != null )
-				timerTxt.text = "Timer: " + playTime.toFixed(2);	
+				
 			
 			// Various Input				
 			if ( FlxG.keys.justPressed("SPACE") )
@@ -269,6 +311,12 @@
 			
 		}
 		
+		private function submitHighscoreComplete(bSuccess:Boolean):void
+		{
+			trace("submitted highscore:"+bSuccess);
+			
+		}
+		
 		virtual public function stopTimer():void
 		{
 			if ( bIsTiming )
@@ -290,6 +338,7 @@
 				if ( bPerformSWFLogging )
 				{
 					Log.LevelCounterMetric("Finished", FlxG.level );
+					HighScores.Submit("Player0", 10000-(playTime*100), String(FlxG.level), submitHighscoreComplete)
 				}
 			}
 			
@@ -392,6 +441,7 @@
 				
 					if ( data.indexOf("-", 0) > 0)
 					{
+						trace("userId:" + userId);
 						if ( userId > 2 || bDrawMyOwn )
 						{							
 							var dataArray:Array = data.split("-");

@@ -7,6 +7,7 @@ package cas.spdr.state
 	import flash.geom.Point;
 	import cas.spdr.map.MapBase;
 	import SWFStats.Log;
+	//import SWFStatsTest.Log;
 	
 	/**
 	 * ...

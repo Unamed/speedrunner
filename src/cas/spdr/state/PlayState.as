@@ -8,6 +8,7 @@
 	import org.flixel.fefranca.FlxGradientBackground;
 	import cas.spdr.gfx.GraphicsLibrary;
 	import SWFStats.Log;
+	//import SWFStatsTest.Log;
 		
 	
 	import com.google.analytics.AnalyticsTracker;

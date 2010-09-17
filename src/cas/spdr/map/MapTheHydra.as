@@ -101,104 +101,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Pickup(7376, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7424, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7472, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7520, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7568, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7616, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7664, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7712, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7760, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7808, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7856, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7904, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(7952, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Pickup(8000, 672);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["colorVal"] = "silver";
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new PlayerStart(72, 1080);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -416,12 +318,6 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new BoostSection(7480, 927-1);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(8284, 684);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
