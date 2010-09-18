@@ -1,6 +1,7 @@
 package org.flixel
 {
 	import cas.spdr.logic.ProgressManager;
+	import FGL.GameTracker.GameTracker;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
@@ -167,6 +168,9 @@ package org.flixel
 		static protected var _originalSeed:Number;
 		
 		static public var progressManager:ProgressManager;
+		
+		static public var fglTracker:GameTracker;
+		
 		/**
 		 * Set <code>pause</code> to true to pause the game, all sounds, and display the pause popup.
 		 */
