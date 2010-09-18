@@ -23,6 +23,8 @@
 			flanmap = new MapMainMenu();	
 			super();
 			
+			FlxG.fglTracker.checkpoint(0, "", "Main Menu");
+			
 			// Display best results over each level door
 			for ( var i:uint = 0; i < this._layer.children().length; i++ )
 			{
@@ -102,7 +104,7 @@
 			super.addHUDElements();
 			
 			var gTxt:FlxText = new FlxText(910, 940, 500, 
-				"Welcome to SpeedRunner Prototype v0.7" + "\n \n" + 
+				"Welcome to SpeedRunner Prototype v0.7b" + "\n \n" + 
 				"Controls: " + "\n" +
 				"LEFT, RIGHT to move" + "\n" +
 				"Z - (Double) Jump (when unlocked)" + "\n" +

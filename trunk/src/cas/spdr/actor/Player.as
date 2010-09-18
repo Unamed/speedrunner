@@ -928,6 +928,8 @@ package cas.spdr.actor
 				Log.LevelCounterMetric("Killed", FlxG.level);
 			}
 			
+			FlxG.fglTracker.checkpoint(0, "", "Killed");
+			
 		}
 		
 		private function shootHook():void
@@ -963,9 +965,9 @@ package cas.spdr.actor
 		{
 			if (hooks[prevHook].exists && !hooks[prevHook].bCollided )
 				this.angle = 0;			
-			else if ( status == ONGROUND && bOnSlopeDown )			
+			else if ( status == ONGROUND && bOnSlopeDown && (bSliding||bCrawling))			
 				this.angle = 45;
-			else if ( status == ONGROUND && bOnSlopeUp )
+			else if ( status == ONGROUND && bOnSlopeUp && (bSliding||bCrawling))
 				this.angle = -45;
 			else if ( status == INAIR && bDidDoubleJump )
 			{					

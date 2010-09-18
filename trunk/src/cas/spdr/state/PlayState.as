@@ -3,6 +3,7 @@
 	import cas.spdr.actor.*;	
 	import cas.spdr.gfx.sprite.*;
 	import cas.spdr.map.MapBase;
+	import FGL.GameTracker.GameTracker;
 	import flash.geom.Point;
 	import org.flixel.*;
 	import org.flixel.fefranca.FlxGradientBackground;
@@ -64,6 +65,7 @@
 		
 		// SWFStats logging:
 		public var bPerformSWFLogging:Boolean = false;		// this variable is also present in Preloader.as!!
+		public var fglTracker:GameTracker;
 		
 		protected var bIsPaused:Boolean;
 		
@@ -76,7 +78,7 @@
 			initLevel();
 						
 			//fade in
-			FlxG.flash(0xff000000);			
+			FlxG.flash(0xff000000);					
 		}	
 		
 		virtual public function initLevel():void
@@ -222,6 +224,8 @@
 				else
 					Log.LevelCounterMetric("Started", FlxG.level);
 			}
+			
+			FlxG.fglTracker.beginLevel(FlxG.level, 0, "", "Started");
 		}
 		
 		public function startLoad():void
@@ -352,6 +356,8 @@
 			{
 				Log.LevelCounterMetric("Exited", FlxG.prevLevel);
 			}
+			
+			FlxG.fglTracker.endLevel(0, "", "Exited");
 		}
 		
 		protected function onAddSpriteCallback(obj:FlxCore):void

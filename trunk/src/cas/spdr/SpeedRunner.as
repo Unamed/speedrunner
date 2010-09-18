@@ -2,6 +2,7 @@
 {
 	import cas.spdr.map.*;
 	import cas.spdr.state.MainMenuState;
+	import FGL.GameTracker.GameTracker;
 	import org.flixel.*;
 	import cas.spdr.Preloader;
 		
@@ -48,7 +49,11 @@
 			FlxG.saves.push( save );		
 			FlxG.save = 0;
 			
-			showLogo = false;			
+			showLogo = false;		
+			
+			// FGL tracking:
+			FlxG.fglTracker = new GameTracker();
+			FlxG.fglTracker.beginGame();
 		}
 	}	
 }
