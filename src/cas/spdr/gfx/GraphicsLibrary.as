@@ -7,9 +7,9 @@
 	public class GraphicsLibrary
 	{
 		//[Embed(source = "/../data/temp/tiles_new_small.png")] private var ImgTiles:Class;
-		[Embed(source = "/../data/temp/tiles_black_32.png")] private var Black32Tiles:Class;//ImgTiles:Class; 
+		//[Embed(source = "/../data/temp/tiles_black_32.png")] private var Black32Tiles:Class;//ImgTiles:Class; 
 		[Embed(source="/../data/temp/tiles_background.png")] private var BgTiles:Class;
-		[Embed(source="/../data/temp/tiles_foreground.png")] private var FgTiles:Class;
+		//[Embed(source="/../data/temp/tiles_foreground.png")] private var FgTiles:Class;
 		[Embed(source = "/../data/temp/tiles_black_37.png")] public var Black37Tiles:Class;//Img_Main:Class;
 
 		[Embed(source = "/../data/temp/bgIm_2b.png")] private var bgIm:Class;
@@ -20,12 +20,12 @@
 		[Embed(source = "/../data/temp/pickup_anim.png")] private var PickupIcon:Class;
 		[Embed(source = "/../data/temp/pickup_Alt.png")] private var PickupAltIcon:Class;
 		[Embed(source = "/../data/temp/BoostSection.png")] private var BoostImg:Class;
-		[Embed(source = "/../data/temp/player.png")] private var ImgPlayer:Class;
+		//[Embed(source = "/../data/temp/player.png")] private var ImgPlayer:Class;
 		//[Embed(source="/../data/temp/ninjagaidentrilogy_ryuhayabusa_sheet.png")] private var ImgRyu:Class;
 		[Embed(source = "/../data/temp/player_sheet_black2.png")] private var ImgRyu:Class;
 		[Embed(source = "/../data/temp/door.png")] private var DoorIcon:Class;
-		[Embed(source = "/../data/temp/tile_slope_up.png")] private var SlopeUpTile:Class;
-		[Embed(source = "/../data/temp/tile_slope_down.png")] private var SlopeDownTile:Class;
+		//[Embed(source = "/../data/temp/tile_slope_up.png")] private var SlopeUpTile:Class;
+		//[Embed(source = "/../data/temp/tile_slope_down.png")] private var SlopeDownTile:Class;
 		[Embed(source = "/../data/temp/hook_small.png")] private var ImgHook:Class;
 		[Embed(source = "/../data/temp/messageDialog.png")] private var MessageDialog:Class;
 		[Embed(source = "/../data/temp/startDialog.png")] private var MessageDialogStart:Class;
@@ -77,8 +77,8 @@
 		public function GraphicsLibrary() 
 		{
 			tiles[TILES_BACKGROUND] = BgTiles;
-			tiles[TILES_FOREGROUND] = FgTiles;
-			tiles[TILES_BLACK_32] = Black32Tiles;
+			//tiles[TILES_FOREGROUND] = FgTiles;
+			//tiles[TILES_BLACK_32] = Black32Tiles;
 			tiles[TILES_BLACK_37] = Black37Tiles;
 			
 			images[IMAGE_BACKGROUND] = bgIm;
@@ -87,11 +87,11 @@
 			sprites[SPRITE_OBSTACLE] = ObstacleIcon;
 			sprites[SPRITE_COIN_PICKUP] = PickupIcon;			
 			sprites[SPRITE_BOOST] = BoostImg;
-			sprites[SPRITE_PLAYER] = ImgPlayer;
+			//sprites[SPRITE_PLAYER] = ImgPlayer;
 			sprites[SPRITE_RYU] = ImgRyu;
 			sprites[SPRITE_DOOR] = DoorIcon;
-			sprites[SPRITE_SLOPE_UP] = SlopeUpTile;
-			sprites[SPRITE_SLOPE_DOWN] = SlopeDownTile;
+			//sprites[SPRITE_SLOPE_UP] = SlopeUpTile;
+			//sprites[SPRITE_SLOPE_DOWN] = SlopeDownTile;
 			sprites[SPRITE_HOOK] = ImgHook;
 			sprites[SPRITE_COIN_PICKUP_ALT] = PickupAltIcon;
 			sprites[SPRITE_MESSAGE_DIALOG] = MessageDialog;

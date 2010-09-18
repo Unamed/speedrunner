@@ -113,6 +113,8 @@
 			{
 				Log.LevelCounterMetric("Re-started", FlxG.level );
 			}
+			
+			FlxG.fglTracker.beginLevel(FlxG.level, 0, "", "Re-Started");
 		}	
 		
 		private function receivedHighscores(data:Array):void
@@ -340,6 +342,8 @@
 					Log.LevelCounterMetric("Finished", FlxG.level );
 					HighScores.Submit("Player0", 10000-(playTime*100), String(FlxG.level), submitHighscoreComplete)
 				}
+				
+				FlxG.fglTracker.checkpoint(playTime,"", "Finished");				
 			}
 			
 			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );				
