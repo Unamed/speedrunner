@@ -73,29 +73,37 @@
 		{
 			super.addGameElements();
 			
-			trace("deathWallSpeed:" + deathWallSpeed);
-			deathWall = new Deathwall(player.x - 2700, player.y -900, 800, 1800, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE));
-			deathWall.velocity.x = deathWallSpeed;
-			this.add(deathWall);
-			
-			// death floor:
-			deathFloor1 = new Deathwall(0, 1600-16, 2400, 600, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));			
-			this.add(deathFloor1);
-			
-			deathFloor2 = new Deathwall(2400, 1600-16, 2400, 600, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));						
-			this.add(deathFloor2);
-			
-			deathFloor3 = new Deathwall(4800, 1600-16, 2400, 600, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));						
-			this.add(deathFloor3);
-			
-			deathFloor4 = new Deathwall(7200, 1600-16, 2400, 600, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));						
-			this.add(deathFloor4);
-			
+			// create deathwalls across the entire height of the map:
+			deathWalls = new Array();									
+			for ( var yloc:int = 0; yloc < flanmap.mainLayer.height; yloc += 384 )
+			{
+				// create a new deathwall section
+				var deathWall:Deathwall = new Deathwall(player.x - 2500, yloc, 400, 384, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE));
+				deathWall.velocity.x = deathWallSpeed;
+				
+				// add it to the array and to the level
+				deathWalls.push(deathWall);			
+				this.add(deathWall);	
+				
+				// create another deathwall section, that faces the other way (this makes the wall twice as wide)
+				var deathWall2:Deathwall = new Deathwall(player.x - 2900, yloc, 400, 384, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL_SIDE), true);
+				deathWall2.velocity.x = deathWallSpeed;
+				deathWall2.facing = FlxSprite.LEFT;
+				deathWall2.dead = true;
+				
+				// ..and also add it to the array and to the level
+				deathWalls.push(deathWall2);			
+				this.add(deathWall2);					
+			}
+				
+			// also add death floors across the entire length of the map:
 			deathFloors = new Array();
-			deathFloors.push(deathFloor1);
-			deathFloors.push(deathFloor2);
-			deathFloors.push(deathFloor3);
-			deathFloors.push(deathFloor4);
+			for ( var xloc:int = 0; xloc < flanmap.mainLayer.width; xloc += 384 )
+			{
+				var deathFloor:Deathwall = new Deathwall(xloc, flanmap.mainLayer.height-16, 384, 400, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));			
+				this.add(deathFloor);
+				deathFloors.push(deathFloor);			
+			}
 		}
 				
 		// collide with deathFloor
@@ -106,7 +114,7 @@
 			
 			FlxG.collideArray(deathFloors, player);
 			
-			if ( deathWall.active )
+			if ( deathWalls.length > 0 && (deathWalls[0] as Deathwall).active)
 			{
 				if ( this.bDoingIntro )
 				{
@@ -114,7 +122,7 @@
 				}
 				else
 				{
-					var wallDist:int = player.x - deathWall.x -800; 
+					var wallDist:int = player.x - (deathWalls[0] as Deathwall ).x -800; 
 					
 					if ( wallDist > 800 )
 						FlxG.quake(0.00, 1);				

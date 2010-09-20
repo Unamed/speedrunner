@@ -19,11 +19,20 @@
 		
 		override public function addGameElements():void
 		{
-			super.addGameElements();
+			super.addGameElements();			
 			
-			deathWall = new Deathwall(0, player.y + 325, 2400, 600, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));			
-			deathWall.velocity.y = -80;
-			this.add(deathWall);
+			// create deathwalls across the entire length of the map:
+			deathWalls = new Array();									
+			for ( var xloc:int = 0; xloc < flanmap.mainLayer.width; xloc += 384 )
+			{
+				// create a new deathwall section
+				var deathWall:Deathwall = new Deathwall(xloc, player.y + 325, 384, 400, GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_DEATHWALL));
+				deathWall.velocity.y = -80;
+				
+				// add it to the array and to the level
+				deathWalls.push(deathWall);			
+				this.add(deathWall);					
+			}
 		}
 		
 		override public function restartLevel():void

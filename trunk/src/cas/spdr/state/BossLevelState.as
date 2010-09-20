@@ -15,7 +15,7 @@ package cas.spdr.state
 	 */
 	public class BossLevelState extends LevelState
 	{
-		protected var deathWall:Deathwall;
+		protected var deathWalls:Array;// Deathwall;
 		
 		protected var introCam:FlxSprite;		
 		protected var introMap:MapBase;
@@ -61,13 +61,29 @@ package cas.spdr.state
 				}		
 			}
 			
-			if( deathWall && deathWall.active )
-				deathWall.collide(player);
+			if ( deathWalls.length > 0 )
+			{
+				FlxG.collideArray(deathWalls, player);				
+			}
+			
+			//if( deathWall && deathWall.active )
+			//	deathWall.collide(player);
 				
 			//@TODO: maybe visually display the progress of the player through the level,
 			// calculated like this: 
 			//var progress:int = (player.x / flanmap.layerMain.width)
 			//this.debugTxt.text = "" + progress;
+			
+		}
+		
+		public function onHitDeathwall():void
+		{
+			for ( var d:int = 0; d < deathWalls.length; d++ )
+			{
+				deathWalls[d].active = false;
+				deathWalls[d].dead = true;			
+				deathWalls[d].velocity.y = 0;	
+			}			
 			
 		}
 		
@@ -83,11 +99,14 @@ package cas.spdr.state
 		
 		override public function stopTimer():void
 		{
-			if ( deathWall )
+			if ( deathWalls.length > 0 )
 			{
-				deathWall.active = false;
-				deathWall.velocity.x = 0;
-				deathWall.velocity.y = 0;
+				for ( var d:int = 0; d < deathWalls.length; d++ )
+				{
+					deathWalls[d].active = false;
+					deathWalls[d].velocity.x = 0;
+					deathWalls[d].velocity.y = 0;
+				}
 			}
 			
 			super.stopTimer();

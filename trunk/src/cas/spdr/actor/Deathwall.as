@@ -11,10 +11,10 @@
 	public class Deathwall extends FlxSprite//Debug
 	{
 		
-		public function Deathwall(X:int, Y:int, W:int, H:int, SimpleGraphic:Class) 
+		public function Deathwall(X:int, Y:int, W:int, H:int, SimpleGraphic:Class, reverse:Boolean = false) 
 		{
 			super(X, Y, SimpleGraphic);
-			loadGraphic( SimpleGraphic, false, false, W, H, false);
+			loadGraphic(SimpleGraphic, false, reverse, W, H, false);
 			
 			width = W;
 			height = H;

@@ -2,6 +2,7 @@ package cas.spdr.actor
 {
 	import cas.spdr.gfx.sprite.*;
 	import cas.spdr.state.Boss1LevelState;
+	import cas.spdr.state.BossLevelState;
 	import cas.spdr.state.LevelState;
 	import cas.spdr.state.MainMenuState;
 	import cas.spdr.state.PlayState;
@@ -1273,10 +1274,11 @@ package cas.spdr.actor
 		public function hitDeathwall(Contact:Deathwall):Boolean
 		{			
 			explode();
-		
-			Contact.active = false;
-			Contact.dead = true;			
-			Contact.velocity.y = 0;
+			
+			if ( FlxG.state is BossLevelState )
+			{
+				(FlxG.state as BossLevelState).onHitDeathwall();				
+			}		
 			
 			return false;
 		}
