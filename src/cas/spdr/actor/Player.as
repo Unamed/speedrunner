@@ -122,6 +122,12 @@ package cas.spdr.actor
 		private var releaseWallCntDwn:Number = 0;
 		
 		private var explosionEmitter:FlxEmitter;
+		
+		public var jumpBtn:String = "UP";
+		public var jumpBtnAlt:String = "Z";
+		public var hookBtn:String = "X";
+		public var slideBtn:String = "DOWN";
+		public var selectBtn:String = "ENTER";
 				
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
@@ -306,7 +312,7 @@ package cas.spdr.actor
 				(FlxG.state as MainMenuState).showUseTriggerInfo(useTriggerEffect);
 			}
 			
-			if ( FlxG.keys.justPressed("UP") )
+			if ( FlxG.keys.justPressed(selectBtn) )
 			{
 				if( bHitDoor )
 					( FlxG.state as PlayState ).switchToLevel(switchToLevelId);				
@@ -509,7 +515,7 @@ package cas.spdr.actor
 				}
 				
 				// immediately release when pressing down:
-				if ( FlxG.keys.DOWN )
+				if ( FlxG.keys[slideBtn] )
 					releaseWallCntDwn = -1;
 				
 				if ( releaseWallCntDwn <= 0 )
@@ -533,7 +539,7 @@ package cas.spdr.actor
 				acceleration.y = 0;
 								
 				// JUMPING:
-				if( !bCinematicMode && FlxG.keys.justPressed("Z") )
+				if( !bCinematicMode && (FlxG.keys.justPressed(jumpBtn)||FlxG.keys.justPressed(jumpBtnAlt)) )
 				{		
 					if ( facing == RIGHT )
 					{
@@ -569,7 +575,7 @@ package cas.spdr.actor
 					{
 						facing = RIGHT;
 						
-						if( FlxG.keys.DOWN )
+						if( FlxG.keys[slideBtn] )
 						{
 							// higher maxVelocity?
 							velocity.x = 1.0 * maxVelocity.x;
@@ -606,7 +612,7 @@ package cas.spdr.actor
 					{
 						facing = LEFT;
 						
-						if( FlxG.keys.DOWN )
+						if( FlxG.keys[slideBtn] )
 						{
 							// higher maxVelocity?
 							velocity.x = -1.0 * maxVelocity.x;
@@ -649,14 +655,14 @@ package cas.spdr.actor
 					}
 					
 					// DOUBLE JUMPING:
-					if( FlxG.keys.justPressed("Z") && !bDidDoubleJump && bCanDoubleJump )
+					if( (FlxG.keys.justPressed(jumpBtn)||FlxG.keys.justPressed(jumpBtnAlt)) && !bDidDoubleJump && bCanDoubleJump )
 					{	
 						this.velocity.y = 0;// -= 100;
 						this.jumpTime = 0;
 						bDidDoubleJump = true;
 					}	
 					
-					if ( FlxG.keys.DOWN && bCanSlide )
+					if ( FlxG.keys[slideBtn] && bCanSlide )
 					{
 						if ( !bSliding )
 							this.y += 26;
@@ -694,7 +700,7 @@ package cas.spdr.actor
 				}
 				else // ON GROUND
 				{
-					if ( !bCinematicMode && FlxG.keys.DOWN && bCanSlide )
+					if ( !bCinematicMode && FlxG.keys[slideBtn] && bCanSlide )
 					{
 						if ( !bCrawling && Math.abs( velocity.x ) > 10 )
 						{
@@ -771,7 +777,7 @@ package cas.spdr.actor
 				}
 				
 				// JUMPING:
-				if( !bCinematicMode && FlxG.keys.pressed("Z") )
+				if( !bCinematicMode && (FlxG.keys.pressed(jumpBtn)||FlxG.keys.pressed(jumpBtnAlt)) )
 				{
 					status = INAIR;
 					bStumbling = false;
@@ -789,17 +795,12 @@ package cas.spdr.actor
 			// END MOVEMENT CODE!
 			// --------------------------------------------------------------------------------------------------------------------------------
 			
-			//AIMING
-			bUp = false;
-			bDown = false;
-			if(FlxG.keys.UP) bUp = true;
-			else if (FlxG.keys.DOWN && velocity.y) bDown = true;
 			
 			// ANIMATING:
 			playAnimation();			
 			
 			// SHOOT HOOK:
-			if ( !bCinematicMode && FlxG.keys.justPressed("X") && bCanHook )
+			if ( !bCinematicMode && FlxG.keys.justPressed(hookBtn) && bCanHook )
 				shootHook();
 			
 			// ROTATING:
@@ -833,7 +834,7 @@ package cas.spdr.actor
 		
 		private function checkReleaseHook():void
 		{
-			if ( hooks[prevHook].exists && !FlxG.keys.pressed("X") )
+			if ( hooks[prevHook].exists && !FlxG.keys.pressed(hookBtn) )
 				hooks[prevHook].release();				
 			
 			if ( !hooks[prevHook].bCollided )
@@ -971,7 +972,7 @@ package cas.spdr.actor
 				this.angle = -45;
 			else if ( status == INAIR && bDidDoubleJump )
 			{					
-				if ( FlxG.keys.Z && Math.abs(this.velocity.x) > 0)
+				if ( (FlxG.keys[jumpBtn]||FlxG.keys[jumpBtnAlt]) && Math.abs(this.velocity.x) > 0)
 				{	
 					if ( facing == RIGHT )					
 						this.angle =  this.angle + FlxG.elapsed * 675;	
@@ -1236,7 +1237,9 @@ package cas.spdr.actor
 			
 			if ( bHitFloor )
 			{
-				status = ONGROUND;			
+				status = ONGROUND;		
+				bOnSlopeDown = false;
+				bOnSlopeUp = false;
 				jumpTime = 0;
 				bDidDoubleJump = false;
 				return super.hitFloor(Contact);
@@ -1340,7 +1343,8 @@ package cas.spdr.actor
 										
 					return false;
 				}
-				else if ( tileIndexAbove2 == 32 || tileIndexAbove2 == 33 || tileIndexAbove2 == 37 || tileIndexAbove2 == 38 )						
+				else if (( tileIndexAbove2 == 32 || tileIndexAbove2 == 33 || tileIndexAbove2 == 37 || tileIndexAbove2 == 38 )						
+					&& tileIndex < playState.flanmap.mainLayer.collideIndex + 3 )	// only apply this hack when not walling..
 				{
 					// okay I've detected that something went terribly wrong, 
 					// I am now TWO tiles below where I should be!

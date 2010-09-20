@@ -249,7 +249,7 @@
 				
 			
 			// Various Input				
-			if ( FlxG.keys.justPressed("SPACE") )
+			if ( FlxG.keys.justPressed(restartBtn) )
 			{
 				restartLevel();
 			}

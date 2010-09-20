@@ -31,15 +31,16 @@ package cas.spdr.state
 				case 1:
 					text = "Loading Race.. " + "\n" + "\n" +
 					"\n\n\n\n\n" +
-					"Jump: Z\n" + 
-					"Slide: down";
+					"Jump: Up / Z\n" + 
+					"Slide: Down";
 					break;
 				case 2:
 				case 3:
 					text = "Loading Race.. " + "\n" + "\n" +
 					"Tip: Use the grappling hook \nto reach higher platforms \nand find quicker routes\n\n\n" +
-					"Jump: Z\n" + 
-					"Hook: X";
+					"Jump: Up / Z\n" + 
+					"Hook: X\n" +
+					"Restart: Backspace";
 					break;
 				case 4:
 					text = "Warning: Wall of Death approaching!" + "\n" + "\n" +
@@ -50,7 +51,7 @@ package cas.spdr.state
 				case 7:
 					text = "Loading Race.. " + "\n" + "\n" +
 					"Tip: Use walljumping \nto find alternate routes \n\n\n\n\n" +
-					"Jump: Z\n" + 
+					"Jump: Up / Z\n" + 
 					"Hook: X";
 					break;				
 				case 8:
@@ -62,7 +63,7 @@ package cas.spdr.state
 				case 11:
 					text = "Loading Race.. " + "\n" + "\n" +
 					"Tip: Use doublejumping \nto find the quickest routes \n\n\n\n\n" +
-					"Jump: Z\n" + 
+					"Jump: Up / Z\n" + 
 					"Hook: X";
 					break;	
 				case 12:
@@ -75,7 +76,7 @@ package cas.spdr.state
 				default:
 					text = "Loading Race.. " + "\n" + "\n" +
 					"Try to find the fastest route to the finish! \n\n\n\n\n" +
-					"Jump: Z\n" + 
+					"Jump: Up / Z\n" + 
 					"Hook: X";
 					break;				
 			}
