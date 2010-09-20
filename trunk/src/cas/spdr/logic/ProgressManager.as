@@ -221,6 +221,33 @@
 			return true;
 		}
 		
+		public function TryUnlockChallenge(levelId:int):Boolean
+		{			
+			switch( levelId )
+			{
+				case 2:
+				case 3:
+					return ( hasFinishedLevel(2) && hasFinishedLevel(3) );
+					break;
+				case 5:
+				case 6:
+				case 7:
+					return ( hasFinishedLevel(5) && hasFinishedLevel(6) && hasFinishedLevel(7) );
+					break;
+				case 9:
+				case 10:
+				case 11:
+					return ( hasFinishedLevel(9) && hasFinishedLevel(10) && hasFinishedLevel(11) );
+					break;
+				case 12:
+				case 13:
+					return true;
+					break;
+			}
+				
+			return false;
+		}
+		
 		public function HasUnlockedWalljump():Boolean
 		{
 			return unlockedPowers[1];			
@@ -308,43 +335,27 @@
 		// returns true if a new power was unlocked
 		public function FinishedLevel(levelId:int, playTime:Number):Boolean
 		{	
-			//var receivedCredits:int = 0;
-			
-			// if the new time is better than the previous best, 
-			// find out how much money I get for this time, 
-			// using previous best result:
+			var bFirstMedal:Boolean = false;
+			if ( getBestTime(levelId) > getBronzeTime(levelId) 
+				&& playTime < getBronzeTime(levelId) )
+			{
+				// this is the first time I've gotten a medal on this level (yay)
+				bFirstMedal = true;
+					
+			}
 			if ( getBestTime(levelId) == 0 || playTime < getBestTime(levelId) )
 			{
-				/*
-				if ( playTime < getGoldTime(levelId) )
-				{					
-					receivedCredits += getBestTime(levelId) > getGoldTime(levelId) ? goldRewards[levelId] : 0;
-					receivedCredits += getBestTime(levelId) > getSilverTime(levelId) ? silverRewards[levelId] : 0;
-					receivedCredits += getBestTime(levelId) > getBronzeTime(levelId) ? bronzeRewards[levelId] : 0;					
-				}
-				else if ( playTime < getSilverTime(levelId) )
-				{
-					receivedCredits += getBestTime(levelId) > getSilverTime(levelId) ? silverRewards[levelId] : 0;
-					receivedCredits += getBestTime(levelId) > getBronzeTime(levelId) ? bronzeRewards[levelId] : 0;	
-				}
-				else if ( playTime < getBronzeTime(levelId) )
-				{					
-					receivedCredits += getBestTime(levelId) > getBronzeTime(levelId) ? bronzeRewards[levelId] : 0;					
-				}*/
-									
-				// finally, set new best time:
 				setBestTime(levelId, playTime);
+				
+				if ( bFirstMedal)
+				{
+					if ( TryUnlockChallenge(levelId) )
+						return true;
+				}
 			}
 			
-			// add to credits:
-			//nCollectedPickups += receivedCredits;
-			//return receivedCredits;	
-			
 			// then see if this unlocks a new power
-			if ( /*playTime < getBronzeTime(levelId) &&*/ TryUnlockPower(levelId) )
-				return true;
-			
-			return false;			
+			return TryUnlockPower(levelId);				
 		}
 		
 		
@@ -356,13 +367,39 @@
 				msg = "New Record!";
 			
 			if ( bUnlockedAPower )
-			{				
-				if( levelId == 1 )
-					msg = "Unlocked Grappling Hook!";
-				else if ( levelId == 4 )
-					msg = "Unlocked WallJump!";								
-				else if ( levelId == 8 )
-					msg = "Unlocked DoubleJump!";
+			{	
+				switch (levelId)
+				{
+					case 1:
+						msg = "Unlocked Grappling Hook!";
+						break;
+					case 2:
+					case 3:
+						msg = "Unlocked challenge level!";
+						break;
+					case 4:
+						msg = "Unlocked WallJump!";
+						break;
+					case 5:
+					case 6:
+					case 7:
+						msg = "Unlocked challenge level!";
+						break;
+					case 8:
+						msg = "Unlocked DoubleJump!";
+						break;
+					case 9:
+					case 10:
+					case 11:
+						msg = "Unlocked challenge level!";
+						break;
+					case 12:
+						msg = "Unlocked final challenge!";
+						break;
+					case 13:
+						msg = "Game Complete!!";
+						break;
+				}				
 			}
 			else
 			{	
@@ -380,15 +417,37 @@
 		public function getUnlockedPowerMessageForLevel(levelId:int):String
 		{
 			var msg:String = "";
-						
-			if( levelId == 1 )
-				msg = "Shoot the magnet at white surfaces by holding X and swing!";
-			else if ( levelId == 4 )
-				msg = "Jump onto white walls to hold on, and jump away again with Z";
-			//else if ( levelId == 4 || levelId == 5 )
-			//	msg = "Slide under obstacles by holding DOWN";					
-			else if ( levelId == 8 )
-				msg = "Cross large gaps by double jumping, press Z while in the air";
+			
+			switch (levelId)
+			{
+				case 1:
+					msg = "Shoot the magnet at white surfaces \nby holding X and swing!";
+					break;
+				case 4:
+					msg = "Jump onto white walls to hold on, \njump away again with Z";
+					break;
+				case 8:
+					msg = "Cross large gaps by double jumping, \npress Z while in the air";
+					break;
+				case 12:
+					msg = "The final, ultra-hard, level is \nlocated near level 1";
+					break;
+				case 13:
+					msg = "Improve your times on the levels \nto become the best speedrunner on the web!";
+					break;
+					
+				case 2:
+				case 3:
+				case 5:
+				case 6:
+				case 7:
+				case 9:
+				case 10:
+				case 11:
+					msg = "Complete challenge levels to unlock new powers!";
+					break;
+			}
+				
 			
 			return msg;		
 		}
@@ -401,13 +460,17 @@
 			{
 				case (1):
 					return UnlockHook();				
-					break;
+					break;				
 				case (4):
 					return UnlockWalljump();
 					break;
 				case (8):
 					return UnlockDoubleJump();
 					break;
+				case 12:
+				case 13:
+					return TryUnlockChallenge(levelId);
+					break;					
 				default:
 					return false;
 			}
@@ -415,7 +478,9 @@
 			return false;
 		}
 		
-		// Returns whether or not a bronze medal was achieved on level<levelId> 
+		/*
+		 * Returns whether or not a bronze medal was achieved on level<levelId> 
+		 */		
 		public function hasFinishedLevel(levelId:int):Boolean
 		{
 			return ( getBestTime(levelId) < getBronzeTime(levelId) );

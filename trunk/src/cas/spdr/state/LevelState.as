@@ -325,12 +325,10 @@
 			{
 				bIsTiming = false;
 				
-				var bNeedsAddMsg:Boolean = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
-				//var recCredits:int = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
+				var bNeedsAddMsg:Boolean = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);				
 				var msg:String = FlxG.progressManager.getFinishedMessage(FlxG.level, playTime, bNeedsAddMsg);
-				if ( bNeedsAddMsg )//recCredits > 0 )
+				if ( bNeedsAddMsg )
 				{
-					//var addMsg:String = "+"+recCredits+ " Credits!";
 					var addMsg:String = FlxG.progressManager.getUnlockedPowerMessageForLevel(FlxG.level);
 					finishDialog.playMessage(msg, addMsg);
 				}
@@ -344,17 +342,7 @@
 				}
 				
 				FlxG.fglTracker.checkpoint(playTime,"", "Finished");				
-			}
-			
-			//tracker.trackEvent("Timing Events", "Finished", "Label", playTime );				
-			
-			//SWFStats.LevelMetrics.Log("Finished", currentMapIndex+1);
-			//SWFStats.LevelMetrics.LogRanged("CompletionTime", currentMapIndex+1, playTime);				
-						
-			//finTxt.text = FlxG.progressManager.FinishedLevel(flanmap, playTime);
-			
-			//finTxt.text = FlxG.progressManager.FinishedLevel(FlxG.level, playTime);
-			//finTxt.visible = true;					
+			}								
 		}	
 		
 		virtual public function endLevel(bSaveData:Boolean = true):void
