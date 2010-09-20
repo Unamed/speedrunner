@@ -127,13 +127,17 @@
 			lTxt.scrollFactor = new Point(1, 1);				
 			this.add(lTxt);	
 			
+			var cTxt:FlxText = new FlxText(2970, 920, 500, "Get at least \na bronze medal \nin level 2 and 3 \nto open the \ndoor to this \nchallenge! ");		
+			cTxt.size = 12;							
+			cTxt.scrollFactor = new Point(1, 1);							
+			this.add(cTxt);	
 			
 			var oTxt:FlxText = new FlxText(1960, 900, 500, "Use the grappling hook here, to reach levels 2 and 3    ->");			
 			oTxt.size = 12;							
 			oTxt.scrollFactor = new Point(1, 1);							
 			this.add(oTxt);	
 			
-			var wTxt:FlxText = new FlxText(3300, 1270, 500, "     /\\ \n      |\n\nUnlock \nwalljumping \nto reach \nlevels 5 \nand beyond");			
+			var wTxt:FlxText = new FlxText(3370, 1270, 500, "Unlock \nwalljumping \nto reach \nlevels 5 \nand beyond");			
 			wTxt.size = 12;							
 			wTxt.scrollFactor = new Point(1, 1);							
 			this.add(wTxt);	
