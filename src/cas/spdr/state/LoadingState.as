@@ -62,7 +62,7 @@ package cas.spdr.state
 				case 10:
 				case 11:
 					text = "Loading Race.. " + "\n" + "\n" +
-					"Tip: Use doublejumping \nto find the quickest routes \n\n\n\n\n" +
+					"Tip: Use your new skills \nto improve your score \nin previous levels \n\n\n\n\n" +
 					"Jump: Up / Z\n" + 
 					"Hook: X";
 					break;	
