@@ -28,7 +28,7 @@
 			this.additonalTextField.x = 50;
 			this.additonalTextField.y = 500;
 			
-			optionsTextField = new FlxText(100, 570, 500, "Press 'UP' to select");				
+			optionsTextField = new FlxText(100, 570, 500, "Press Enter to select");				
 			optionsTextField.size = 10;	
 			optionsTextField.scrollFactor = new Point(0, 0);
 			optionsTextField.visible = false;	

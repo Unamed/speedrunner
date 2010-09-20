@@ -22,7 +22,7 @@
 			moveSpeed = -2500;			
 			loadGraphic( GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_MESSAGE_DIALOG), false, false, 800, 600, false);
 			
-			optionsTextField = new FlxText(550, 470, 500, "ESC: level select \nSPACE: retry");				
+			optionsTextField = new FlxText(550, 470, 500, "ENTER: continue \nBACKSPACE: retry");				
 			optionsTextField.size = 15;	
 			optionsTextField.scrollFactor = new Point(0, 0);
 			optionsTextField.visible = false;		

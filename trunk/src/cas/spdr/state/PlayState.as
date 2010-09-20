@@ -69,6 +69,9 @@
 		
 		protected var bIsPaused:Boolean;
 		
+		public var restartBtn:String = "BACKSPACE";
+		public var escBtn:String = "ENTER";
+		
 		public function PlayState() 
 		{
 			super();			
@@ -122,8 +125,13 @@
 			
 			bgSpr2 = new FlxSprite(-500, 0, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND));
 			bgSpr2.scrollFactor = new Point(0.2, 0.1);
-			bgSpr2.width = 5000;
+			bgSpr2.width = 2500;
 			bgSpr2.height = 1000;
+			
+			var bgSpr2b:FlxSprite = new FlxSprite(2000, 0, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND));
+			bgSpr2b.scrollFactor = new Point(0.2, 0.1);
+			bgSpr2b.width = 2500;
+			bgSpr2b.height = 1000;
 			
 			var yval:int;
 			if ( FlxG.level == 8 )
@@ -133,20 +141,27 @@
 				
 			bgSpr3 = new FlxSprite(0, yval, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND_2));
 			bgSpr3.scrollFactor = new Point(0.5, 0.9);
-			bgSpr3.width = 4000;
+			bgSpr3.width = 2500;
 			bgSpr3.height = 2000;
 			
-			var bgSpr3b:FlxSprite = new FlxSprite(4000*0.5, yval, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND_2));
+			var bgSpr3b:FlxSprite = new FlxSprite(2500, yval, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND_2));
 			bgSpr3b.scrollFactor = new Point(0.5, 0.9);
-			bgSpr3b.width = 4000;
+			bgSpr3b.width = 2500;
 			bgSpr3b.height = 2000;
+			
+			var bgSpr3c:FlxSprite = new FlxSprite(5000, yval, GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_BACKGROUND_2));
+			bgSpr3c.scrollFactor = new Point(0.5, 0.9);
+			bgSpr3c.width = 2500;
+			bgSpr3c.height = 2000;
 			
 			//bgSpr2.alpha = 0.2;
 			
 			this.add(bgSpr);			
 			this.add(bgSpr2);
+			this.add(bgSpr2b);
 			this.add(bgSpr3);
 			this.add(bgSpr3b);
+			this.add(bgSpr3c);
 		}
 		
 		public function addBGLayer():void
@@ -251,7 +266,7 @@
 			}
 			
 			// First (and always, irregardless of pause), process input:			
-			if ( FlxG.keys.justPressed("ESC") )
+			if ( !(FlxG.state is MainMenuState) && FlxG.keys.justPressed(escBtn) )
 				switchToMainMenu();	
 			
 			// Don't perform collisions or updates when game is paused:
@@ -339,11 +354,11 @@
 			{
 				FlxG.progressManager.clearSaveData();
 			}
-			
+			/*
 			if ( FlxG.keys.justPressed("O") )
 			{
 				FlxG.switchState(OptionsMenuState);				
-			}
+			}*/
 		}
 		
 		public function switchToMainMenu():void 

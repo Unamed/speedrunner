@@ -30,6 +30,7 @@ package org.flixel.data
 		public var MINUS:Boolean;
 		public var PLUS:Boolean;
 		public var DELETE:Boolean;
+		public var BACKSPACE:Boolean;
 		public var Q:Boolean;
 		public var W:Boolean;
 		public var E:Boolean;
@@ -123,7 +124,8 @@ package org.flixel.data
 			addKey("ESC",27);
 			addKey("MINUS",189);
 			addKey("PLUS",187);
-			addKey("DELETE",8);
+			addKey("DELETE", 46);
+			addKey("BACKSPACE",8);
 			addKey("LBRACKET",219);
 			addKey("RBRACKET",221);
 			addKey("BACKSLASH",220);

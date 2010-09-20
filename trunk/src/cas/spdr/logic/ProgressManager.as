@@ -59,12 +59,12 @@
 			unlockCosts[3] = 300;	//doublejump
 			unlockCosts[4] = 1000;	//reverse-mode	
 			
-			goldTimes[0] = 1.0;	//MainMenu
-			goldTimes[1] = 15.0;	//Lion
-			goldTimes[2] = 13.0;	//Hydra
-			goldTimes[3] = 15.0;	//Hind
+			goldTimes[0] = 1.0;		//MainMenu
+			goldTimes[1] = 20.0;	// Set using data from FGL (19.09.2010)
+			goldTimes[2] = 18.0;	// Set using data from FGL (19.09.2010)
+			goldTimes[3] = 18.0;	// Set using data from FGL (19.09.2010)
 			goldTimes[4] = 1.0;	
-			goldTimes[5] = 20.0;	
+			goldTimes[5] = 20.0;	// should do everything *1.5?
 			goldTimes[6] = 16.0;	
 			goldTimes[7] = 16.0;	
 			goldTimes[8] = 1.0;	
@@ -77,11 +77,11 @@
 			goldTimes[15] = 1.0;	
 			
 			silverTimes[0] = 1.0;	//MainMenu
-			silverTimes[1] = 17.0;	//Lion
-			silverTimes[2] = 15.0;	//Hydra
-			silverTimes[3] = 17.0;	//Hind
+			silverTimes[1] = 25.0;	// Set using data from FGL (19.09.2010)
+			silverTimes[2] = 20.0;	// Set using data from FGL (19.09.2010)
+			silverTimes[3] = 20.0;	// Set using data from FGL (19.09.2010)
 			silverTimes[4] = 1.0;	
-			silverTimes[5] = 23.0;	
+			silverTimes[5] = 23.0;	// should do everything *1.5?
 			silverTimes[6] = 19.0;	
 			silverTimes[7] = 19.0;	
 			silverTimes[8] = 1.0;	
@@ -94,11 +94,11 @@
 			silverTimes[15] = 1.0;	
 			
 			bronzeTimes[0] = 1.0;	//MainMenu
-			bronzeTimes[1] = 20.0;	//Lion
-			bronzeTimes[2] = 18.0;	//Hydra
-			bronzeTimes[3] = 20.0;	//Hind
+			bronzeTimes[1] = 40.0;	// Set using data from FGL (19.09.2010)
+			bronzeTimes[2] = 30.0;	// Set using data from FGL (19.09.2010)
+			bronzeTimes[3] = 30.0;	// Set using data from FGL (19.09.2010)
 			bronzeTimes[4] = 1.0;	
-			bronzeTimes[5] = 28.0;	
+			bronzeTimes[5] = 28.0;	// should do everything *1.5?
 			bronzeTimes[6] = 24.0;	
 			bronzeTimes[7] = 24.0;	
 			bronzeTimes[8] = 1.0;	

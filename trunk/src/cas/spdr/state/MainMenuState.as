@@ -106,13 +106,12 @@
 			var gTxt:FlxText = new FlxText(910, 940, 500, 
 				"Welcome to SpeedRunner Prototype v0.7b" + "\n \n" + 
 				"Controls: " + "\n" +
-				"LEFT, RIGHT to move" + "\n" +
-				"Z - (Double) Jump (when unlocked)" + "\n" +
-				"X - Shoot Grappling Hook (when unlocked)" + "\n" +
-				"DOWN - Slide" + "\n" +				
-				"UP to enter door" + "\n" +
-				"ESC to main menu" + "\n" +
-				"SPACE to restart level" + "\n\n\n\n\n\n\n\n\n\n\n\n" +
+				"Run: arrow keys Left & Right" + "\n" +
+				"Jump: UP / Z (DoubleJump when unlocked)" + "\n" +
+				"Grappling hook: X (When unlocked)" + "\n" +
+				"Slide: DOWN" + "\n" +				
+				"Enter door: ENTER" + "\n" +
+				"Restart race: BACKSPACE" + "\n\n\n\n\n\n\n\n\n\n\n\n" +
 				"Comments? Send them to: \ncaspervanest [at] gmail [dot] com"
 				);			
 			gTxt.size = 12;							

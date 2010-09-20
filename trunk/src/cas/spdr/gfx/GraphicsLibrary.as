@@ -12,7 +12,7 @@
 		//[Embed(source="/../data/temp/tiles_foreground.png")] private var FgTiles:Class;
 		[Embed(source = "/../data/temp/tiles_black_37.png")] public var Black37Tiles:Class;//Img_Main:Class;
 
-		[Embed(source = "/../data/temp/bgIm_2b.png")] private var bgIm:Class;
+		[Embed(source = "/../data/temp/bgIm_2c.png")] private var bgIm:Class;
 		[Embed(source = "/../data/temp/bgIm_3b.png")] private var bgIm2:Class;
 		
 		[Embed(source = "/../data/temp/obstacle.png")] private var ObstacleIcon:Class;
