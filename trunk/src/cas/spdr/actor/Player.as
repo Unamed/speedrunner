@@ -129,12 +129,16 @@ package cas.spdr.actor
 		public var hookBtn:String = "X";
 		public var slideBtn:String = "DOWN";
 		public var selectBtn:String = "ENTER";
+		
+		private var defaultOffsetX:int;
+		private var defaultOffsetY:int;
+		private var slideOffsetY:int;
 				
 		
 		public function Player(X:int, Y:int)//, hooks:Array)
 		{
 			super(X, Y);	
-			this.loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_RYU), true, true, 45, 51);			
+			this.loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_RYU), true, true, 100, 100 );// 45, 51);			
 			
 			restart = 0;
 			
@@ -145,8 +149,15 @@ package cas.spdr.actor
 			//bounding box tweaks
 			width = 21;
 			height = 46;
-			offset.x = 11;	//2
-			offset.y = 4;
+			
+			this.origin = new Point(100/2, (100-height)+(height/2));
+			
+			defaultOffsetX = (100 - width) / 2;
+			defaultOffsetY = (100 - height);
+			slideOffsetY = defaultOffsetY + 22;
+			
+			offset.x = defaultOffsetX; // 11;	//2
+			offset.y = defaultOffsetY; // 4;
 			
 			//basic player physics
 			drag.x = defaultRunVelocity * 2;
@@ -159,7 +170,8 @@ package cas.spdr.actor
 			maxVelocity.y = 24 * size;// 800;
 			
 			//animations
-			addAnimation("idle", [0]);
+			//addAnimation("idle", [0,0,0,0,0,0,0,0,0,0,0, 24, 25, 26], 24, false );
+			addAnimation("idle", [32, 32, 32, 32, 32, 33, 34, 35], 24, false );
 			addAnimation("runslow", [1, 2, 3], 8);						
 			addAnimation("runmedium", [1, 2, 3], 16);
 			addAnimation("runfast", [1, 2, 3], 24);			
@@ -175,7 +187,8 @@ package cas.spdr.actor
 			addAnimation("slide", [19]);
 			addAnimation("crawl", [20,21],4);
 			addAnimation("stumble", [16,17,18],8);
-			addAnimation("dead", [ 22],24,false);
+			addAnimation("dead", [ 22], 24, false);
+			addAnimation("enter", [27, 28, 29, 30, 31, 32], 24, false);
 			
 			
 			curHook = 0;
@@ -315,8 +328,11 @@ package cas.spdr.actor
 			
 			if ( FlxG.keys.justPressed(selectBtn) )
 			{
-				if( bHitDoor )
+				if ( bHitDoor )
+				{
 					( FlxG.state as PlayState ).switchToLevel(switchToLevelId);				
+					play("enter");
+				}
 				else if ( bHitUseTrigger )
 					FlxG.progressManager.upgradeSetting( useTriggerEffect );				
 			}
@@ -669,7 +685,7 @@ package cas.spdr.actor
 							this.y += 26;
 							
 						bSliding = true;
-						this.offset.y = 26;
+						this.offset.y = slideOffsetY;
 						this.height = 20;
 					}
 					else
@@ -694,7 +710,7 @@ package cas.spdr.actor
 						
 						if ( !bCrawling )
 						{
-							this.offset.y = 4;
+							this.offset.y = defaultOffsetY;
 							this.height = 46;								
 						}
 					}
@@ -721,7 +737,7 @@ package cas.spdr.actor
 							bCrawling = true;
 						}
 						
-						this.offset.y = 26;
+						this.offset.y = slideOffsetY;
 						this.height = 20;
 					}
 					else
@@ -744,7 +760,7 @@ package cas.spdr.actor
 						
 						if ( !bCrawling )
 						{
-							this.offset.y = 4;
+							this.offset.y = defaultOffsetY;
 							this.height = 46;								
 						}
 					}
@@ -899,14 +915,14 @@ package cas.spdr.actor
 					play("runfast");
 				else if ( Math.abs(velocity.x) > defaultRunVelocity )				
 					play("runmedium");
-				else if(velocity.x == 0)
+				else if( velocity.x == 0 )
 					play("idle");
-				else	
+				else 	
 					play("runslow");
 			}				
 		}
 		
-		private function explode():void
+		public function explode():void
 		{
 			if ( ! FlxG.state is LevelState || this.dead)
 				return;
@@ -1118,7 +1134,7 @@ package cas.spdr.actor
 				{
 					this.y -= 26;
 					this.height = 46;
-					this.offset.y = 4;
+					this.offset.y = defaultOffsetY;
 					
 					/*
 					if( velocity.x > 0 )
@@ -1145,7 +1161,7 @@ package cas.spdr.actor
 				bSuperBoosting = true;	
 				superBoostDir = Contact.boostDir;
 				
-				this.offset.y = 26;
+				this.offset.y = slideOffsetY;
 				this.height = 20;
 				
 				bCanSlide = false;				

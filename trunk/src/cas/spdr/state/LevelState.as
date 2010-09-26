@@ -2,6 +2,8 @@
 {	
 	import cas.spdr.actor.*;
 	import cas.spdr.gfx.sprite.Pickup;
+	import flash.errors.IllegalOperationError;
+	import flash.errors.IOError;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxText;
 	import org.flixel.FlxG;
@@ -215,13 +217,23 @@
 		{			
 			super.update();
 			
-			if( bIsTiming )
-				playTime += FlxG.elapsed;
+			if ( bIsTiming )
+			{
+				playTime += FlxG.elapsed;			
+				
+				if ( playTime >= FlxG.progressManager.getBronzeTime(FlxG.level) )
+				{
+					player.explode();
+					bIsTiming = false;
+					playTime = FlxG.progressManager.getBronzeTime(FlxG.level);					
+				}
+			}
+
 			
 			// HUD:
 			if ( timerTxt != null )
 			{
-				timerTxt.text = "" + playTime.toFixed(2);				
+				timerTxt.text = "" + (FlxG.progressManager.getBronzeTime(FlxG.level) - playTime).toFixed(2);				
 				
 				if( playTime > FlxG.progressManager.getGoldTime(FlxG.level) )
 				{
@@ -233,6 +245,8 @@
 					}				
 				}					
 			}
+			
+			
 				
 				
 			// logging:
@@ -360,6 +374,14 @@
 			if( bShouldLog && !bDisableLogging)			
 				sendLogToServer("http://www.progamestudios.com/casgames/spdr_stats/position_stats.php");
 			bShouldLog = false;	
+			
+			FlxG.switchState(StoryState as Class);
+			if ( FlxG.state is StoryState )
+			{
+				(FlxG.state as StoryState).setText("Received Grappling Hook!");
+				(FlxG.state as StoryState).setSupportText("Use the hook to swing across gaps \nand reach higher platforms. \nShoot the hook at white surfaces \nwith X");
+				(FlxG.state as StoryState).setImage(GraphicsLibrary.Instance.GetImage(GraphicsLibrary.IMAGE_STORY_GH));
+			}
 		}
 		
 		private function logPlayerPosition():void
@@ -385,11 +407,13 @@
 			
 			// now send:
 			sendRequest.method = URLRequestMethod.POST;
+			
+			trace("Sending message, URL:" + sendRequest.url + ", data:" + sendRequest.data);
 			sendLoader.load(sendRequest);
 			
 			function sendComplete(evt:Event):void
 			{
-				trace("Message sent:");				
+				trace("Message sent.");				
 				//trace(url + "?action=submit"+"&track="+track+"&version="+version+"&time="+time+"&hash="+hash+"&data="+data);
 			}
 			function sendError(evt:IOErrorEvent):void
