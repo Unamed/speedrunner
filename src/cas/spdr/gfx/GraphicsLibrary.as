@@ -14,6 +14,7 @@
 
 		[Embed(source = "/../data/temp/bgIm_2c.png")] private var bgIm:Class;
 		[Embed(source = "/../data/temp/bgIm_3b.png")] private var bgIm2:Class;
+		[Embed(source = "/../data/temp/grapplinghookget.png")] private var ghookGet:Class;
 		
 		[Embed(source = "/../data/temp/obstacle.png")] private var ObstacleIcon:Class;
 		[Embed(source = "/../data/temp/lethal_obstacle.png")] private var LethalObstacleIcon:Class;
@@ -22,7 +23,7 @@
 		[Embed(source = "/../data/temp/BoostSection.png")] private var BoostImg:Class;
 		//[Embed(source = "/../data/temp/player.png")] private var ImgPlayer:Class;
 		//[Embed(source="/../data/temp/ninjagaidentrilogy_ryuhayabusa_sheet.png")] private var ImgRyu:Class;
-		[Embed(source = "/../data/temp/player_sheet_black2.png")] private var ImgRyu:Class;
+		[Embed(source = "/../data/temp/player_sheet_black2new.png")] private var ImgRyu:Class;
 		[Embed(source = "/../data/temp/door.png")] private var DoorIcon:Class;
 		//[Embed(source = "/../data/temp/tile_slope_up.png")] private var SlopeUpTile:Class;
 		//[Embed(source = "/../data/temp/tile_slope_down.png")] private var SlopeDownTile:Class;
@@ -45,6 +46,7 @@
 		
 		public static const IMAGE_BACKGROUND:uint = 0;
 		public static const IMAGE_BACKGROUND_2:uint = 1;
+		public static const IMAGE_STORY_GH:uint = 2;
 		
 		public static const SPRITE_OBSTACLE:uint = 0;
 		public static const SPRITE_COIN_PICKUP:uint = 1;
@@ -83,6 +85,7 @@
 			
 			images[IMAGE_BACKGROUND] = bgIm;
 			images[IMAGE_BACKGROUND_2] = bgIm2;
+			images[IMAGE_STORY_GH] = ghookGet;
 			
 			sprites[SPRITE_OBSTACLE] = ObstacleIcon;
 			sprites[SPRITE_COIN_PICKUP] = PickupIcon;			

@@ -38,7 +38,7 @@
 		{
 			super();
 			//loadGraphic(ImgHook);
-			this.loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_HOOK));
+			this.loadGraphic(GraphicsLibrary.Instance.GetSprite(GraphicsLibrary.SPRITE_HOOK), true,false,12,12,false);
 			exists = false;
 			bCollided = false;
 			
@@ -53,6 +53,9 @@
 			hookableTiles.push(34);
 			hookableTiles.push(35);
 			hookableTiles.push(36);
+			
+			this.addAnimation("open", [0]);
+			this.addAnimation("closed", [1]);
 			
 			// Trail emitter
 			emitter = new FlxEmitter();			
@@ -83,6 +86,7 @@
 			super.reset(X, Y);
 			
 			bCollided = false;
+			play("open");
 			
 			velocity.x = VelocityX;
 			velocity.y = VelocityY;	
@@ -192,6 +196,8 @@
 				bCollided = true;	
 				
 				playerAccel = new Point(500, 0);
+				
+				play("closed");
 			}				
 				
 			return true;	
@@ -224,13 +230,13 @@
 		}
 		
 		override public function render():void
-		{					
-			super.render();	
-			
+		{	
 			if ( exists )
 			{			
 				line.render();
-			}			
+			}
+			
+			super.render();	
 		}
 		
 		/*

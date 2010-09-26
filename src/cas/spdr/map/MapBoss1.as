@@ -52,7 +52,7 @@ package cas.spdr.map {
 			layerBG.drawIndex = 1;
 			layerBG.x = 0;
 			layerBG.y = 0;
-			layerBG.scrollFactor.x = 0.500000;
+			layerBG.scrollFactor.x = 1.000000;
 			layerBG.scrollFactor.y = 1.000000;
 
 			allLayers = [ layerFG, layerMain, layerBG ];
@@ -94,20 +94,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new FallingBlock(3032 +8, 1032 +8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new FallingBlock(3160 +8, 1032 +8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new FallingBlock(600 +8, 1080 +8);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -119,83 +105,6 @@ package cas.spdr.map {
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["triggerId"] = 2;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new FallingBlock(2904 +8, 1032 +8);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(2744, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(2808, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(2872, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(2936, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(3000, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(3064, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(3128, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(3192, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(2680, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Trigger(3256, 952);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			obj["triggerId"] = 3;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
@@ -514,72 +423,6 @@ package cas.spdr.map {
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);
-			obj = new Obstacle(7948, 636);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7980, 636);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7980, 668);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7948, 668);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7980, 700);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7948, 700);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7948, 732);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7980, 732);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7980, 764);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7948, 764);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7980, 988);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
 			obj = new Obstacle(7980, 1020);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
@@ -599,12 +442,6 @@ package cas.spdr.map {
 			if(onAddCallback != null)
 				onAddCallback(obj);
 			obj = new Obstacle(7980, 1116);;
-			obj.x+=obj.offset.x;
-			obj.y+=obj.offset.y;
-			FlxG.state.add(obj);
-			if(onAddCallback != null)
-				onAddCallback(obj);
-			obj = new Obstacle(7948, 988);;
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			FlxG.state.add(obj);
@@ -733,6 +570,229 @@ package cas.spdr.map {
 			obj.x+=obj.offset.x;
 			obj.y+=obj.offset.y;
 			obj["triggerId"] = 1111;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(7948, 1420);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(7980, 1420);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(7980, 1388);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(7948, 1388);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(7948, 1356);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(7980, 1356);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(7980, 1324);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Obstacle(7948, 1324);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(2648 +8, 1032 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 711;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(2776 +8, 1032 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 712;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(2904 +8, 1032 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 713;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(3032 +8, 1032 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 714;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new FallingBlock(3160 +8, 1032 +8);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 715;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(3240, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 715;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(3176, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 715;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(3240, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 715;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(3176, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 715;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(3048, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 714;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(3048, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 714;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(3112, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 714;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(3112, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 714;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2920, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 713;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2984, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 713;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2984, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 713;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2920, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 713;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2792, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 712;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2792, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 712;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2856, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 712;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2856, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 712;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2664, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 711;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2728, 952);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 711;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2728, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 711;
+			FlxG.state.add(obj);
+			if(onAddCallback != null)
+				onAddCallback(obj);
+			obj = new Trigger(2664, 1048);;
+			obj.x+=obj.offset.x;
+			obj.y+=obj.offset.y;
+			obj["triggerId"] = 711;
 			FlxG.state.add(obj);
 			if(onAddCallback != null)
 				onAddCallback(obj);

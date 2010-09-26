@@ -10,10 +10,11 @@
 	import cas.spdr.gfx.GraphicsLibrary;
 	import SWFStats.Log;
 	//import SWFStatsTest.Log;
+	import flash.system.Capabilities;
 		
 	
-	import com.google.analytics.AnalyticsTracker;
-	import com.google.analytics.GATracker;
+	//import com.google.analytics.AnalyticsTracker;
+	//import com.google.analytics.GATracker;
 		
 	/**
 	 * The Base PlayState, featuring a character that walks around in an environment. Can be used for a level, or for the main menu
@@ -49,7 +50,7 @@
 		protected var debugTxt:FlxText;
 
 		// Google Analytics:
-		private var tracker:GATracker;
+		//private var tracker:GATracker;
 		
 		private var bgSpr:FlxGradientBackground;
 		private var bgSpr2:FlxSprite;
@@ -76,12 +77,54 @@
 		{
 			super();			
 			
-			bgColor = 0xFF7678CB;
+			bgColor = 0xFF000000;
+			//bgColor = 0xFF7678CB;
 			
 			initLevel();
 						
 			//fade in
-			FlxG.flash(0xff000000);					
+			FlxG.flash(0xff000000);		
+			
+			
+			// detect player version:
+			
+
+			// Get the player's version by using the getVersion() global function.
+			var versionNumber:String = Capabilities.version;
+			trace("versionNumber: "+versionNumber);
+			trace("-----");
+
+			// The version number is a list of items divided by ","
+			var versionArray:Array = versionNumber.split(",");
+			var length:Number = versionArray.length;
+			for(var i:Number = 0; i < length; i++) trace("versionArray["+i+"]: "+versionArray[i]);
+			trace("-----");
+
+			// The main version contains the OS type too so we split it in two
+			// and we'll have the OS type and the major version number separately.
+			var platformAndVersion:Array = versionArray[0].split(" ");
+			for (var j:Number = 0; j < 2; j++) 
+			{
+				trace("platformAndVersion[" + j + "]: " + platformAndVersion[j]);
+			}
+			trace("-----");
+
+			var majorVersion:Number = parseInt(platformAndVersion[1]);
+			var minorVersion:Number = parseInt(versionArray[1]);
+			var buildNumber:Number = parseInt(versionArray[2]);
+
+			trace("Platform: "+platformAndVersion[0]);
+			trace("Major version: "+majorVersion);
+			trace("Minor version: "+minorVersion);
+			trace("Build number: "+buildNumber);
+			trace("-----");
+
+			if (majorVersion < 9) 
+				trace("Your Flash Player version is older than the current version 9, please update.");
+			else 
+				trace("You are using Flash Player 9 or later.");
+				
+			debugTxt.text = "v" + majorVersion + "." + minorVersion + "." + buildNumber;
 		}	
 		
 		virtual public function initLevel():void
@@ -200,7 +243,7 @@
 		
 		virtual public function addHUDElements():void
 		{	
-			debugTxt = new FlxText(300, 150, 200, "");
+			debugTxt = new FlxText(700, 10, 200, "");
 			debugTxt.scrollFactor = new Point(0, 0);	
 			debugTxt.size = 10;	
 			
@@ -293,8 +336,8 @@
 			*/	
 			
 			// Google Analytics:			
-			if ( !tracker )
-				tracker = new GATracker(this, "UA-12125437-1", "AS3", false );			
+			//if ( !tracker )
+			//	tracker = new GATracker(this, "UA-12125437-1", "AS3", false );			
 			
 			// COLLISION:			
 			var playerCol:Boolean = false;
@@ -353,6 +396,13 @@
 			if ( FlxG.keys.justPressed("R") )
 			{
 				FlxG.progressManager.clearSaveData();
+			}
+			
+			if ( FlxG.keys.justPressed("T") )
+			{
+				FlxG.progressManager.UnlockDoubleJump();
+				FlxG.progressManager.UnlockWalljump();
+				FlxG.progressManager.UnlockHook();
 			}
 			/*
 			if ( FlxG.keys.justPressed("O") )

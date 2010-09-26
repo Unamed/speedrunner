@@ -34,6 +34,7 @@
 			
 			var xLoc:Number;
 			var yLoc:Number;
+			var xOffset:int;
 			if ( hook.bCollided )
 			{				
 				if ( player.facing == FlxSprite.LEFT)
@@ -42,18 +43,26 @@
 					xLoc = 0.25 * player.width;
 					
 				yLoc = player.height / 2;
+				xOffset = 0;
 			}
 			else
 			{
 				if ( player.facing == FlxSprite.LEFT)
+				{
 					xLoc = 0;
+					xOffset = -1;
+				}
 				else
+				{
 					xLoc = player.width;
+					xOffset = 5;
+				}
 					
 				yLoc = player.height / 8;
+				
 			}
             drawShape.graphics.moveTo(player.x + xLoc + FlxG.scroll.x, player.y + yLoc + FlxG.scroll.y);
-            drawShape.graphics.lineTo(hook.x + hook.width/2 + FlxG.scroll.x, hook.y + 6 + FlxG.scroll.y);
+            drawShape.graphics.lineTo(hook.x + hook.width/2 - xOffset + FlxG.scroll.x, hook.y + 9 + FlxG.scroll.y);
             FlxG.buffer.draw(drawShape);
         }
     }
