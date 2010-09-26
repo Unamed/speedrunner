@@ -24,12 +24,11 @@ package cas.spdr.state
 			
 			var text:String = "SpeedRunner" +
 					"\n\n\n\n\n" +
-					"Press "+startBtn+" to start 3";		
+					"Press "+startBtn+" to start";		
 			
-			var gTxt:FlxText = new FlxText(200, 200, 500, text);				
-			gTxt.size = 16;							
-			gTxt.scrollFactor = new Point(1, 1);	
-			//gTxt.color = 0x000000;
+			var gTxt:FlxText = new FlxText(100, 200, 600, text);							
+			gTxt.scrollFactor = new Point(1, 1);				
+			gTxt.setFormat("Tahoma", 20, 0xFFFFFF, "center");
 			this.add(gTxt);
 		}
 		
