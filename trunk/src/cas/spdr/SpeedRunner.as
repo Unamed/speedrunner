@@ -1,13 +1,13 @@
 ﻿package cas.spdr
 {
 	import cas.spdr.map.*;
-	import cas.spdr.state.MainMenuState;
+	import cas.spdr.state.BeginState;
 	import FGL.GameTracker.GameTracker;
 	import org.flixel.*;
-	import cas.spdr.Preloader;
+	//import cas.spdr.Preloader;
 		
 	[SWF(width = "800", height = "600", backgroundColor = "#000000")]	
-	[Frame(factoryClass="cas.spdr.Preloader")]
+	//[Frame(factoryClass="cas.spdr.Preloader")]
 		
 	/**
 	 * ...
@@ -17,7 +17,7 @@
 	{	
 		public function SpeedRunner():void 
 		{	
-			super(800, 600, MainMenuState, 1);// , 0xff131c1b, false, 0xff729954);			
+			super(800, 600, BeginState, 1);// , 0xff131c1b, false, 0xff729954);		
 			
 			// main menu is level 0
 			FlxG.levels.push(MapMainMenu);
